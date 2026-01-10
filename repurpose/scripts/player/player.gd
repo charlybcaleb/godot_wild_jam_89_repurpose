@@ -9,6 +9,7 @@ var move_pts: Array
 var moving: bool:
 	set(v):
 		moving = v; $PathPreviz.visible = not moving; set_physics_process(moving)
+var facing_right: bool
 
 func _ready(): moving = false
 func setup(_grid: AStarGrid2D):
@@ -53,6 +54,7 @@ func try_move(target_pos: Vector2i):
 func start_move():
 	if move_pts.is_empty(): return
 	cur_pt = 0; moving = true
+	play_move_anim(true)
 
 func _physics_process(_delta: float):
 	if cur_pt == move_pts.size() -1:
@@ -60,11 +62,42 @@ func _physics_process(_delta: float):
 		global_position = move_pts[-1]
 		current_cell = pos_to_cell(global_position)
 		$PathPreviz.points = []; moving = false
+		play_move_anim(false)
 	else:
 		var dir = (move_pts[cur_pt + 1] - move_pts[cur_pt]).normalized()
 		velocity = dir * GlobalConstants.NAV_SPEED
 		move_and_slide()
+		print(str(dir))
+		set_facing_vis(dir)
 		# length comparator is in px
 		if (move_pts[cur_pt + 1] - global_position).length() < 4:
 			current_cell = pos_to_cell(global_position)
 			cur_pt += 1
+
+#### ANIMATION / VISUALS ####################################
+
+func play_move_anim(m: bool):
+	if m:
+		%AnimSprite.play("walk")
+	else:
+		%AnimSprite.play("default")
+
+func set_facing_vis(dir: Vector2):
+	if dir.y == 0.0:
+		var should_face_right := facing_right
+		if dir.x < 0:
+			should_face_right = true
+		else:
+			should_face_right = false
+		if should_face_right and not facing_right:
+			%AnimSprite.set_flip_h(true)
+			facing_right = true
+		if not should_face_right and facing_right:
+			%AnimSprite.set_flip_h(false)
+			facing_right = false
+	else:
+		# didn't change h dir, do nothing
+		pass
+	
+
+	

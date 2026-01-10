@@ -12,7 +12,7 @@ unique_name_in_owner = true
 [node name="Dungeon0" parent="." instance=ExtResource("2_xnanu")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(320, 180)
+position = Vector2(68, 62)
 
 [node name="Player" parent="." instance=ExtResource("3_xnanu")]
 unique_name_in_owner = true
