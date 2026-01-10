@@ -71,8 +71,7 @@ shape = SubResource("RectangleShape2D_dovo2")
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_a3pup")
 animation = &"walk"
-frame = 2
-frame_progress = 0.6325794
+frame_progress = 0.6533416
 
 [node name="PathPreviz" type="Line2D" parent="."]
 top_level = true

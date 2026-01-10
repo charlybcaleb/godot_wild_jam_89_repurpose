@@ -16,7 +16,9 @@ func _draw():
 		for y in grid.region.size.y:
 			var p = Vector2(x, y)
 			var col = Color(1,0,0,0.5) if grid.is_point_solid(p) else Color(0,1,0,0.3)
-			draw_rect(Rect2(p*grid.cell_size, grid.cell_size), col)
+			var world_p = p * grid.cell_size
+			#var camOffset = GameMan.CamWorldPos()
+			draw_rect(Rect2(world_p, grid.cell_size), col)
 			#print( "set rect at point " + str(x) + "," + str(y))
 
 

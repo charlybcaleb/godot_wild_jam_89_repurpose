@@ -14,7 +14,7 @@ var facing_right: bool
 func _ready(): moving = false
 func setup(_grid: AStarGrid2D):
 	grid = _grid
-	current_cell = GameMan.pos_to_cell(global_position)
+	current_cell = pos_to_cell(global_position)
 	target_cell = current_cell
 
 func _input(_event: InputEvent):
@@ -55,7 +55,7 @@ func _physics_process(_delta: float):
 	if cur_pt == move_pts.size() -1:
 		velocity = Vector2.ZERO
 		global_position = move_pts[-1]
-		current_cell = GameMan.pos_to_cell(global_position)
+		current_cell = pos_to_cell(global_position)
 		$PathPreviz.points = []; moving = false
 		play_move_anim(false)
 	else:
@@ -66,7 +66,7 @@ func _physics_process(_delta: float):
 		set_facing_vis(dir)
 		# length comparator is in px
 		if (move_pts[cur_pt + 1] - global_position).length() < 4:
-			current_cell = GameMan.pos_to_cell(global_position)
+			current_cell = pos_to_cell(global_position)
 			cur_pt += 1
 
 #### ANIMATION / VISUALS ####################################

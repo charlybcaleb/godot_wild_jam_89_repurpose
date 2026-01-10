@@ -1,19 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://cky00tw4a57h6"]
+[gd_scene load_steps=5 format=3 uid="uid://cky00tw4a57h6"]
 
 [ext_resource type="PackedScene" uid="uid://cfp21mjv65dgd" path="res://scenes/ui/ui_scene.tscn" id="1_j0xxo"]
+[ext_resource type="Script" uid="uid://bx7xiwh3ljtna" path="res://scripts/camera/camera.gd" id="2_8rffp"]
 [ext_resource type="PackedScene" uid="uid://wriu3c8nph2x" path="res://assets/tilesets/dungeon_0.tscn" id="2_xnanu"]
 [ext_resource type="PackedScene" uid="uid://dpfbr2m80hha8" path="res://scenes/player/player.tscn" id="3_xnanu"]
 
 [node name="crawl" type="Node2D"]
 
-[node name="UI" parent="." instance=ExtResource("1_j0xxo")]
-unique_name_in_owner = true
-
 [node name="Dungeon0" parent="." instance=ExtResource("2_xnanu")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(68, 62)
+[node name="Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(320, 180)
+script = ExtResource("2_8rffp")
+
+[node name="UI" parent="Camera" instance=ExtResource("1_j0xxo")]
+unique_name_in_owner = true
+offset_left = -320.0
+offset_top = -180.0
+offset_right = -320.0
+offset_bottom = -180.0
 
 [node name="Player" parent="." instance=ExtResource("3_xnanu")]
 unique_name_in_owner = true
-position = Vector2(24, 24)
+position = Vector2(280, 136)
