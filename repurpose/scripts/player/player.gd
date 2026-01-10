@@ -68,6 +68,7 @@ func _physics_process(_delta: float):
 		if (move_pts[cur_pt + 1] - global_position).length() < 4:
 			current_cell = GameMan.pos_to_cell(global_position)
 			cur_pt += 1
+		GameMan.player_moved()
 
 #### ANIMATION / VISUALS ####################################
 

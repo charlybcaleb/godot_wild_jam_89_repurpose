@@ -26,3 +26,6 @@ func build_grid():
 				astar_grid.set_point_solid(id, false)
 	%UI/%GridDisplay.grid = astar_grid
 	%Player.setup(astar_grid)
+
+func get_path_from_to(from: Vector2, to: Vector2):
+	

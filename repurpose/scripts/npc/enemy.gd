@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+## if true, targets player unless has no path to player, then targets nearest min
+@export var assassin := false
+var target: Node2D = null
+
 var grid: AStarGrid2D
 var current_cell: Vector2i
 var cur_pt: int
@@ -11,40 +15,52 @@ var moving: bool:
 		moving = v; $PathPreviz.visible = not moving; set_physics_process(moving)
 var facing_right: bool
 
-func _ready(): moving = false
+func _ready(): 
+	GameMan.register_enemy(self)
+	moving = false
+	add_to_group("enemies")
+
+# called by GameMan
 func setup(_grid: AStarGrid2D):
 	grid = _grid
-	current_cell = pos_to_cell(global_position)
+	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
 
-func _input(_event: InputEvent):
-	if moving: return
-	var target_pos = current_cell
-	if Input.is_action_just_pressed("move_left"):
-		print("move left")
-		target_pos.x = current_cell.x - 1
-		try_move(target_pos)
-	if Input.is_action_just_pressed("move_right"):
-		target_pos.x = current_cell.x + 1
-		try_move(target_pos)
-	if Input.is_action_just_pressed("move_up"):
-		target_pos.y = current_cell.y - 1
-		try_move(target_pos)
-	if Input.is_action_just_pressed("move_down"):
-		target_pos.y = current_cell.y + 1
-		try_move(target_pos)
+# FIXME: should go by path length, not global pos distance
+func get_target() -> Node2D:
+	var minions = get_tree().get_nodes_in_group("minion")
+	var player = %Player
+	var closest: Node2D
+	if(assassin): return player
+	if minions.length > 0:
+		for t in minions:
+			var lowest_dist := 99.0
+			var dist = global_position.distance_to(t.global_position)
+			if dist < lowest_dist:
+				lowest_dist = dist
+				closest = t
+		return closest
+	else:
+		return player
 
+func set_target(t: Node2D):
+		target = t
+
+## called by GameMan when player moves
+func tick(_delta: float) -> void:
+	if target == null or target.hp <= 0:
+		set_target(get_target())
+	if target != null:
+		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
+		if tpos != target_cell:
+			move_pts = grid.get_point_path(current_cell, tpos)
+			# offset move_pts path by half the size of our tile size to get center
+			move_pts = (move_pts as Array).map(
+				func (p): return p + grid.cell_size / 2.0)
+			$PathPreviz.points = move_pts
+			target_cell = tpos
+			start_move()
 ##
-func try_move(target_pos: Vector2i):
-	if target_pos != target_cell:
-		move_pts = grid.get_point_path(current_cell, target_pos)
-		# offset move_pts path by half the size of our tile size to get center
-		move_pts = (move_pts as Array).map(
-			func (p): return p + grid.cell_size / 2.0)
-		$PathPreviz.points = move_pts
-		target_cell = target_pos
-		print("try move from " + str(current_cell) + "to " + str(target_cell))
-	start_move()
 
 func start_move():
 	if move_pts.is_empty(): return
@@ -55,7 +71,7 @@ func _physics_process(_delta: float):
 	if cur_pt == move_pts.size() -1:
 		velocity = Vector2.ZERO
 		global_position = move_pts[-1]
-		current_cell = pos_to_cell(global_position)
+		current_cell = GameMan.pos_to_cell(global_position)
 		$PathPreviz.points = []; moving = false
 		play_move_anim(false)
 	else:
@@ -66,7 +82,7 @@ func _physics_process(_delta: float):
 		set_facing_vis(dir)
 		# length comparator is in px
 		if (move_pts[cur_pt + 1] - global_position).length() < 4:
-			current_cell = pos_to_cell(global_position)
+			current_cell = GameMan.pos_to_cell(global_position)
 			cur_pt += 1
 
 #### ANIMATION / VISUALS ####################################
