@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfp21mjv65dgd"]
+
+[ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridDisplay" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_u3faw")
+
+[node name="MarginContainer" type="MarginContainer" parent="GridDisplay"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.6000001
+anchor_bottom = 1.0
+offset_left = 535.0
+offset_top = 3.0
+offset_right = 535.0
+offset_bottom = 3.0
+
+[node name="PanelContainer" type="PanelContainer" parent="GridDisplay/MarginContainer"]
+layout_mode = 2
+
+[node name="ShowGrid" type="CheckBox" parent="GridDisplay/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "show grid"
+
+[connection signal="toggled" from="GridDisplay/MarginContainer/PanelContainer/ShowGrid" to="GridDisplay" method="_on_show_grid_toggled"]

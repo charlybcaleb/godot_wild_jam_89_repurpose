@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpfbr2m80hha8"]
+
+[ext_resource type="Script" uid="uid://c6qvy2t1jgb1k" path="res://scripts/player/player.gd" id="1_8afob"]
+[ext_resource type="Texture2D" uid="uid://cbgun67oip5by" path="res://assets/sprites/characters/necro.png" id="2_dovo2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
+size = Vector2(16, 16)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_8afob")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_dovo2")
+
+[node name="PathPreviz" type="Line2D" parent="."]
+top_level = true
+width = 1.0
+default_color = Color(1, 0.5770334, 0.5273696, 1)
