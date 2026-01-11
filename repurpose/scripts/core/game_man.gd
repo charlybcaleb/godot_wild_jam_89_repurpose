@@ -50,11 +50,12 @@ func process_attacks():
 		var damage := 0
 		for r in rolls:
 			damage += randi_range(1, die)
+		attacks.pop_at(attacks.find(a))
 		a.defender.take_damage(damage)
+		# debug
 		print(a.attacker.name + " " + a.attacker.data.name + " viciously attacked " + 
 		a.defender.name + " " + a.defender.data.name + 
 			" for " + str(damage) + " damage!")
-		attacks.pop_at(attacks.find(a))
 
 func queue_attack(attack: Attack):
 	attacks.append(attack)

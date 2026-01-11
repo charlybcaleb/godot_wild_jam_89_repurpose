@@ -32,6 +32,10 @@ position = Vector2(280, 136)
 position = Vector2(360, 136)
 data = ExtResource("6_ci1ul")
 
+[node name="Enemy2" parent="." instance=ExtResource("5_mjl0v")]
+position = Vector2(360, 152)
+data = ExtResource("6_ci1ul")
+
 [node name="Minion" parent="." instance=ExtResource("6_5b884")]
 position = Vector2(304, 168)
 data = ExtResource("6_ci1ul")

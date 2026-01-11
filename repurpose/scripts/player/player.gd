@@ -2,14 +2,21 @@ extends CharacterBody2D
 
 @export var hp:= 9
 
+# nav / movement
 var grid: AStarGrid2D
 var current_cell: Vector2i
 var cur_pt: int
 var target_cell: Vector2i
 var move_pts: Array
-
+# move / attack target
 var target: Vector2 = Vector2.ZERO
 
+# this prevents pseudo-diagonal and super fast instant turns. might remove idk. i think diag is unintuitive.
+var move_cooldown := GlobalConstants.MOVE_TWEEN_DURATION
+var time_since_last_move := 99.99
+var queued_move: Vector2i
+
+# viz
 var facing_right: bool
 
 func _ready() -> void:
@@ -20,39 +27,59 @@ func setup(_grid: AStarGrid2D):
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
 
-func _input(_event: InputEvent):
+func _physics_process(delta: float) -> void:
+	if time_since_last_move < move_cooldown:
+		time_since_last_move += delta
+	if queued_move != Vector2i.ZERO and time_since_last_move >= move_cooldown:
+		try_move(queued_move, true)
+		queued_move = Vector2i.ZERO
+		print("DID QUEUED MOVE!!!")
+
+enum InputDir { LEFT, RIGHT, UP, DOWN, NONE, }
+
+func _input(event: InputEvent):
+	if event is InputEventMouseMotion: return
+	
+	var input_dir := InputDir.NONE
 	var target_pos = current_cell
 	if Input.is_action_just_pressed("move_left"):
+		input_dir = InputDir.LEFT
+	elif Input.is_action_just_pressed("move_right"):
+		input_dir = InputDir.RIGHT
+	elif Input.is_action_just_pressed("move_up"):
+		input_dir = InputDir.UP
+	elif Input.is_action_just_pressed("move_down"):
+		input_dir = InputDir.DOWN
+	else:
+		return
+	
+	if input_dir == InputDir.LEFT:
 		target_pos.x = current_cell.x - 1
-		try_move(target_pos)
-	if Input.is_action_just_pressed("move_right"):
+	elif input_dir == InputDir.RIGHT:
 		target_pos.x = current_cell.x + 1
-		try_move(target_pos)
-	if Input.is_action_just_pressed("move_up"):
+	elif input_dir == InputDir.UP:
 		target_pos.y = current_cell.y - 1
-		try_move(target_pos)
-	if Input.is_action_just_pressed("move_down"):
+	elif input_dir == InputDir.DOWN:
 		target_pos.y = current_cell.y + 1
-		try_move(target_pos)
+	
+	# queued move target is currently player pos and occuring every time player moves.
+	if time_since_last_move < move_cooldown:
+		if queued_move == Vector2i.ZERO:
+			queued_move = target_pos
+		print("TRIED TO MOVE, CAN'T CUZ COOLDOWN TIMER AT: " + str(time_since_last_move))
+		return
+
+	try_move(target_pos, false)
 
 ## called from inputting a direction. tile coord pos.
-func try_move(target_pos: Vector2i):
-	#target = target_pos
-	#if target_pos != target_cell:
-		#move_pts = grid.get_point_path(current_cell, target_pos)
-		## offset move_pts path by half the size of our tile size to get center
-		#move_pts = (move_pts as Array).map(
-			#func (p): return p + grid.cell_size / 2.0)
-		#$PathPreviz.points = move_pts
-		#target_cell = target_pos
-		#print("try move from " + str(current_cell) + "to " + str(target_cell))
-		#process_move()
+func try_move(target_pos: Vector2i, was_queued: bool):
 	target = target_pos
 	if GameMan.is_tile_occupied(target):
 		print ("player can't move, tile occupied")
 		return
 	print("move target: " + str(target))
 	move_tick()
+	if !was_queued: time_since_last_move = 0.0
 
 # enemy equiv is tick()
 func move_tick() -> void:
