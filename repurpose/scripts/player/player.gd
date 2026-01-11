@@ -8,19 +8,16 @@ var cur_pt: int
 var target_cell: Vector2i
 var move_pts: Array
 
-var moving: bool:
-	set(v):
-		moving = v; $PathPreviz.visible = not moving; set_physics_process(moving)
+var target: Vector2 = Vector2.ZERO
+
 var facing_right: bool
 
-func _ready(): moving = false
 func setup(_grid: AStarGrid2D):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
 
 func _input(_event: InputEvent):
-	if moving: return
 	var target_pos = current_cell
 	if Input.is_action_just_pressed("move_left"):
 		target_pos.x = current_cell.x - 1
@@ -37,40 +34,81 @@ func _input(_event: InputEvent):
 
 ##
 func try_move(target_pos: Vector2i):
-	if target_pos != target_cell:
-		move_pts = grid.get_point_path(current_cell, target_pos)
+	#target = target_pos
+	#if target_pos != target_cell:
+		#move_pts = grid.get_point_path(current_cell, target_pos)
+		## offset move_pts path by half the size of our tile size to get center
+		#move_pts = (move_pts as Array).map(
+			#func (p): return p + grid.cell_size / 2.0)
+		#$PathPreviz.points = move_pts
+		#target_cell = target_pos
+		#print("try move from " + str(current_cell) + "to " + str(target_cell))
+		#process_move()
+	target = target_pos
+	print("move target: " + str(target))
+	move_tick()
+
+# enemy equiv is tick()
+func move_tick() -> void:
+	var tpos = Vector2i(target)
+	if tpos != target_cell:
+		move_pts = grid.get_point_path(current_cell, tpos)
 		# offset move_pts path by half the size of our tile size to get center
-		move_pts = (move_pts as Array).map(
-			func (p): return p + grid.cell_size / 2.0)
-		$PathPreviz.points = move_pts
-		target_cell = target_pos
-		print("try move from " + str(current_cell) + "to " + str(target_cell))
-	start_move()
+		move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+		target_cell = tpos
+		do_move()
+		GameMan.player_moved()
+		recalc_path()
 
-func start_move():
-	if move_pts.is_empty(): return
-	cur_pt = 0; moving = true
-	play_move_anim(true)
-	GameMan.player_moved()
+func do_move():
+	print("move_pts size: " + str(move_pts.size()))
+	if move_pts.is_empty(): print("move esa empty!"); return 
+	cur_pt = 0;
+	
+	# check target range. if adjacent, do combat
+	#if target != null:
+		#var dist = GameMan.pos_to_cell(global_position).distance_to(
+			#GameMan.pos_to_cell(target))
+		#print("dist: " + str(dist))
+		#if dist < 2.0:
+			#print("arrived")
+			## probably flag for combat, then gman will do combat after TWEEN_DURATION delay
+			#return
 
-func _physics_process(_delta: float):
 	if cur_pt == move_pts.size() -1:
-		velocity = Vector2.ZERO
-		global_position = move_pts[-1]
+		# FIXME: do arrival logic
+		print("PLAYER ARRIVED")
 		current_cell = GameMan.pos_to_cell(global_position)
-		$PathPreviz.points = []; moving = false
+		tween_move(move_pts[-1])
+		# viz
+		$PathPreviz.points = []; 
 		play_move_anim(false)
+		pass
 	else:
-		var dir = (move_pts[cur_pt + 1] - move_pts[cur_pt]).normalized()
-		velocity = dir * GlobalConstants.NAV_SPEED
-		move_and_slide()
-		set_facing_vis(dir)
-		# length comparator is in px
-		if (move_pts[cur_pt + 1] - global_position).length() < 4:
-			current_cell = GameMan.pos_to_cell(global_position)
-			cur_pt += 1
+		#global_position = move_pts[cur_pt+1]
+		tween_move(move_pts[cur_pt+1])
+		current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
+		cur_pt += 1
+		# viz
+		play_move_anim(true)
+
+
+func tween_move(to: Vector2):
+	var dur = GlobalConstants.MOVE_TWEEN_DURATION
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", to, dur) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN)
 
 #### ANIMATION / VISUALS ####################################
+
+func recalc_path():
+	if target == null: return
+	var tpos = Vector2i(GameMan.pos_to_cell(target))
+	move_pts = grid.get_point_path(current_cell, tpos)
+	move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+	$PathPreviz.points = move_pts
+	target_cell = tpos
 
 func play_move_anim(m: bool):
 	if m:

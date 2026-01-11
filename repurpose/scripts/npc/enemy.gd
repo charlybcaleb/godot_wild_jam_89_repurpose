@@ -58,31 +58,6 @@ func tick(_delta: float) -> void:
 			do_move()
 			recalc_path()
 
-func _input(event: InputEvent) -> void:
-	if(event.is_action_pressed("debug")):
-		recalc_path()
-
-#func _process(_delta: float) -> void:
-	#move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
-	#$PathPreviz.points = move_pts
-
-#func _input(event: InputEvent):
-	#if event is InputEventMouseMotion:
-		#var tpos = Vector2i(GameMan.pos_to_cell(event.position))
-		#if tpos != target_cell:
-			#move_pts = grid.get_point_path(current_cell, tpos)
-			#move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
-			#$PathPreviz.points = move_pts
-			#target_cell = tpos
-
-func recalc_path():
-	if target == null: return
-	var tpos = Vector2i(GameMan.pos_to_cell(target.position))
-	move_pts = grid.get_point_path(current_cell, tpos)
-	move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
-	$PathPreviz.points = move_pts
-	target_cell = tpos
-
 
 func do_move():
 	print("move_pts size: " + str(move_pts.size()))
@@ -102,8 +77,7 @@ func do_move():
 	if cur_pt == move_pts.size() -1:
 		# FIXME: do arrival logic
 		current_cell = GameMan.pos_to_cell(global_position)
-		#tween_move(move_pts[-1])
-		global_position = move_pts[-1]
+		tween_move(move_pts[-1])
 		# viz
 		$PathPreviz.points = []; 
 		play_move_anim(false)
@@ -122,6 +96,14 @@ func tween_move(to: Vector2):
 		.set_ease(Tween.EASE_IN)
 
 #### ANIMATION / VISUALS ####################################
+
+func recalc_path():
+	if target == null: return
+	var tpos = Vector2i(GameMan.pos_to_cell(target.position))
+	move_pts = grid.get_point_path(current_cell, tpos)
+	move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+	$PathPreviz.points = move_pts
+	target_cell = tpos
 
 func play_move_anim(m: bool):
 	if m:
@@ -145,6 +127,19 @@ func set_facing_vis(dir: Vector2):
 	else:
 		# didn't change h dir, do nothing
 		pass
-	
 
-	
+#### DEPRECATED / SAVE FOR LATER
+
+func _input(event: InputEvent) -> void:
+	if(event.is_action_pressed("debug")):
+		recalc_path()
+
+# path draw
+#func _input(event: InputEvent):
+	#if event is InputEventMouseMotion:
+		#var tpos = Vector2i(GameMan.pos_to_cell(event.position))
+		#if tpos != target_cell:
+			#move_pts = grid.get_point_path(current_cell, tpos)
+			#move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+			#$PathPreviz.points = move_pts
+			#target_cell = tpos
