@@ -30,15 +30,16 @@ func get_target() -> Node2D:
 	var minions = get_tree().get_nodes_in_group("minion")
 	var player = %Player
 	var closest: Node2D
+	# FIXME: needs to be if assassin AND has path to player.
 	if(assassin): return player
-	if minions.size() > 0:
-		for t in minions:
-			var lowest_dist := 99.0
-			var dist = global_position.distance_to(t.global_position)
-			if dist < lowest_dist:
-				lowest_dist = dist
-				closest = t
-		return closest
+	
+	for t in minions:
+		var lowest_dist := 99.0
+		var dist = global_position.distance_to(t.global_position)
+		if t.hp > 0 and dist < lowest_dist:
+			lowest_dist = dist
+			closest = t
+	if closest != null: return closest
 	else:
 		return player
 
@@ -47,12 +48,13 @@ func set_target(t: Node2D):
 
 ## called by GameMan when player moves
 func tick(_delta: float) -> void:
+	if hp <= 0: return
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
 	if target == null or target.hp <= 0:
 		set_target(get_target())
-		print("enemy targeted: " + target.name)
+		if target: print("enemy targeted: " + target.name)
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
 		if tpos != target_cell:

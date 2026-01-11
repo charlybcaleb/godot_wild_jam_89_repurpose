@@ -33,7 +33,7 @@ func get_target() -> Node2D:
 		for t in enemies:
 			var lowest_dist := 99.0
 			var dist = global_position.distance_to(t.global_position)
-			if dist < lowest_dist:
+			if t.hp > 0 and dist < lowest_dist:
 				lowest_dist = dist
 				closest = t
 		return closest
@@ -44,6 +44,7 @@ func set_target(t: Node2D):
 
 ## called by GameMan when player moves
 func tick(_delta: float) -> void:
+	if hp <= 0: return
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
