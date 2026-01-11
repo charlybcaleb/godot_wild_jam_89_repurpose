@@ -20,7 +20,15 @@ func _draw():
 			#var camOffset = GameMan.CamWorldPos()
 			draw_rect(Rect2(world_p, grid.cell_size), col)
 			#print( "set rect at point " + str(x) + "," + str(y))
+			var occ_col = Color(0.0, 1.533, 2.858, 0.475)
+			if GameMan.is_tile_occupied(p):
+				draw_rect(Rect2(world_p, grid.cell_size), occ_col)
 
 
 func _on_show_grid_toggled(toggled_on: bool) -> void:
 	toggle_grid_display(toggled_on)
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("debug"):
+		show_grid_display = true
+		_draw()

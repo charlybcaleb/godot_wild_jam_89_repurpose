@@ -70,9 +70,8 @@ func tick(_delta: float) -> void:
 	if target != null:
 		var dist = GameMan.pos_to_cell(global_position).distance_to(
 			GameMan.pos_to_cell(target.global_position))
-		print("dist: " + str(dist))
 		if dist < 2.0:
-			print(name + " beginning attack")
+			print(name + " beginning attack " + "at dist: " + str(dist))
 			# send attack to gman
 			var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
 			GameMan.queue_attack(att)
@@ -88,29 +87,35 @@ func do_move():
 	if target != null:
 		var dist = GameMan.pos_to_cell(global_position).distance_to(
 			GameMan.pos_to_cell(target.global_position))
-		print("dist: " + str(dist))
-		if dist < 2.0:
-			print("arrived")
+		if dist < 1.8:
+			print("arrived at dist " + str(dist))
 			# probably flag for combat, then gman will do combat after TWEEN_DURATION delay
-			return
+			#return
 	
 	if cur_pt == move_pts.size() -1:
+		var move = Move.new(
+			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[-1]), data.speed)
+		GameMan.queue_move(move)
 		# FIXME: do arrival logic
-		current_cell = GameMan.pos_to_cell(global_position)
-		tween_move(move_pts[-1])
+		#current_cell = GameMan.pos_to_cell(global_position)
+		#tween_move(move_pts[-1])
 		# viz
 		$PathPreviz.points = []; 
 		play_move_anim(false)
 		pass
 	else:
+		var move = Move.new(
+			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), data.speed)
+		GameMan.queue_move(move)
+		print(name + " queued move!")
 		# can we move here?
-		if GameMan.is_tile_occupied(move_pts[cur_pt+1]) or \
-		GameMan.is_player_moving_to_tile(move_pts[cur_pt+1]):
-			print ("enemy can't move, tile occupied")
-			return
-		tween_move(move_pts[cur_pt+1])
-		current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
-		cur_pt += 1
+		#if GameMan.is_tile_occupied(move_pts[cur_pt+1]) or \
+		#GameMan.is_player_moving_to_tile(move_pts[cur_pt+1]):
+			#print ("enemy can't move, tile occupied")
+			#return
+		#tween_move(move_pts[cur_pt+1])
+		#current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
+		#cur_pt += 1
 
 func tween_move(to: Vector2):
 	var dur = GlobalConstants.MOVE_TWEEN_DURATION

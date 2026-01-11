@@ -120,6 +120,7 @@ func take_damage(damage: float):
 
 func die():
 	GameMan.register_npc_death(self)
+	%AnimSprite.hide()
 
 #### ANIMATION / VISUALS ####################################
 

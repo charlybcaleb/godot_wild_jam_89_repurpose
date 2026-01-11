@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var hp:= 9
+@export var data: EnemyData
 
 # nav / movement
 var grid: AStarGrid2D
@@ -77,7 +78,7 @@ func try_move(target_pos: Vector2i, was_queued: bool):
 	if GameMan.is_tile_occupied(target):
 		print ("player can't move, tile occupied")
 		return
-	print("move target: " + str(target))
+	#print("move target: " + str(target))
 	move_tick()
 	if !was_queued: time_since_last_move = 0.0
 
@@ -132,6 +133,17 @@ func tween_move(to: Vector2):
 	tween.tween_property(self, "global_position", to, dur) \
 		.set_trans(Tween.TRANS_SINE) \
 		.set_ease(Tween.EASE_IN)
+
+func take_damage(damage: float):
+	damage = int(round(damage))
+	hp -= damage
+	if hp <= 0:
+		die()
+
+func die():
+	pass
+	#GameMan.register_npc_death(self)
+	#%AnimSprite.hide()
 
 #### ANIMATION / VISUALS ####################################
 

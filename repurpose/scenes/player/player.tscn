@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dpfbr2m80hha8"]
+[gd_scene load_steps=12 format=3 uid="uid://dpfbr2m80hha8"]
 
 [ext_resource type="Script" uid="uid://c6qvy2t1jgb1k" path="res://scripts/player/player.gd" id="1_8afob"]
 [ext_resource type="Texture2D" uid="uid://bf4sao3dj7ror" path="res://assets/sprites/characters/necro-Sheet.png" id="2_dovo2"]
+[ext_resource type="Resource" uid="uid://bjrjmsfwducmj" path="res://assets/resources/necro_data.tres" id="2_gmlin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(16, 16)
@@ -63,6 +64,7 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_8afob")
+data = ExtResource("2_gmlin")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_dovo2")
