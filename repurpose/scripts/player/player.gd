@@ -12,6 +12,9 @@ var target: Vector2 = Vector2.ZERO
 
 var facing_right: bool
 
+func _ready() -> void:
+	GameMan.register_player(self)
+
 func setup(_grid: AStarGrid2D):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
@@ -32,7 +35,7 @@ func _input(_event: InputEvent):
 		target_pos.y = current_cell.y + 1
 		try_move(target_pos)
 
-##
+## called from inputting a direction. tile coord pos.
 func try_move(target_pos: Vector2i):
 	#target = target_pos
 	#if target_pos != target_cell:
@@ -45,6 +48,9 @@ func try_move(target_pos: Vector2i):
 		#print("try move from " + str(current_cell) + "to " + str(target_cell))
 		#process_move()
 	target = target_pos
+	if GameMan.is_tile_occupied(target):
+		print ("player can't move, tile occupied")
+		return
 	print("move target: " + str(target))
 	move_tick()
 
@@ -82,7 +88,6 @@ func do_move():
 		tween_move(move_pts[-1])
 		# viz
 		$PathPreviz.points = []; 
-		play_move_anim(false)
 		pass
 	else:
 		#global_position = move_pts[cur_pt+1]
@@ -91,6 +96,7 @@ func do_move():
 		cur_pt += 1
 		# viz
 		play_move_anim(true)
+		play_anim_delayed("default", GlobalConstants.MOVE_TWEEN_DURATION)
 
 
 func tween_move(to: Vector2):
@@ -101,6 +107,10 @@ func tween_move(to: Vector2):
 		.set_ease(Tween.EASE_IN)
 
 #### ANIMATION / VISUALS ####################################
+
+func play_anim_delayed(anim: String, delay: float):
+	await get_tree().create_timer(delay).timeout
+	%AnimSprite.play(anim)
 
 func recalc_path():
 	if target == null: return

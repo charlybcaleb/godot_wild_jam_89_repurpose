@@ -40,3 +40,8 @@ animation = &"walk"
 top_level = true
 width = 1.0
 default_color = Color(1, 0.5770334, 0.5273696, 1)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 8.0
+affect_navigation_mesh = true
+carve_navigation_mesh = true

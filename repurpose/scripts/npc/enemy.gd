@@ -45,6 +45,8 @@ func set_target(t: Node2D):
 
 ## called by GameMan when player moves
 func tick(_delta: float) -> void:
+	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
+	await get_tree().create_timer(0.08).timeout
 	if target == null or target.hp <= 0:
 		set_target(get_target())
 		print("enemy targeted: " + target.name)
@@ -83,7 +85,11 @@ func do_move():
 		play_move_anim(false)
 		pass
 	else:
-		#global_position = move_pts[cur_pt+1]
+		# can we move here?
+		if GameMan.is_tile_occupied(move_pts[cur_pt+1]) or \
+		GameMan.is_player_moving_to_tile(move_pts[cur_pt+1]):
+			print ("enemy can't move, tile occupied")
+			return
 		tween_move(move_pts[cur_pt+1])
 		current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
 		cur_pt += 1
