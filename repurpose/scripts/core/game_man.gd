@@ -69,7 +69,7 @@ func process_moves():
 		if coords_being_moved_to.has(to_coord):
 			move_valid = false
 		if is_tile_occupied(to_coord): 
-			move_valid = false; print("queued move ignored, tile occupied!!!!!")
+			move_valid = false; #print("queued move ignored, tile occupied!!!!!")
 		else:
 			print("TILE NOT OCCUPIED AT " + str(to_coord))
 		if is_player_moving_to_tile(to_coord): move_valid = false
@@ -81,6 +81,7 @@ func process_moves():
 			coords_being_moved_to.append(to_coord)
 			mover.current_cell = to_coord
 			mover.cur_pt += 1
+			# the to_coord we receive is in tile space. tween_move works in global space.
 			tween_move(mover, cell_to_pos(to_coord) + Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0)))
 			moves.pop_at(moves.find(m))
 			moves_performed += 1
@@ -138,7 +139,6 @@ func is_tile_occupied(coord: Vector2i) -> bool:
 	if get_node_at_coord(coord) == null:
 		return false
 	else:
-		print("IS THIS THING ON")
 		return true
 
 func is_player_moving_to_tile(coord: Vector2i) -> bool:

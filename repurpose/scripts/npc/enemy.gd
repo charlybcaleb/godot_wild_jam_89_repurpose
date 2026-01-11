@@ -117,12 +117,6 @@ func do_move():
 		#current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
 		#cur_pt += 1
 
-func tween_move(to: Vector2):
-	var dur = GlobalConstants.MOVE_TWEEN_DURATION
-	var tween = create_tween()
-	tween.tween_property(self, "global_position", to, dur) \
-		.set_trans(Tween.TRANS_SINE) \
-		.set_ease(Tween.EASE_IN)
 
 func take_damage(damage: float):
 	hp -= damage

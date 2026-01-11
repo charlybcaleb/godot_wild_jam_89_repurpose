@@ -1,0 +1,47 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://ds88b58vvlfsd"]
+
+[ext_resource type="Texture2D" uid="uid://y87yj2t4se1r" path="res://assets/sprites/env/domain.png" id="1_k4w8v"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a7x8w"]
+texture = ExtResource("1_k4w8v")
+0:0/0 = 0
+0:1/0 = 0
+2:1/animation_columns = 4
+2:1/animation_speed = 2.0
+2:1/animation_mode = 1
+2:1/animation_frame_0/duration = 1.0
+2:1/animation_frame_1/duration = 1.0
+2:1/animation_frame_2/duration = 1.0
+2:1/animation_frame_3/duration = 1.0
+2:1/0 = 0
+2:2/animation_columns = 4
+2:2/animation_speed = 2.0
+2:2/animation_mode = 1
+2:2/animation_frame_0/duration = 1.0
+2:2/animation_frame_1/duration = 1.0
+2:2/animation_frame_2/duration = 1.0
+2:2/animation_frame_3/duration = 1.0
+2:2/0 = 0
+2:3/animation_columns = 8
+2:3/animation_speed = 10.0
+2:3/animation_mode = 1
+2:3/animation_frame_0/duration = 1.0
+2:3/animation_frame_1/duration = 1.0
+2:3/animation_frame_2/duration = 1.0
+2:3/animation_frame_3/duration = 1.0
+2:3/animation_frame_4/duration = 1.0
+2:3/animation_frame_5/duration = 1.0
+2:3/animation_frame_6/duration = 1.0
+2:3/animation_frame_7/duration = 1.0
+2:3/0 = 0
+2:0/animation_columns = 4
+2:0/animation_speed = 2.0
+2:0/animation_mode = 1
+2:0/animation_frame_0/duration = 1.0
+2:0/animation_frame_1/duration = 1.0
+2:0/animation_frame_2/duration = 1.0
+2:0/animation_frame_3/duration = 1.0
+2:0/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_a7x8w")
