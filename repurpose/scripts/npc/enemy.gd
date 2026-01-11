@@ -54,13 +54,13 @@ func tick(_delta: float) -> void:
 			move_pts = grid.get_point_path(current_cell, tpos)
 			# offset move_pts path by half the size of our tile size to get center
 			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
-			$PathPreviz.points = move_pts
 			target_cell = tpos
 			do_move()
+			recalc_path()
 
 func _input(event: InputEvent) -> void:
 	if(event.is_action_pressed("debug")):
-		do_move()
+		recalc_path()
 
 #func _process(_delta: float) -> void:
 	#move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
@@ -75,24 +75,51 @@ func _input(event: InputEvent) -> void:
 			#$PathPreviz.points = move_pts
 			#target_cell = tpos
 
+func recalc_path():
+	if target == null: return
+	var tpos = Vector2i(GameMan.pos_to_cell(target.position))
+	move_pts = grid.get_point_path(current_cell, tpos)
+	move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+	$PathPreviz.points = move_pts
+	target_cell = tpos
+
 
 func do_move():
 	print("move_pts size: " + str(move_pts.size()))
 	if move_pts.is_empty(): return 
 	cur_pt = 0;
 	
+	# check target range. if adjacent, do combat
+	if target != null:
+		var dist = GameMan.pos_to_cell(global_position).distance_to(
+			GameMan.pos_to_cell(target.global_position))
+		print("dist: " + str(dist))
+		if dist < 2.0:
+			print("arrived")
+			# probably flag for combat, then gman will do combat after TWEEN_DURATION delay
+			return
+	
 	if cur_pt == move_pts.size() -1:
 		# FIXME: do arrival logic
 		current_cell = GameMan.pos_to_cell(global_position)
+		#tween_move(move_pts[-1])
 		global_position = move_pts[-1]
 		# viz
 		$PathPreviz.points = []; 
 		play_move_anim(false)
 		pass
 	else:
-		global_position = move_pts[cur_pt+1]
-		current_cell = GameMan.pos_to_cell(global_position)
+		#global_position = move_pts[cur_pt+1]
+		tween_move(move_pts[cur_pt+1])
+		current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
 		cur_pt += 1
+
+func tween_move(to: Vector2):
+	var dur = GlobalConstants.MOVE_TWEEN_DURATION
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", to, dur) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN)
 
 #### ANIMATION / VISUALS ####################################
 

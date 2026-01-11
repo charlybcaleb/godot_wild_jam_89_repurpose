@@ -8,3 +8,6 @@ const TILE_SIZE_WORLD = 0.25
 const NAV_SPEED = 50.0
 
 const DELTA = 0.0167
+
+# VIZ
+const MOVE_TWEEN_DURATION = 0.15
