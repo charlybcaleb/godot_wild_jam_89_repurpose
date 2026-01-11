@@ -16,7 +16,7 @@ var facing_right: bool
 
 func _ready(): 
 	GameMan.register_enemy(self)
-	add_to_group("enemy")
+	add_to_group("minion")
 	set_physics_process(false)
 
 # called by GameMan
@@ -27,20 +27,17 @@ func setup(_grid: AStarGrid2D):
 
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:
-	var minions = get_tree().get_nodes_in_group("minion")
-	var player = %Player
+	var enemies = get_tree().get_nodes_in_group("enemy")
 	var closest: Node2D
-	if(assassin): return player
-	if minions.size() > 0:
-		for t in minions:
+	if enemies.size() > 0:
+		for t in enemies:
 			var lowest_dist := 99.0
 			var dist = global_position.distance_to(t.global_position)
 			if dist < lowest_dist:
 				lowest_dist = dist
 				closest = t
 		return closest
-	else:
-		return player
+	else: return null
 
 func set_target(t: Node2D):
 		target = t
@@ -51,6 +48,7 @@ func tick(_delta: float) -> void:
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
 	if target == null or target.hp <= 0:
+		if get_target() == null: return
 		set_target(get_target())
 		print("enemy targeted: " + target.name)
 	if target != null:
@@ -63,8 +61,6 @@ func tick(_delta: float) -> void:
 			do_move()
 			recalc_path()
 	## ACTIONS
-	# if target close enough, get node in target cell. if minion or player, attack.
-	# check target range. if adjacent, do combat
 	if target != null:
 		var dist = GameMan.pos_to_cell(global_position).distance_to(
 			GameMan.pos_to_cell(target.global_position))
@@ -76,13 +72,12 @@ func tick(_delta: float) -> void:
 			GameMan.queue_attack(att)
 			return
 
-
 func do_move():
 	print("move_pts size: " + str(move_pts.size()))
 	if move_pts.is_empty(): return 
 	cur_pt = 0;
 	
-	# check target range. if adjacent, do nothing
+	# check target range. if adjacent, do combat
 	if target != null:
 		var dist = GameMan.pos_to_cell(global_position).distance_to(
 			GameMan.pos_to_cell(target.global_position))
