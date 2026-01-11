@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@export var hp:= 9
+
 var grid: AStarGrid2D
 var current_cell: Vector2i
 var cur_pt: int
@@ -21,7 +23,6 @@ func _input(_event: InputEvent):
 	if moving: return
 	var target_pos = current_cell
 	if Input.is_action_just_pressed("move_left"):
-		print("move left")
 		target_pos.x = current_cell.x - 1
 		try_move(target_pos)
 	if Input.is_action_just_pressed("move_right"):
@@ -50,6 +51,7 @@ func start_move():
 	if move_pts.is_empty(): return
 	cur_pt = 0; moving = true
 	play_move_anim(true)
+	GameMan.player_moved()
 
 func _physics_process(_delta: float):
 	if cur_pt == move_pts.size() -1:
@@ -62,13 +64,11 @@ func _physics_process(_delta: float):
 		var dir = (move_pts[cur_pt + 1] - move_pts[cur_pt]).normalized()
 		velocity = dir * GlobalConstants.NAV_SPEED
 		move_and_slide()
-		print(str(dir))
 		set_facing_vis(dir)
 		# length comparator is in px
 		if (move_pts[cur_pt + 1] - global_position).length() < 4:
 			current_cell = GameMan.pos_to_cell(global_position)
 			cur_pt += 1
-		GameMan.player_moved()
 
 #### ANIMATION / VISUALS ####################################
 
