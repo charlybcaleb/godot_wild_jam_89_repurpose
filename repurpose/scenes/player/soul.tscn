@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://5co6xfe74xqe"]
+
+[ext_resource type="Script" uid="uid://b2fv86les0on6" path="res://scripts/npc/soul.gd" id="1_x5ctu"]
+[ext_resource type="Resource" uid="uid://djyoytxdkd28s" path="res://assets/resources/pelfen_soul_data.tres" id="2_td8pb"]
+[ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="2_x5ctu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
+size = Vector2(16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_40wdo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_x5ctu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_x5ctu")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="Soul" type="CharacterBody2D"]
+script = ExtResource("1_x5ctu")
+soul_data = ExtResource("2_td8pb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="AnimSprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_40wdo")
+animation = &"walk"
+
+[node name="PathPreviz" type="Line2D" parent="."]
+top_level = true
+width = 1.0
+default_color = Color(1, 0.5770334, 0.5273696, 1)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 8.0
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_dovo2")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

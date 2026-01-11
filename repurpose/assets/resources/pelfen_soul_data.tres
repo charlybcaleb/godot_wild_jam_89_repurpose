@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SoulData" load_steps=2 format=3 uid="uid://djyoytxdkd28s"]
+
+[ext_resource type="Script" uid="uid://dh4rrw3p1ms2r" path="res://scripts/dungeon/soul_data.gd" id="1_i0nb4"]
+
+[resource]
+script = ExtResource("1_i0nb4")
+name = "Soul"
+enemy_data_name = "Pelfen"
+metadata/_custom_type_script = "uid://dh4rrw3p1ms2r"
