@@ -22,6 +22,7 @@ var facing_right: bool
 
 func _ready() -> void:
 	GameMan.register_player(self)
+	add_to_group("player")
 
 func setup(_grid: AStarGrid2D):
 	grid = _grid
@@ -62,6 +63,17 @@ func _input(event: InputEvent):
 		target_pos.y = current_cell.y - 1
 	elif input_dir == InputDir.DOWN:
 		target_pos.y = current_cell.y + 1
+	
+	# check if occupied. if occ by enemy, queue attack. if occ by else, skip input.
+	var occupant := GameMan.get_node_at_coord(target_pos)
+	if occupant:
+		if occupant.is_in_group("enemy"):
+			var att = Attack.new(self, occupant, data.dmgDie, data.dmgRolls, data.speed)
+			GameMan.queue_attack(att)
+			GameMan.player_moved()
+			return
+		else:
+			return
 	
 	# queued move target is currently player pos and occuring every time player moves.
 	if time_since_last_move < move_cooldown:
@@ -136,6 +148,7 @@ func tween_move(to: Vector2):
 
 func take_damage(damage: float):
 	damage = int(round(damage))
+	$HitFlashAnim.play("hit")
 	hp -= damage
 	if hp <= 0:
 		die()

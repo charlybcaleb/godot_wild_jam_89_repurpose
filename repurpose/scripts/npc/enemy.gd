@@ -65,17 +65,10 @@ func tick(_delta: float) -> void:
 			do_move()
 			recalc_path()
 	## ACTIONS
-	# if target close enough, get node in target cell. if minion or player, attack.
-	# check target range. if adjacent, do combat
 	if target != null:
-		var dist = GameMan.pos_to_cell(global_position).distance_to(
-			GameMan.pos_to_cell(target.global_position))
-		if dist < 2.0:
-			print(name + " beginning attack " + "at dist: " + str(dist))
-			# send attack to gman
-			var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
-			GameMan.queue_attack(att)
-			return
+		var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
+		GameMan.queue_attack(att)
+		return
 
 
 func do_move():
@@ -120,6 +113,7 @@ func do_move():
 
 func take_damage(damage: float):
 	hp -= damage
+	$HitFlashAnim.play("hit")
 	if hp <= 0:
 		die()
 

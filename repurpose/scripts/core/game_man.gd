@@ -6,6 +6,7 @@ var camera: Node = null
 var enemies: Array[Node2D]
 var player: Node2D
 var minions: Array[Node2D]
+var souls: Array[Node2D]
 # queues
 var attacks: Array[Attack]
 var moves: Array[Move]
@@ -25,8 +26,11 @@ func cell_to_pos(cell: Vector2i):
 func tick():
 	enemy_tick()
 	minion_tick()
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_moves()
-	process_attacks()
+	process_attacks(true) # process player attacks
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	process_attacks(false) # process npc attacks
 
 func enemy_tick():
 	for e in enemies:
@@ -37,6 +41,7 @@ func minion_tick():
 		m.tick(GlobalConstants.DELTA)
 
 func player_moved():
+	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	tick()
 
 func queue_move(move: Move):
@@ -44,7 +49,6 @@ func queue_move(move: Move):
 	moves.append(move)
 
 func process_moves():
-	if moves.size() == 0: return
 	coords_being_moved_to.clear()
 	# debug
 	var debug := true
@@ -87,26 +91,32 @@ func process_moves():
 			moves_performed += 1
 	if debug: print("moves performed: " + str(moves_performed) + ", moves skipped: " + str(moves_skipped))
 
-func process_attacks():
+func process_attacks(player_mode: bool):
 	if attacks.size() == 0: return
-	# first sort by speed
+	# sort by speed, filter
 	var fastest := attacks[0]
 	for a in attacks:
 		if a.speed > fastest.speed:
 			fastest = a
 			attacks.push_front(attacks.pop_at(attacks.find(a)))
+		if a.attacker.hp <= 0:
+			attacks.pop_at(attacks.find(a))
+		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
+			abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
+			attacks.pop_at(attacks.find(a))
 	# now do attacks
 	for a in attacks:
-		if a.attacker.hp <= 0:
+		if player_mode and !a.attacker.is_in_group("player"):
 			continue
-		
+		if !player_mode and a.attacker.is_in_group("player"):
+			continue
 		var die = a.dmg_die
 		var rolls = a.dmg_rolls
 		var damage := 0
 		for r in rolls:
 			damage += randi_range(1, die)
-		attacks.pop_at(attacks.find(a))
 		a.defender.take_damage(damage)
+		attacks.pop_at(attacks.find(a))
 		# debug
 		print(a.attacker.name + " " + a.attacker.data.name + " viciously attacked " + 
 		a.defender.name + " " + a.defender.data.name + 
@@ -167,7 +177,15 @@ func register_enemy(e: Node2D):
 	e.setup(dun.astar_grid)
 	enemies.append(e)
 
-func RegisterDun(d: Node2D):
+func register_minion(m: Node2D):
+	m.setup(dun.astar_grid)
+	minions.append(m)
+
+func register_soul(s: Node2D):
+	s.setup(dun.astar_grid)
+	souls.append(s)
+
+func register_dun(d: Node2D):
 	dun = d
 
 func SetupCam(cam: Node2D):

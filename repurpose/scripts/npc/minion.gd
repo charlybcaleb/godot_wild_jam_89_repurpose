@@ -15,7 +15,7 @@ var move_pts: Array
 var facing_right: bool
 
 func _ready(): 
-	GameMan.register_enemy(self)
+	GameMan.register_minion(self)
 	add_to_group("minion")
 	set_physics_process(false)
 
@@ -115,6 +115,7 @@ func do_move():
 
 func take_damage(damage: float):
 	hp -= damage
+	$HitFlashAnim.play("hit")
 	if hp <= 0:
 		die()
 

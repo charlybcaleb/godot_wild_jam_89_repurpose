@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bcpjtsaaholgm"]
+
+[ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="1_e8trx"]
+
+[resource]
+shader = ExtResource("1_e8trx")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_enabled = false

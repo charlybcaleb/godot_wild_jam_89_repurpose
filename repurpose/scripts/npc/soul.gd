@@ -13,7 +13,7 @@ var move_pts: Array
 enum SoulState { IDLE, CHANNEL, WORK, HELD }
 
 func _ready(): 
-	GameMan.register_enemy(self)
+	GameMan.register_soul(self)
 	add_to_group("soul")
 	set_physics_process(false)
 

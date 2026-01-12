@@ -1,10 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://crxjpxruc3bdb"]
+[gd_scene load_steps=10 format=3 uid="uid://crxjpxruc3bdb"]
 
 [ext_resource type="Script" uid="uid://brarbdwq3te8i" path="res://scripts/npc/minion.gd" id="1_wxuj3"]
+[ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="2_viepk"]
 [ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="2_wxuj3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(16, 16)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_viepk"]
+resource_local_to_scene = true
+shader = ExtResource("2_viepk")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_enabled = false
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_40wdo"]
 animations = [{
@@ -25,6 +32,44 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_40wdo"]
+resource_name = "hit"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimSprite:material:shader_parameter/flash_enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_tjssy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimSprite:material:shader_parameter/flash_enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gl05p"]
+_data = {
+&"RESET": SubResource("Animation_tjssy"),
+&"hit": SubResource("Animation_40wdo")
+}
+
 [node name="Minion" type="CharacterBody2D"]
 script = ExtResource("1_wxuj3")
 
@@ -33,6 +78,7 @@ shape = SubResource("RectangleShape2D_dovo2")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_viepk")
 sprite_frames = SubResource("SpriteFrames_40wdo")
 animation = &"walk"
 
@@ -45,3 +91,8 @@ default_color = Color(1, 0.5770334, 0.5273696, 1)
 radius = 8.0
 affect_navigation_mesh = true
 carve_navigation_mesh = true
+
+[node name="HitFlashAnim" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_gl05p")
+}
