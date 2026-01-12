@@ -23,6 +23,7 @@ var facing_right: bool
 func _ready() -> void:
 	GameMan.register_player(self)
 	add_to_group("player")
+	hp = data.hp
 
 func setup(_grid: AStarGrid2D):
 	grid = _grid
@@ -68,6 +69,7 @@ func _input(event: InputEvent):
 	var occupant := GameMan.get_node_at_coord(target_pos)
 	if occupant:
 		if occupant.is_in_group("enemy"):
+			print("--------PLAYER ATTACK QUEUEING from: " + str(current_cell) + " to " + str((occupant.current_cell)))
 			var att = Attack.new(self, occupant, data.dmgDie, data.dmgRolls, data.speed)
 			GameMan.queue_attack(att)
 			GameMan.player_moved()

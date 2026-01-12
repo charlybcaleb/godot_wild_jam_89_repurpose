@@ -27,7 +27,6 @@ offset_bottom = -180.0
 [node name="Player" parent="." instance=ExtResource("3_xnanu")]
 unique_name_in_owner = true
 position = Vector2(280, 136)
-hp = null
 
 [node name="Enemy" parent="." instance=ExtResource("5_mjl0v")]
 position = Vector2(360, 136)

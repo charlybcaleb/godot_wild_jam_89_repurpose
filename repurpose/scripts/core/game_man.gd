@@ -9,9 +9,11 @@ var minions: Array[Node2D]
 var souls: Array[Node2D]
 # queues
 var attacks: Array[Attack]
+var att_to_prune: Array[Attack]
 var moves: Array[Move]
 var coords_being_moved_to: Array[Vector2i]
 # stats
+var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
 
@@ -31,6 +33,7 @@ func tick():
 	process_attacks(true) # process player attacks
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_attacks(false) # process npc attacks
+	turn += 1
 
 func enemy_tick():
 	for e in enemies:
@@ -49,6 +52,7 @@ func queue_move(move: Move):
 	moves.append(move)
 
 func process_moves():
+	if moves.size() == 0: return
 	coords_being_moved_to.clear()
 	# debug
 	var debug := true
@@ -93,19 +97,19 @@ func process_moves():
 
 func process_attacks(player_mode: bool):
 	if attacks.size() == 0: return
+	att_to_prune.clear()
 	# sort by speed, filter
 	var fastest := attacks[0]
 	for a in attacks:
 		if a.speed > fastest.speed:
 			fastest = a
-			attacks.push_front(attacks.pop_at(attacks.find(a)))
-		if a.attacker.hp <= 0:
-			attacks.pop_at(attacks.find(a))
-		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
-			abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
-			attacks.pop_at(attacks.find(a))
+	attacks.push_front(fastest)
+
 	# now do attacks
 	for a in attacks:
+		if a.attacker.hp <= 0:
+			att_to_prune.append(a)
+			continue
 		if player_mode and !a.attacker.is_in_group("player"):
 			continue
 		if !player_mode and a.attacker.is_in_group("player"):
@@ -120,10 +124,25 @@ func process_attacks(player_mode: bool):
 		# debug
 		print(a.attacker.name + " " + a.attacker.data.name + " viciously attacked " + 
 		a.defender.name + " " + a.defender.data.name + 
-			" for " + str(damage) + " damage!")
+			" for " + str(damage) + " damage!" + str(a.attacker.current_cell) + " to " +
+			str(a.defender.current_cell))
+	# now cleanup attacks
+	for a in att_to_prune:
+		attacks.pop_at(attacks.find(a))
+
 
 func queue_attack(attack: Attack):
-	attacks.append(attack)
+	var a := attack
+	var valid := true
+	if a.attacker.hp <= 0:
+		valid = false
+	if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
+		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
+		valid = false
+	#if abs(a.turn - get_turn()) >
+	if a.turn != get_turn():
+		valid = false
+	if valid: attacks.append(attack)
 
 func tween_move(mover: Node2D, to: Vector2):
 	var dur = GlobalConstants.MOVE_TWEEN_DURATION
@@ -166,6 +185,9 @@ func register_npc_death(npc: Node2D):
 		minions.pop_at(minions.find(npc))
 		minions_slain += 1
 		print("minion slain: " + npc.data.name)
+
+func get_turn() -> int:
+	return turn
 
 ## INIT STUFF
 
