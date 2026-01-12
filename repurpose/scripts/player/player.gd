@@ -109,7 +109,7 @@ func move_tick() -> void:
 		recalc_path()
 
 func do_move():
-	print("move_pts size: " + str(move_pts.size()))
+	#print("move_pts size: " + str(move_pts.size()))
 	if move_pts.is_empty(): print("move esa empty!"); return 
 	cur_pt = 0;
 	

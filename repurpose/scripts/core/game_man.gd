@@ -78,8 +78,6 @@ func process_moves():
 			move_valid = false
 		if is_tile_occupied(to_coord): 
 			move_valid = false; #print("queued move ignored, tile occupied!!!!!")
-		else:
-			print("TILE NOT OCCUPIED AT " + str(to_coord))
 		if is_player_moving_to_tile(to_coord): move_valid = false
 		if !move_valid:
 			moves.pop_at(moves.find(m))
@@ -107,13 +105,23 @@ func process_attacks(player_mode: bool):
 
 	# now do attacks
 	for a in attacks:
+		# prune invalid
 		if a.attacker.hp <= 0:
 			att_to_prune.append(a)
 			continue
+		if a.turn != get_turn():
+			att_to_prune.append(a)
+			continue
+		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
+		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
+			att_to_prune.append(a)
+			continue
+		# skip according to mode
 		if player_mode and !a.attacker.is_in_group("player"):
 			continue
 		if !player_mode and a.attacker.is_in_group("player"):
 			continue
+		# do attack
 		var die = a.dmg_die
 		var rolls = a.dmg_rolls
 		var damage := 0
@@ -134,15 +142,17 @@ func process_attacks(player_mode: bool):
 func queue_attack(attack: Attack):
 	var a := attack
 	var valid := true
+	var aq_log = ""
 	if a.attacker.hp <= 0:
-		valid = false
-	if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
-		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
-		valid = false
-	#if abs(a.turn - get_turn()) >
+		valid = false; aq_log += "att hp 0, "
+	#if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
+		#abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
+		#valid = false; aq_log += "att too far, "
 	if a.turn != get_turn():
-		valid = false
+		valid = false; aq_log += "att expired, "
 	if valid: attacks.append(attack)
+	else:
+		print("QUEUE_ATTACK: failed because " + aq_log)
 
 func tween_move(mover: Node2D, to: Vector2):
 	var dur = GlobalConstants.MOVE_TWEEN_DURATION

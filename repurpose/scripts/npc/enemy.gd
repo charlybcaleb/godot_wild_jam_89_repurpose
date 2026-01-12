@@ -72,7 +72,7 @@ func tick(_delta: float) -> void:
 
 
 func do_move():
-	print("move_pts size: " + str(move_pts.size()))
+	#print("move_pts size: " + str(move_pts.size()))
 	if move_pts.is_empty(): return 
 	cur_pt = 0;
 	
@@ -100,7 +100,7 @@ func do_move():
 		var move = Move.new(
 			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), data.speed)
 		GameMan.queue_move(move)
-		print(name + " queued move!")
+		#print(name + " queued move!")
 		# can we move here?
 		#if GameMan.is_tile_occupied(move_pts[cur_pt+1]) or \
 		#GameMan.is_player_moving_to_tile(move_pts[cur_pt+1]):
