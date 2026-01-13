@@ -5,7 +5,6 @@ extends CharacterBody2D
 @export var hp := 6
 @export var data: EnemyData
 var target: Node2D = null
-var is_corpse = false
 
 var grid: AStarGrid2D
 var current_cell: Vector2i
@@ -26,7 +25,6 @@ func setup(_grid: AStarGrid2D):
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
 	hp = data.hp
-	is_corpse = false
 
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:
@@ -123,9 +121,9 @@ func take_damage(damage: float):
 
 func die():
 	GameMan.register_npc_death(self)
+	$Area2D.become_corpse(self)
 	%AnimSprite.play("die")
 	await %AnimSprite.animation_finished
-	is_corpse = true
 
 
 

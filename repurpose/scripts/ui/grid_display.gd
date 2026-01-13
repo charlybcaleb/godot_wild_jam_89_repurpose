@@ -32,3 +32,11 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("debug"):
 		show_grid_display = true
 		_draw()
+		
+		var free_tile = Vector2(GameMan.get_free_tile_near(Vector2i(19,19)))
+		var col = Color(0.0, 0.988, 0.0, 0.49)
+		var world_ft = free_tile * grid.cell_size
+		if free_tile.x >= 900:
+			print ("FREE TILE NOT FOUND"); return
+		print ("FREE TILE FOUND AT: " + str(free_tile))
+		draw_rect(Rect2(world_ft, grid.cell_size), col)

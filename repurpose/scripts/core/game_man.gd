@@ -211,6 +211,42 @@ func is_player_moving_to_tile(coord: Vector2i) -> bool:
 	else:
 		return false
 
+func is_tile_blocked(coord: Vector2i) -> bool:
+	var blocked = false
+	if dun.is_cell_obstacle(coord):
+		blocked = true
+	if is_tile_occupied(coord):
+		blocked = true
+	return blocked
+
+func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
+	var queue: Array[Vector2i]
+	var visited: Array[Vector2i]
+	var max_steps:= 20
+	var current_step:= 0
+	
+	queue.append(start_coord)
+	visited.append(start_coord)
+	while !queue.is_empty() and current_step <= max_steps:
+		var current_coord = queue.pop_front()
+		if !is_tile_blocked(current_coord):
+			return current_coord
+		
+		# free tile not found, continue
+		visited.append(current_coord)
+		var left_n = current_coord + Vector2i(-1,0)
+		var right_n = current_coord + Vector2i(1,0)
+		var up_n = current_coord + Vector2i(0,-1)
+		var down_n = current_coord + Vector2i(0,1)
+		var neighbors: Array[Vector2i]
+		neighbors.append(left_n); neighbors.append(right_n); neighbors.append(up_n); neighbors.append(down_n);
+		for n in neighbors:
+			if !visited.has(n):
+				queue.append(n)
+		current_step += 1
+	# if none found, return invalid coord
+	return Vector2i(999,999)
+
 func register_npc_death(npc: Node2D):
 	if npc.is_in_group("enemy"):
 		enemies.pop_at(enemies.find(npc))

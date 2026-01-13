@@ -4,9 +4,10 @@
 [ext_resource type="Script" uid="uid://cgnuuoe8t3atm" path="res://scripts/dungeon/dungeon.gd" id="1_s4kdp"]
 [ext_resource type="TileSet" uid="uid://ds88b58vvlfsd" path="res://assets/tilesets/domaintiles.tres" id="3_f75cf"]
 
-[node name="Dungeon0" type="Node2D" node_paths=PackedStringArray("map")]
+[node name="Dungeon0" type="Node2D" node_paths=PackedStringArray("map", "soulmaps")]
 script = ExtResource("1_s4kdp")
 map = NodePath("TML_Room")
+soulmaps = [NodePath("TML_Room2")]
 
 [node name="TML_Room" type="TileMapLayer" parent="."]
 texture_filter = 1

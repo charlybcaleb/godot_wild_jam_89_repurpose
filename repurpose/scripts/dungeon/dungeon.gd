@@ -36,5 +36,8 @@ func build_grid():
 					astar_grid.set_point_solid(id, false)
 	%UI/%GridDisplay.grid = astar_grid
 
+func is_cell_obstacle(coord: Vector2i) -> bool:
+	return astar_grid.is_point_solid(coord)
+
 #func get_path_from_to(from: Vector2, to: Vector2):
 	#
