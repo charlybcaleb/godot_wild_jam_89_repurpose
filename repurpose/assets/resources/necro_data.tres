@@ -6,5 +6,5 @@
 script = ExtResource("1_5gbo3")
 name = "Necro"
 hp = 999999
-dmgDie = 1
+dmgDie = 20000
 metadata/_custom_type_script = "uid://c08irn7x3105s"

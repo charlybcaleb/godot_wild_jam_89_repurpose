@@ -25,8 +25,9 @@ func _on_mouse_shape_exited(_shape_idx: int) -> void:
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		# add enemy as soul to domain
-		Domain.new_soul(the_damned_waiting_for_redemption)
-		pass
+		if is_corpse:
+			Domain.new_soul(the_damned_waiting_for_redemption)
+			the_damned_waiting_for_redemption.hide()
 
 func become_corpse(enemy: Node2D):
 	is_corpse = true

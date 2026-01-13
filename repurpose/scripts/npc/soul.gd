@@ -9,19 +9,22 @@ var current_cell: Vector2i
 var cur_pt: int
 var target_cell: Vector2i
 var move_pts: Array
+var data: EnemyData
+var hp := 6
 
 enum SoulState { IDLE, CHANNEL, WORK, HELD }
 
 func _ready(): 
-	#GameMan.register_soul(self)
+	GameMan.register_soul(self)
 	add_to_group("soul")
 	set_physics_process(false)
 
-# called by GameMan
-func setup(_grid: AStarGrid2D):
+# called by Domain but should be called by GameMAn
+func setup(_grid: AStarGrid2D, d: EnemyData):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
+	data = d
 
 func _process(delta: float) -> void:
 	if soul_state == SoulState.HELD:

@@ -195,6 +195,9 @@ func get_node_at_coord(coord: Vector2i) -> Node2D:
 	for m in minions:
 		if m.current_cell == coord:
 			return m
+	for s in souls:
+		if s.current_cell == coord:
+			return s
 	if player.current_cell == coord:
 		return player
 	return null
@@ -218,6 +221,9 @@ func is_tile_blocked(coord: Vector2i) -> bool:
 	if is_tile_occupied(coord):
 		blocked = true
 	return blocked
+
+#func tele_to_coord(entity: Node2D, coord: Vector2i):
+	#entity.global_position = coord
 
 func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	var queue: Array[Vector2i]
@@ -274,9 +280,8 @@ func register_minion(m: Node2D):
 	m.setup(dun.astar_grid)
 	minions.append(m)
 
-#func register_soul(s: Node2D):
-	#s.setup(dun.astar_grid)
-	#souls.append(s)
+func register_soul(s: Node2D):
+	souls.append(s)
 
 func register_dun(d: Node2D):
 	dun = d
