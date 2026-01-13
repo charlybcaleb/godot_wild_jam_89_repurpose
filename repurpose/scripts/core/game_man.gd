@@ -10,6 +10,7 @@ var souls: Array[Node2D]
 # queues
 var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
+var alrdy_attacked: Array[Node2D] # this is a bandaid fix for the jam.
 var moves: Array[Move]
 var coords_being_moved_to: Array[Vector2i]
 # stats
@@ -28,10 +29,10 @@ func cell_to_pos(cell: Vector2i):
 func tick():
 	enemy_tick()
 	minion_tick()
-	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	await get_tree().create_timer(0.08).timeout
 	process_moves()
 	process_attacks(true) # process player attacks
-	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_attacks(false) # process npc attacks
 	turn += 1
 
@@ -96,6 +97,7 @@ func process_moves():
 func process_attacks(player_mode: bool):
 	if attacks.size() == 0: return
 	att_to_prune.clear()
+	alrdy_attacked.clear()
 	# sort by speed, filter
 	var fastest := attacks[0]
 	for a in attacks:
@@ -116,6 +118,9 @@ func process_attacks(player_mode: bool):
 		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
 			att_to_prune.append(a)
 			continue
+		if alrdy_attacked.has(a.attacker):
+			att_to_prune.append(a)
+			continue
 		# skip according to mode
 		if player_mode and !a.attacker.is_in_group("player"):
 			continue
@@ -129,11 +134,12 @@ func process_attacks(player_mode: bool):
 			damage += randi_range(1, die)
 		a.defender.take_damage(damage)
 		attacks.pop_at(attacks.find(a))
+		alrdy_attacked.append(a.attacker)
 		# debug
 		print(a.attacker.name + " " + a.attacker.data.name + " viciously attacked " + 
 		a.defender.name + " " + a.defender.data.name + 
-			" for " + str(damage) + " damage!" + str(a.attacker.current_cell) + " to " +
-			str(a.defender.current_cell))
+			" for " + str(damage) + " damage!" + str(a.from) + " to " +
+			str(a.to) + ". TURN " + str(get_turn()))
 	# now cleanup attacks
 	for a in att_to_prune:
 		attacks.pop_at(attacks.find(a))
@@ -145,9 +151,9 @@ func queue_attack(attack: Attack):
 	var aq_log = ""
 	if a.attacker.hp <= 0:
 		valid = false; aq_log += "att hp 0, "
-	#if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
-		#abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
-		#valid = false; aq_log += "att too far, "
+	if abs(a.from.x - a.to.x) > 1 or \
+		abs(a.from.y - a.to.y) > 1:
+		valid = false; aq_log += "att too far, "
 	if a.turn != get_turn():
 		valid = false; aq_log += "att expired, "
 	if valid: attacks.append(attack)

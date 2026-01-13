@@ -96,7 +96,6 @@ func try_move(target_pos: Vector2i, was_queued: bool):
 	move_tick()
 	if !was_queued: time_since_last_move = 0.0
 
-# enemy equiv is tick()
 func move_tick() -> void:
 	var tpos = Vector2i(target)
 	if tpos != target_cell:
@@ -105,7 +104,6 @@ func move_tick() -> void:
 		move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 		target_cell = tpos
 		do_move()
-		GameMan.player_moved()
 		recalc_path()
 
 func do_move():
@@ -139,6 +137,10 @@ func do_move():
 		# viz
 		play_move_anim(true)
 		play_anim_delayed("default", GlobalConstants.MOVE_TWEEN_DURATION)
+	
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	GameMan.player_moved()
+	
 
 
 func tween_move(to: Vector2):
