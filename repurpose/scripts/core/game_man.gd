@@ -35,6 +35,8 @@ func tick():
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_attacks(true) # process player attacks
 	process_attacks(false) # process npc attacks
+	# make corpses interactable etc
+	process_corpses()
 	turn += 1
 
 func enemy_tick():
@@ -171,6 +173,12 @@ func queue_attack(attack: Attack):
 	else:
 		print("QUEUE_ATTACK: failed because " + aq_log)
 
+func process_corpses():
+	for e in enemies:
+		pass
+		#if e.is_corpse:
+			
+
 func tween_move(mover: Node2D, to: Vector2):
 	var dur = GlobalConstants.MOVE_TWEEN_DURATION
 	var tween = create_tween()
@@ -230,9 +238,9 @@ func register_minion(m: Node2D):
 	m.setup(dun.astar_grid)
 	minions.append(m)
 
-func register_soul(s: Node2D):
-	s.setup(dun.astar_grid)
-	souls.append(s)
+#func register_soul(s: Node2D):
+	#s.setup(dun.astar_grid)
+	#souls.append(s)
 
 func register_dun(d: Node2D):
 	dun = d

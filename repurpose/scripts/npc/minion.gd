@@ -166,3 +166,7 @@ func _input(event: InputEvent) -> void:
 			#move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			#$PathPreviz.points = move_pts
 			#target_cell = tpos
+
+
+func _on_area_2d_mouse_entered() -> void:
+	pass # Replace with function body.

@@ -5,6 +5,7 @@
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a7x8w"]
 texture = ExtResource("1_k4w8v")
 0:0/0 = 0
+0:0/0/custom_data_0 = true
 0:1/0 = 0
 2:1/animation_columns = 4
 2:1/animation_speed = 2.0
@@ -44,4 +45,6 @@ texture = ExtResource("1_k4w8v")
 2:0/0 = 0
 
 [resource]
+custom_data_layer_0/name = "obstacle"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_a7x8w")

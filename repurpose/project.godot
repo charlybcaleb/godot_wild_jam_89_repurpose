@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GlobalConstants="*res://scripts/core/global_constants.gd"
 GameMan="*res://scripts/core/game_man.gd"
+Domain="*res://scripts/core/domain.gd"
 
 [display]
 
@@ -31,6 +32,10 @@ window/stretch/mode="canvas_items"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/script_splitter/plugin.cfg")
+
+[gui]
+
+theme/custom_font="uid://jloqvexmrxhi"
 
 [input]
 
