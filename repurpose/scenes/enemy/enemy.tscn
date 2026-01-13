@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://pcshqpycldlj"]
+[gd_scene load_steps=15 format=3 uid="uid://pcshqpycldlj"]
 
 [ext_resource type="Script" uid="uid://cvfvhlyxb21v5" path="res://scripts/npc/enemy.gd" id="1_a3pup"]
 [ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="2_40wdo"]
 [ext_resource type="Texture2D" uid="uid://df8ckrofmyug4" path="res://assets/sprites/characters/pelfen.png" id="2_a3pup"]
 [ext_resource type="Texture2D" uid="uid://cg38e7gyc4m7" path="res://assets/sprites/characters/pelfen-Sheet.png" id="4_tjssy"]
+[ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_gl05p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(16, 16)
@@ -90,6 +91,9 @@ _data = {
 &"hit": SubResource("Animation_40wdo")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cwlon"]
+size = Vector2(16, 16)
+
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_a3pup")
 
@@ -116,3 +120,13 @@ carve_navigation_mesh = true
 libraries = {
 &"": SubResource("AnimationLibrary_gl05p")
 }
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("5_gl05p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_cwlon")
+
+[connection signal="input_event" from="Area2D" to="Area2D" method="_on_input_event"]
+[connection signal="mouse_shape_entered" from="Area2D" to="Area2D" method="_on_mouse_shape_entered"]
+[connection signal="mouse_shape_exited" from="Area2D" to="Area2D" method="_on_mouse_shape_exited"]
