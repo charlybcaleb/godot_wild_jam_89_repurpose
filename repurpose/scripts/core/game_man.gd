@@ -12,6 +12,7 @@ var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
 var alrdy_attacked: Array[Node2D] # this is a bandaid fix for the jam.
 var moves: Array[Move]
+var moves_to_prune: Array[Move] # this is a bandaid fix for the jam.
 var coords_being_moved_to: Array[Vector2i]
 # stats
 var turn := 0
@@ -29,7 +30,7 @@ func cell_to_pos(cell: Vector2i):
 func tick():
 	enemy_tick()
 	minion_tick()
-	await get_tree().create_timer(0.08).timeout
+	#await get_tree().create_timer(0.08).timeout
 	process_moves()
 	process_attacks(true) # process player attacks
 	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -44,7 +45,7 @@ func minion_tick():
 	for m in minions:
 		m.tick(GlobalConstants.DELTA)
 
-func player_moved():
+func player_acted():
 	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	tick()
 
@@ -62,13 +63,16 @@ func process_moves():
 	# sort by speed and prune dead
 	var fastest := moves[0]
 	for m in moves:
-		if m.speed > fastest.speed:
+		#if m.speed > fastest.speed:
+			#fastest = m
+		if m.mover.is_in_group("player"):
 			fastest = m
-			moves.push_front(moves.pop_at(moves.find(m)))
+			moves.push_front(moves.pop_at(moves.find(fastest))) # FIXME: erm popping in le for loop?
 		if m.mover.hp <= 0:
-			moves.pop_at(moves.find(m))
+			moves_to_prune.append(m)
 			continue
 	# now do moves
+	var player_moves_this_tick = 0
 	for m in moves:
 		var _from_coord := m.from
 		var to_coord := m.to
@@ -78,20 +82,27 @@ func process_moves():
 		if coords_being_moved_to.has(to_coord):
 			move_valid = false
 		if is_tile_occupied(to_coord): 
-			move_valid = false; #print("queued move ignored, tile occupied!!!!!")
-		if is_player_moving_to_tile(to_coord): move_valid = false
+			move_valid = false
+		if m.mover.is_in_group("player") and player_moves_this_tick >= 1:
+			move_valid = false
+		#if is_player_moving_to_tile(to_coord): move_valid = false
 		if !move_valid:
-			moves.pop_at(moves.find(m))
+			moves_to_prune.append(m)
 			moves_skipped += 1
 			continue
 		else:
+			if mover.is_in_group("player"):
+				player_moves_this_tick += 1
 			coords_being_moved_to.append(to_coord)
 			mover.current_cell = to_coord
 			mover.cur_pt += 1
 			# the to_coord we receive is in tile space. tween_move works in global space.
 			tween_move(mover, cell_to_pos(to_coord) + Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0)))
-			moves.pop_at(moves.find(m))
+			moves_to_prune.append(m)
 			moves_performed += 1
+	# cleanup
+	for m in moves_to_prune:
+		moves.pop_at(moves.find(m))
 	if debug: print("moves performed: " + str(moves_performed) + ", moves skipped: " + str(moves_skipped))
 
 func process_attacks(player_mode: bool):

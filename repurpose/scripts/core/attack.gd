@@ -20,3 +20,5 @@ func _init(_attacker: Node2D = null, _defender: Node2D = null, _die: int = 4, _r
 	turn = GameMan.get_turn()
 	from = attacker.current_cell
 	to = defender.current_cell
+	# right now, queue attack from enemy fails on player if player inputs moves fast because current
+	# cell of player is already changed.
