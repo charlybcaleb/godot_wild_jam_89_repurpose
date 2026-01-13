@@ -24,18 +24,19 @@ func setup(_grid: AStarGrid2D):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
+	hp = data.hp
 
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	var closest: Node2D
 	if enemies.size() > 0:
-		for t in enemies:
+		for e in enemies:
 			var lowest_dist := 99.0
-			var dist = global_position.distance_to(t.global_position)
-			if t.hp > 0 and dist < lowest_dist:
+			var dist = global_position.distance_to(e.global_position)
+			if e.hp > 0 and dist < lowest_dist:
 				lowest_dist = dist
-				closest = t
+				closest = e
 		return closest
 	else: return null
 
@@ -51,7 +52,7 @@ func tick(_delta: float) -> void:
 	if target == null or target.hp <= 0:
 		if get_target() == null: return
 		set_target(get_target())
-		print("enemy targeted: " + target.name)
+		if target: print("enemy targeted: " + target.name)
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
 		if tpos != target_cell:
@@ -63,18 +64,12 @@ func tick(_delta: float) -> void:
 			recalc_path()
 	## ACTIONS
 	if target != null:
-		var dist = GameMan.pos_to_cell(global_position).distance_to(
-			GameMan.pos_to_cell(target.global_position))
-		print("dist: " + str(dist))
-		if dist < 2.0:
-			print(name + " beginning attack")
-			# send attack to gman
-			var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
-			GameMan.queue_attack(att)
-			return
+		var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
+		GameMan.queue_attack(att)
+		return
 
 func do_move():
-	print("move_pts size: " + str(move_pts.size()))
+	#print("move_pts size: " + str(move_pts.size()))
 	if move_pts.is_empty(): return 
 	cur_pt = 0;
 	
@@ -102,7 +97,7 @@ func do_move():
 		var move = Move.new(
 			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), data.speed)
 		GameMan.queue_move(move)
-		print(name + " queued move!")
+		#print(name + " queued move!")
 		# can we move here?
 		#if GameMan.is_tile_occupied(move_pts[cur_pt+1]) or \
 		#GameMan.is_player_moving_to_tile(move_pts[cur_pt+1]):

@@ -24,6 +24,7 @@ func setup(_grid: AStarGrid2D):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
+	hp = data.hp
 
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:
@@ -33,12 +34,12 @@ func get_target() -> Node2D:
 	# FIXME: needs to be if assassin AND has path to player.
 	if(assassin): return player
 	
-	for t in minions:
+	for m in minions:
 		var lowest_dist := 99.0
-		var dist = global_position.distance_to(t.global_position)
-		if t.hp > 0 and dist < lowest_dist:
+		var dist = global_position.distance_to(m.global_position)
+		if m.hp > 0 and dist < lowest_dist:
 			lowest_dist = dist
-			closest = t
+			closest = m
 	if closest != null: return closest
 	else:
 		return player
@@ -53,6 +54,7 @@ func tick(_delta: float) -> void:
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
 	if target == null or target.hp <= 0:
+		if get_target() == null: return
 		set_target(get_target())
 		if target: print("enemy targeted: " + target.name)
 	if target != null:
@@ -119,6 +121,8 @@ func take_damage(damage: float):
 
 func die():
 	GameMan.register_npc_death(self)
+	%AnimSprite.hide()
+
 
 #### ANIMATION / VISUALS ####################################
 
