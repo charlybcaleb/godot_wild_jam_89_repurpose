@@ -85,7 +85,7 @@ func _input(event: InputEvent):
 	try_move(target_coord, false)
 
 ## called from inputting a direction and target tile empty. tile coord pos.
-func try_move(target_coord: Vector2i, was_queued: bool):
+func try_move(target_coord: Vector2i, _was_queued: bool):
 	if GameMan.is_tile_occupied(target_coord):
 		print ("player can't move, tile occupied")
 		return

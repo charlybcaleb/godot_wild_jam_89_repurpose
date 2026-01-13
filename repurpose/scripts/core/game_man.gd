@@ -32,8 +32,8 @@ func tick():
 	minion_tick()
 	#await get_tree().create_timer(0.08).timeout
 	process_moves()
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_attacks(true) # process player attacks
-	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_attacks(false) # process npc attacks
 	turn += 1
 
@@ -162,8 +162,8 @@ func queue_attack(attack: Attack):
 	var aq_log = ""
 	if a.attacker.hp <= 0:
 		valid = false; aq_log += "att hp 0, "
-	if abs(a.from.x - a.to.x) > 1 or \
-		abs(a.from.y - a.to.y) > 1:
+	if abs(a.from.x - a.to.x) > 2 or \
+		abs(a.from.y - a.to.y) > 2:
 		valid = false; aq_log += "att too far, "
 	if a.turn != get_turn():
 		valid = false; aq_log += "att expired, "
