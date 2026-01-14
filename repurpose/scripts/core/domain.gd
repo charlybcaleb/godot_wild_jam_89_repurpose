@@ -27,15 +27,33 @@ func process_soul_spawn_moves():
 func _process(_delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_soul_spawn_moves()
+	if Input.is_action_just_pressed("lmb"):
+		if !GameMan.souls.is_empty():
+			var soul = GameMan.souls[0]
+			var click_coord = GameMan.pos_to_cell(round(get_global_mouse_position()))
+			var valid = true
+			if GameMan.click_consumed:
+				valid = false
+			print("SUMMON CLICK AT COORD " + str(click_coord))
+			if GameMan.is_tile_blocked(click_coord):
+				valid = false
+			if valid: 
+				summon_at(click_coord, soul)
 
 ## spawns first unassigned soul in at coord as minion, unless other soul is provided.
 func summon_at(coord: Vector2i, soul: Node2D = null):
 	GameMan.spawn_npc(soul.data, coord, soul)
+	soul.queue_free()
 
-func _input(event: InputEvent) -> void:
-	# if left click, summon_at pos
-	if event is InputEventMouseButton:
-		if !GameMan.souls.is_empty():
-			var soul = GameMan.souls[0]
-			var click_coord = GameMan.pos_to_cell(get_global_mouse_position())
-			summon_at(click_coord, soul)
+
+#func _input(event: InputEvent) -> void:
+	## if left click, summon_at pos
+	#if event is InputEventMouseButton and !GameMan.click_consumed:
+		#if !GameMan.souls.is_empty():
+			#var soul = GameMan.souls[0]
+			#var click_coord = GameMan.pos_to_cell(get_global_mouse_position())
+			#var valid_coord = true
+			#if GameMan.is_tile_blocked(click_coord):
+				#valid_coord = false
+			#if valid_coord: 
+				#summon_at(click_coord, soul)

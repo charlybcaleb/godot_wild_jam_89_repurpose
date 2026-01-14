@@ -23,7 +23,15 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		# add enemy as soul to domain
 		if is_corpse:
-			send_soul_to_domain(the_damned_waiting_for_redemption)
+			var valid = true
+			GameMan.click_consumed = true
+			if valid:
+				send_soul_to_domain(the_damned_waiting_for_redemption)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+			GameMan.click_consumed = false
+
+#func _process(delta: float) -> void:
+	#if Input.is_action_just_released_by_event()
 
 func become_corpse(_npc: Node2D, is_minion= false):
 	is_corpse = true
@@ -34,5 +42,7 @@ func become_corpse(_npc: Node2D, is_minion= false):
 
 func send_soul_to_domain(_npc: Node2D):
 	Domain.new_soul(_npc)
-	npc.queue_free()
 	ui.show_enemy_popup(npc, false)
+	# delete corpse after delay to prevent instant summon lol FIXME: terrible.
+	await get_tree().create_timer(0.300).timeout
+	npc.queue_free()

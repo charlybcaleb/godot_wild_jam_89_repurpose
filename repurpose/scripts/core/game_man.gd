@@ -2,6 +2,8 @@ extends Node
 # system
 var dun: Node = null
 var camera: Node = null
+# input
+var click_consumed = false # FIXME: this shit is so cursed. it's a gamejam tho!
 # scenes
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 # entities
@@ -233,12 +235,11 @@ func process_spawn_moves():
 	tele_to_coord(spawn_moves[0].mover, spawn_moves[0].to, true)
 	spawn_moves.remove_at(0)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_spawn_moves()
 
 enum npc_type { ENEMY, MINION, }
-
 
 
 
