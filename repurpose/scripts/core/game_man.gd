@@ -65,6 +65,9 @@ func process_moves():
 	# sort by speed and prune dead
 	var fastest := moves[0]
 	for m in moves:
+		if m.mover == null:
+			moves_to_prune.append(m)
+			continue
 		#if m.speed > fastest.speed:
 			#fastest = m
 		if m.mover.is_in_group("player"):
@@ -76,6 +79,9 @@ func process_moves():
 	# now do moves
 	var player_moves_this_tick = 0
 	for m in moves:
+		if m.mover == null:
+			moves_to_prune.append(m)
+			continue
 		var _from_coord := m.from
 		var to_coord := m.to
 		var move_valid = true

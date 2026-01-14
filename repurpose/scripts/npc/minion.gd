@@ -116,7 +116,10 @@ func take_damage(damage: float):
 
 func die():
 	GameMan.register_npc_death(self)
-	%AnimSprite.hide()
+	$Area2D.become_corpse(self, true)
+	%AnimSprite.play("die")
+	await %AnimSprite.animation_finished
+	
 
 #### ANIMATION / VISUALS ####################################
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://crxjpxruc3bdb"]
+[gd_scene load_steps=13 format=3 uid="uid://crxjpxruc3bdb"]
 
 [ext_resource type="Script" uid="uid://brarbdwq3te8i" path="res://scripts/npc/minion.gd" id="1_wxuj3"]
 [ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="2_aaqyv"]
 [ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="2_viepk"]
 [ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="2_wxuj3"]
+[ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_keeiw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(16, 16)
@@ -71,6 +72,9 @@ _data = {
 &"hit": SubResource("Animation_40wdo")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eg7rb"]
+size = Vector2(16, 16)
+
 [node name="Minion" type="CharacterBody2D"]
 script = ExtResource("1_wxuj3")
 data = ExtResource("2_aaqyv")
@@ -98,3 +102,13 @@ carve_navigation_mesh = true
 libraries = {
 &"": SubResource("AnimationLibrary_gl05p")
 }
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("5_keeiw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_eg7rb")
+
+[connection signal="input_event" from="Area2D" to="Area2D" method="_on_input_event"]
+[connection signal="mouse_shape_entered" from="Area2D" to="Area2D" method="_on_mouse_shape_entered"]
+[connection signal="mouse_shape_exited" from="Area2D" to="Area2D" method="_on_mouse_shape_exited"]

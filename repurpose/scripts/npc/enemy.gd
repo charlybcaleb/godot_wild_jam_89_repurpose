@@ -121,6 +121,8 @@ func take_damage(damage: float):
 
 func die():
 	GameMan.register_npc_death(self)
+	# npc_interactable.become_corpse is start of flow for all npcs to
+	# become souls after death.
 	$Area2D.become_corpse(self)
 	%AnimSprite.play("die")
 	await %AnimSprite.animation_finished
