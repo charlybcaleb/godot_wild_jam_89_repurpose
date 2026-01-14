@@ -3,12 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://epcroqnykgx7" path="res://assets/sprites/ui/128x64frame.png" id="1_begeg"]
 [ext_resource type="Script" uid="uid://ddwo8dabv86c" path="res://scenes/ui/map_room.gd" id="1_pms05"]
 
-[node name="RoomPanelContainer" type="PanelContainer"]
+[node name="RoomPanelContainer" type="PanelContainer" node_paths=PackedStringArray("lines")]
 offset_left = 32.0
 offset_top = 148.0
 offset_right = 96.0
 offset_bottom = 212.0
 script = ExtResource("1_pms05")
+lines = [NodePath("PathPreviz"), NodePath("PathPreviz2"), NodePath("PathPreviz3")]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2
@@ -19,3 +20,21 @@ expand_mode = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 4
+
+[node name="PathPreviz" type="Line2D" parent="."]
+visible = false
+top_level = true
+width = 1.0
+default_color = Color(0.74554527, 0.49988288, 1, 1)
+
+[node name="PathPreviz2" type="Line2D" parent="."]
+visible = false
+top_level = true
+width = 1.0
+default_color = Color(0.74554527, 0.49988288, 1, 1)
+
+[node name="PathPreviz3" type="Line2D" parent="."]
+visible = false
+top_level = true
+width = 1.0
+default_color = Color(0.74554527, 0.49988288, 1, 1)

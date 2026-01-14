@@ -10,6 +10,7 @@ const DELTA = 0.0167
 
 # stats etc
 enum ResourceType { MP, HP, GOLD, }
+enum MapRoomType { PRESENT, EMPTY }
 
 # VIZ
 const MOVE_TWEEN_DURATION = 0.15
