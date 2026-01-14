@@ -55,11 +55,13 @@ func summon_at(coord: Vector2i, soul: Node2D = null):
 
 # called by npc_interactable twice, with the latter removing the npc after a delay,
 # to prevent race condition
-func mouse_over_npc(npc: Node2D):
-	npc_at_mouse = npc
-	if npc == null:
-		await get_tree().create_timer(0.200).timeout
+func mouse_over_npc(npc: Node2D, clear= false):
+	if !clear:
 		npc_at_mouse = npc
+		return
+	if clear and npc == npc_at_mouse:
+		await get_tree().create_timer(0.050).timeout
+		npc_at_mouse = null
 		print("no mo npc!!!!!!!")
 
 #func _input(event: InputEvent) -> void:
