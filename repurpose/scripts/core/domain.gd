@@ -60,7 +60,7 @@ func mouse_over_npc(npc: Node2D, clear= false):
 		npc_at_mouse = npc
 		return
 	if clear and npc == npc_at_mouse:
-		await get_tree().create_timer(0.050).timeout
+		await get_tree().create_timer(0.250).timeout
 		npc_at_mouse = null
 		print("no mo npc!!!!!!!")
 

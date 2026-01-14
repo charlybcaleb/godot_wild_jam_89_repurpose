@@ -380,6 +380,7 @@ func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	return Vector2i(999,999)
 
 func register_npc_death(npc: Node2D):
+	await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
 	if npc.is_in_group("enemy"):
 		enemies.pop_at(enemies.find(npc))
 		enemies_slain += 1
