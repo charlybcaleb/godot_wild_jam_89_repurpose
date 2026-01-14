@@ -80,11 +80,29 @@ func process_moves():
 		var to_coord := m.to
 		var move_valid = true
 		var mover := m.mover
-		# check if to_coord is occupied
+		var max_move_retries := 20
+		# check if to_coord is occupied or will be
 		if coords_being_moved_to.has(to_coord):
-			move_valid = false
+			if m.if_invalid_find_nearest and m.invalid_retry_count < max_move_retries:
+				var new_to = get_free_tile_near(to_coord)
+				if new_to.x < 998: # invalid get_free coord == 999,999
+					m.to = new_to
+					m.invalid_retry_count += 1
+				else:
+					move_valid = false
+			else:
+				move_valid = false
 		if is_tile_occupied(to_coord): 
-			move_valid = false
+			if m.if_invalid_find_nearest and m.invalid_retry_count < max_move_retries:
+				var new_to = get_free_tile_near(to_coord)
+				if new_to.x < 998: # invalid get_free coord == 999,999
+					m.to = new_to
+					m.invalid_retry_count += 1
+				else:
+					move_valid = false
+			else:
+				move_valid = false
+		# FIXME: bandaid fix for jam. this problem should be patched elsewhere.
 		if m.mover.is_in_group("player") and player_moves_this_tick >= 1:
 			move_valid = false
 		#if is_player_moving_to_tile(to_coord): move_valid = false
@@ -222,8 +240,41 @@ func is_tile_blocked(coord: Vector2i) -> bool:
 		blocked = true
 	return blocked
 
-#func tele_to_coord(entity: Node2D, coord: Vector2i):
-	#entity.global_position = coord
+func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= false):
+	var _from_coord = entity.current_cell
+	var to_coord := coord
+	var move_valid = true
+	var max_move_retries := 20
+	var retry_count := 0
+	# check if to_coord is occupied or will be
+	if coords_being_moved_to.has(to_coord):
+		if if_invalid_find_nearest and retry_count < max_move_retries:
+			var new_to = get_free_tile_near(to_coord)
+			if new_to.x < 998: # invalid get_free coord == 999,999
+				to_coord = new_to
+				retry_count += 1
+			else:
+				move_valid = false
+		else:
+			move_valid = false
+	if is_tile_occupied(to_coord): 
+		if if_invalid_find_nearest and retry_count < max_move_retries:
+			var new_to = get_free_tile_near(to_coord)
+			if new_to.x < 998: # invalid get_free coord == 999,999
+				to_coord = new_to
+				retry_count += 1
+			else:
+				move_valid = false
+		else:
+			move_valid = false
+	#if is_player_moving_to_tile(to_coord): move_valid = false
+	if !move_valid:
+		return
+	entity.global_position = cell_to_pos(to_coord)
+	entity.current_cell = to_coord
+	
+	
+
 
 func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	var queue: Array[Vector2i]

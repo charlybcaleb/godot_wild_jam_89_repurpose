@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cky00tw4a57h6"]
+[gd_scene load_steps=8 format=3 uid="uid://cky00tw4a57h6"]
 
 [ext_resource type="PackedScene" uid="uid://cfp21mjv65dgd" path="res://scenes/ui/ui_scene.tscn" id="1_j0xxo"]
 [ext_resource type="Script" uid="uid://bx7xiwh3ljtna" path="res://scripts/camera/camera.gd" id="2_8rffp"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://pcshqpycldlj" path="res://scenes/enemy/enemy.tscn" id="5_mjl0v"]
 [ext_resource type="PackedScene" uid="uid://crxjpxruc3bdb" path="res://scenes/player/minion.tscn" id="6_5b884"]
 [ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="6_ci1ul"]
-[ext_resource type="PackedScene" uid="uid://5co6xfe74xqe" path="res://scenes/player/soul.tscn" id="8_ci1ul"]
 
 [node name="crawl" type="Node2D"]
 
@@ -27,11 +26,12 @@ position = Vector2(360, 136)
 data = ExtResource("6_ci1ul")
 
 [node name="Enemy2" parent="." instance=ExtResource("5_mjl0v")]
-position = Vector2(344, 160)
+position = Vector2(344, 152)
 data = ExtResource("6_ci1ul")
 
-[node name="Soul" parent="." instance=ExtResource("8_ci1ul")]
-position = Vector2(320, 304)
+[node name="Enemy3" parent="." instance=ExtResource("5_mjl0v")]
+position = Vector2(344, 168)
+data = ExtResource("6_ci1ul")
 
 [node name="Minion" parent="." instance=ExtResource("6_5b884")]
 position = Vector2(312, 168)
