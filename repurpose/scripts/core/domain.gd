@@ -3,6 +3,7 @@ extends Node2D
 var spawn_moves: Array[Move]
 var domain_center:= Vector2i(19,18)
 var soul_scene: PackedScene = preload("res://scenes/player/soul.tscn")
+var npc_at_mouse: Node2D
 
 # domain spans from x 0 to 39 and y 15 to 21
 
@@ -28,6 +29,10 @@ func _process(_delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_soul_spawn_moves()
 	if Input.is_action_just_pressed("lmb"):
+		# if there is a corpse at this position, do not summon.
+		if npc_at_mouse:
+			if npc_at_mouse.hp <= 0:
+				return
 		if !GameMan.souls.is_empty():
 			var soul = GameMan.souls[0]
 			var click_coord = GameMan.pos_to_cell(get_global_mouse_position())
@@ -48,6 +53,14 @@ func summon_at(coord: Vector2i, soul: Node2D = null):
 	GameMan.spawn_npc(soul.data, coord, soul)
 	soul.queue_free()
 
+# called by npc_interactable twice, with the latter removing the npc after a delay,
+# to prevent race condition
+func mouse_over_npc(npc: Node2D):
+	npc_at_mouse = npc
+	if npc == null:
+		await get_tree().create_timer(0.200).timeout
+		npc_at_mouse = npc
+		print("no mo npc!!!!!!!")
 
 #func _input(event: InputEvent) -> void:
 	## if left click, summon_at pos

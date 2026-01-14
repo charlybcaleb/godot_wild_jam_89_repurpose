@@ -63,7 +63,8 @@ func _input(event: InputEvent):
 	elif input_dir == InputDir.DOWN:
 		target_coord.y = current_cell.y + 1
 	
-	# check if occupied. if occ by enemy, queue attack. if occ by else, skip input.
+	# check if occupied. if occ by enemy, queue attack. if occ by mini, swap.
+	# if occ by else, skip input.
 	var occupant := GameMan.get_node_at_coord(target_coord)
 	if occupant:
 		if occupant.is_in_group("enemy"):
@@ -72,6 +73,11 @@ func _input(event: InputEvent):
 			GameMan.queue_attack(att)
 			GameMan.player_acted()
 			return
+		elif occupant.is_in_group("minion"):
+			print("--------PLAYER MOVE SWAP QUEUEING from: " + str(current_cell) + " to " + str((occupant.current_cell)))
+			var move = Move.new(
+				self, current_cell, target_coord, data.speed)
+			GameMan.queue_swap_move(move)
 		else:
 			return
 	
@@ -86,9 +92,9 @@ func _input(event: InputEvent):
 
 ## called from inputting a direction and target tile empty. tile coord pos.
 func try_move(target_coord: Vector2i, _was_queued: bool):
-	if GameMan.is_tile_occupied(target_coord):
-		print ("player can't move, tile occupied")
-		return
+	#if GameMan.is_tile_occupied(target_coord): ## removed cuz this is checked in input.
+		#print ("player can't move, tile occupied")
+		#return
 	#print("move target: " + str(target))
 	var tpos = Vector2i(target_coord)
 	if tpos != target_cell:

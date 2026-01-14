@@ -68,6 +68,7 @@ func tick(_delta: float) -> void:
 				print("MINI PATH PT: " + str(mp_coord))
 				# check if any points aside from start and end are blocked
 				if move_pts.find(mp) != move_pts.size()-1 and \
+				move_pts.find(mp) != 1 and \
 				move_pts.find(mp) != 0:
 					if GameMan.is_tile_blocked(mp_coord, false):
 						path_blocked = true

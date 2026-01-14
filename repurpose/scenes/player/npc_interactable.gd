@@ -14,10 +14,12 @@ func _ready() -> void:
 
 func _on_mouse_shape_entered(_shape_idx: int) -> void:
 	ui.show_enemy_popup(npc)
+	Domain.mouse_over_npc(npc)
 
 func _on_mouse_shape_exited(_shape_idx: int) -> void:
 	# hide popup
 	ui.show_enemy_popup(npc, false)
+	Domain.mouse_over_npc(null)
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():

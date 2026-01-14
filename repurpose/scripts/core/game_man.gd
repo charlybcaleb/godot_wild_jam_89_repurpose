@@ -16,6 +16,7 @@ var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
 var alrdy_attacked: Array[Node2D] # this is a bandaid fix for the jam.
 var moves: Array[Move]
+var swap_moves: Array[Move]
 var moves_to_prune: Array[Move] # this is a bandaid fix for the jam.
 var coords_being_moved_to: Array[Vector2i]
 var spawn_moves: Array[Move]
@@ -33,8 +34,9 @@ func cell_to_pos(cell: Vector2i):
 	return cell * GlobalConstants.TILE_SIZE
 
 func tick():
-	enemy_tick()
+	process_swap_moves()
 	minion_tick()
+	enemy_tick()
 	#await get_tree().create_timer(0.08).timeout
 	process_moves()
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -59,6 +61,18 @@ func player_acted():
 func queue_move(move: Move):
 	if moves.has(move): print("move found in q, skipping. queue size: "+str(moves.size())); return
 	moves.append(move)
+
+func queue_swap_move(move: Move):
+	if swap_moves.has(move): print("move found in q, skipping. queue size: "+str(swap_moves.size())); return
+	swap_moves.append(move)
+
+## only the player can do this rn.
+func process_swap_moves():
+	if swap_moves.size() == 0: return
+	for sm in swap_moves:
+		tele_to_coord(sm.mover, sm.to, false, true)
+		tele_to_coord(get_node_at_coord(sm.to), sm.from, false, true)
+		swap_moves.clear() # FIXME: right now, only one swap move is processed.
 
 func process_moves():
 	if moves.size() == 0: return
@@ -158,9 +172,9 @@ func process_attacks(player_mode: bool):
 		if a.attacker.hp <= 0:
 			att_to_prune.append(a)
 			continue
-		#if a.turn != get_turn(): # MINIBUG: IT WAS THIS!
-			#att_to_prune.append(a)
-			#continue
+		if a.turn != get_turn(): # MINIBUG: IT WAS THIS!
+			att_to_prune.append(a)
+			continue
 		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
 		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
 			att_to_prune.append(a) # MINIBUG THIS IS FINE
@@ -294,7 +308,7 @@ func is_tile_blocked(coord: Vector2i, count_corpses = true) -> bool:
 	return blocked
 
 # FIXME: THIS SHIT WAS THROWN TOGETHER IN 2 MIN. IT'S ONLY USED IN domain.gd
-func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= false):
+func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= false, forced= false):
 	var _from_coord = entity.current_cell
 	var to_coord := coord
 	var move_valid = true
@@ -322,7 +336,7 @@ func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= fal
 		else:
 			move_valid = false
 	#if is_player_moving_to_tile(to_coord): move_valid = false
-	if !move_valid:
+	if !forced and !move_valid:
 		return
 	entity.global_position = cell_to_pos(to_coord) + \
 	Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0))
