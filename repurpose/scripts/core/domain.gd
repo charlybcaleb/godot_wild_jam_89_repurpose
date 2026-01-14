@@ -1,6 +1,5 @@
-extends Node
+extends Node2D
 
-var souls: Array[Node2D]
 var spawn_moves: Array[Move]
 var domain_center:= Vector2i(19,18)
 var soul_scene: PackedScene = preload("res://scenes/player/soul.tscn")
@@ -28,3 +27,15 @@ func process_soul_spawn_moves():
 func _process(_delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_soul_spawn_moves()
+
+## spawns first unassigned soul in at coord as minion, unless other soul is provided.
+func summon_at(coord: Vector2i, soul: Node2D = null):
+	GameMan.spawn_npc(soul.data, coord, soul)
+
+func _input(event: InputEvent) -> void:
+	# if left click, summon_at pos
+	if event is InputEventMouseButton:
+		if !GameMan.souls.is_empty():
+			var soul = GameMan.souls[0]
+			var click_coord = GameMan.pos_to_cell(get_global_mouse_position())
+			summon_at(click_coord, soul)

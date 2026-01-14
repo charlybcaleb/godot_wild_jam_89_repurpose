@@ -20,10 +20,12 @@ func _ready():
 	set_physics_process(false)
 
 # called by GameMan
-func setup(_grid: AStarGrid2D):
+func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
+	if _data:
+		data = _data
 	hp = data.hp
 
 # FIXME: should go by path length, not global pos distance

@@ -2,6 +2,8 @@ extends Node
 # system
 var dun: Node = null
 var camera: Node = null
+# scenes
+var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 # entities
 var enemies: Array[Node2D]
 var player: Node2D
@@ -14,6 +16,7 @@ var alrdy_attacked: Array[Node2D] # this is a bandaid fix for the jam.
 var moves: Array[Move]
 var moves_to_prune: Array[Move] # this is a bandaid fix for the jam.
 var coords_being_moved_to: Array[Vector2i]
+var spawn_moves: Array[Move]
 # stats
 var turn := 0
 var enemies_slain := 0
@@ -212,7 +215,36 @@ func tween_move(mover: Node2D, to: Vector2):
 		.set_trans(Tween.TRANS_SINE) \
 		.set_ease(Tween.EASE_IN)
 
+func spawn_npc(data: EnemyData, coord: Vector2i, soul: Node2D = null):
+	if soul != null:
+		var minion = minion_scene.instantiate()
+		minion.setup(dun.astar_grid, data)
+		get_tree().get_root().add_child(minion)
+		var free_tile = get_free_tile_near(coord)
+		var move = Move.new(
+			minion, pos_to_cell(minion.global_position), free_tile, 100, true)
+		queue_spawn_move(move)
+		souls.pop_at(souls.find(soul)) # FIXME: should probably make a queue_deregister_npc thing.
+
+func queue_spawn_move(move: Move):
+	spawn_moves.append(move)
+
+func process_spawn_moves():
+	tele_to_coord(spawn_moves[0].mover, spawn_moves[0].to, true)
+	spawn_moves.remove_at(0)
+
+func _process(_delta: float) -> void:
+	if !spawn_moves.is_empty():
+		process_spawn_moves()
+
+enum npc_type { ENEMY, MINION, }
+
+
+
+
 ## HELPERS AND REGISTRATION
+
+
 
 func get_node_at_coord(coord: Vector2i) -> Node2D:
 	for e in enemies:
@@ -283,8 +315,6 @@ func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= fal
 	Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0))
 	entity.current_cell = to_coord
 	
-	
-
 
 func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	var queue: Array[Vector2i]

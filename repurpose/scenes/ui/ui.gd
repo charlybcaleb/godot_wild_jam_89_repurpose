@@ -20,10 +20,13 @@ func _process(_delta: float) -> void:
 
 func show_enemy_popup(npc: Node2D, e= true):
 	if e:
+		enemy_popup_target = npc
 		enemy_popup.global_position = npc.global_position + popup_offset
 		show_popup = true
-		enemy_popup_target = npc
+		enemy_popup.update(npc.data)
 	else:
 		if enemy_popup_target != npc:
+			# without this, would end up turning off after enter when moving 
+			# between two npcs quickly.
 			return
 		show_popup = false
