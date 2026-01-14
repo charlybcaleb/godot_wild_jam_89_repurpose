@@ -29,13 +29,14 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	hp = data.hp
 
 # FIXME: should go by path length, not global pos distance
+# the minion version of this prioritizes enemies closest to player
 func get_target() -> Node2D:
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	var closest: Node2D
+	var lowest_dist := 99.0
 	if enemies.size() > 0:
 		for e in enemies:
-			var lowest_dist := 99.0
-			var dist = global_position.distance_to(e.global_position)
+			var dist = GameMan.player.current_cell.distance_to(e.current_cell)
 			if e.hp > 0 and dist < lowest_dist:
 				lowest_dist = dist
 				closest = e
@@ -51,16 +52,34 @@ func tick(_delta: float) -> void:
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
-	if target == null or target.hp <= 0:
-		if get_target() == null: return
-		set_target(get_target())
-		if target: print("enemy targeted: " + target.name)
+	if get_target() == null: return
+	set_target(get_target())
+	#if target == null or target.hp <= 0:
+		#if get_target() == null: return
+		#set_target(get_target())
+		#if target: print("enemy targeted: " + target.name)
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
-		if tpos != target_cell:
+		if tpos != tpos+Vector2i.UP: # FIXME: lol i turned this check off. cuz it was making enemies not move.!
 			move_pts = grid.get_point_path(current_cell, tpos)
+			var path_blocked = false
+			for mp in move_pts:
+				var mp_coord = (GameMan.pos_to_cell(mp))
+				print("MINI PATH PT: " + str(mp_coord))
+				# check if any points aside from start and end are blocked
+				if move_pts.find(mp) != move_pts.size()-1 and \
+				move_pts.find(mp) != 0:
+					if GameMan.is_tile_blocked(mp_coord, false):
+						path_blocked = true
+						print("MINI PATH BLOCKED: " + str(mp_coord))
 			# offset move_pts path by half the size of our tile size to get center
+			# this must be done before movement. FIXME: this sucks
 			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+			# if path blocked, wander 1 tile instead and retry
+			if path_blocked:
+				move_pts = grid.get_point_path(current_cell, \
+				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(current_cell)))
+				move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			target_cell = tpos
 			do_move()
 			recalc_path()
@@ -111,6 +130,8 @@ func do_move():
 
 
 func take_damage(damage: float):
+	if hp <= 0:
+		return
 	hp -= damage
 	$HitFlashAnim.play("hit")
 	if hp <= 0:

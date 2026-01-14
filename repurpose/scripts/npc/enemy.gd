@@ -61,7 +61,7 @@ func tick(_delta: float) -> void:
 		#if target: print("enemy targeted: " + target.name)
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
-		if tpos != target_cell:
+		if tpos != tpos+Vector2i.UP: # FIXME: lol i turned this check off. cuz it was making enemies not move.!
 			move_pts = grid.get_point_path(current_cell, tpos)
 			var path_blocked = false
 			for mp in move_pts:
@@ -133,6 +133,8 @@ func do_move():
 
 
 func take_damage(damage: float):
+	if hp <= 0:
+		return
 	hp -= damage
 	$HitFlashAnim.play("hit")
 	if hp <= 0:
