@@ -152,6 +152,9 @@ func process_attacks(player_mode: bool):
 	# now do attacks
 	for a in attacks:
 		# prune invalid
+		if a.attacker == null:
+			att_to_prune.append(a)
+			continue
 		if a.attacker.hp <= 0:
 			att_to_prune.append(a)
 			continue
@@ -261,11 +264,20 @@ func get_node_at_coord(coord: Vector2i) -> Node2D:
 		return player
 	return null
 
-func is_tile_occupied(coord: Vector2i) -> bool:
-	if get_node_at_coord(coord) == null:
-		return false
+func is_tile_occupied(coord: Vector2i, count_corpses = true) -> bool:
+	var occupied = false
+	var node_at_coord = get_node_at_coord(coord)
+	if node_at_coord == null:
+		occupied = false
+		return occupied
 	else:
-		return true
+		#if node at coord, check if it's a corpse, decide based on that
+		if count_corpses :
+			occupied = true
+		else:
+			if node_at_coord.hp <= 0:
+				occupied = false
+		return occupied
 
 func is_player_moving_to_tile(coord: Vector2i) -> bool:
 	if player.target_cell == coord:
@@ -273,7 +285,7 @@ func is_player_moving_to_tile(coord: Vector2i) -> bool:
 	else:
 		return false
 
-func is_tile_blocked(coord: Vector2i) -> bool:
+func is_tile_blocked(coord: Vector2i, count_corpses = true) -> bool:
 	var blocked = false
 	if dun.is_cell_obstacle(coord):
 		blocked = true
@@ -316,6 +328,14 @@ func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= fal
 	Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0))
 	entity.current_cell = to_coord
 	
+func get_random_neighbor_tile(coord: Vector2i) -> Vector2i:
+	var left_n = coord + Vector2i(-1,0)
+	var right_n = coord + Vector2i(1,0)
+	var up_n = coord + Vector2i(0,-1)
+	var down_n = coord + Vector2i(0,1)
+	var neighbors: Array[Vector2i]
+	neighbors.append(left_n); neighbors.append(right_n); neighbors.append(up_n); neighbors.append(down_n);
+	return neighbors[randi_range(0,neighbors.size()-1)]
 
 func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	var queue: Array[Vector2i]

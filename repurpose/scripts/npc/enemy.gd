@@ -35,7 +35,7 @@ func get_target() -> Node2D:
 	if(assassin): return player
 	
 	for m in minions:
-		var lowest_dist := 99.0
+		var lowest_dist := 9999.0
 		var dist = global_position.distance_to(m.global_position)
 		if m.hp > 0 and dist < lowest_dist:
 			lowest_dist = dist
@@ -53,16 +53,30 @@ func tick(_delta: float) -> void:
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
-	if target == null or target.hp <= 0:
-		if get_target() == null: return
-		set_target(get_target())
-		if target: print("enemy targeted: " + target.name)
+	if get_target() == null: print("ENEMY: GET TARGET RETURNED NULL"); return
+	set_target(get_target())
+	#if target == null or target.hp <= 0:
+		#if get_target() == null: return
+		#set_target(get_target())
+		#if target: print("enemy targeted: " + target.name)
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
 		if tpos != target_cell:
 			move_pts = grid.get_point_path(current_cell, tpos)
 			# offset move_pts path by half the size of our tile size to get center
 			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
+			var path_blocked = false
+			for mp in move_pts:
+				var mp_coord = round(GameMan.pos_to_cell(mp))
+				print("ENEMY PATH PT: " + str(mp_coord))
+				if GameMan.is_tile_blocked(mp_coord, false) and move_pts.find(mp) != move_pts.size()-1:
+					path_blocked = true
+					print("ENEMY PATH BLOCKED: " + str(mp_coord))
+			# if path blocked, wander 1 tile instead and retry
+			if path_blocked:
+				move_pts = grid.get_point_path(current_cell, \
+				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(current_cell)))
+				move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			target_cell = tpos
 			do_move()
 			recalc_path()
@@ -71,6 +85,7 @@ func tick(_delta: float) -> void:
 		var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
 		GameMan.queue_attack(att)
 		return
+
 
 
 func do_move():

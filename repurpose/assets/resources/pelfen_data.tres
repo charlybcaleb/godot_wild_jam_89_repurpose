@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_cvtkj")
 name = "Pelfen"
+hp = 18
 metadata/_custom_type_script = "uid://c08irn7x3105s"
