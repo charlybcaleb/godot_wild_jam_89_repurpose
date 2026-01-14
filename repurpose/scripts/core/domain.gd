@@ -39,6 +39,9 @@ func _process(_delta: float) -> void:
 				valid = false
 			if valid: 
 				summon_at(click_coord, soul)
+	if Input.is_action_just_pressed("debug"):
+		var click_coord = GameMan.pos_to_cell(round(get_global_mouse_position()))
+		print("DEBUG CLICK AT COORD " + str(click_coord))
 
 ## spawns first unassigned soul in at coord as minion, unless other soul is provided.
 func summon_at(coord: Vector2i, soul: Node2D = null):

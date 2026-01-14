@@ -63,15 +63,17 @@ func tick(_delta: float) -> void:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
 		if tpos != target_cell:
 			move_pts = grid.get_point_path(current_cell, tpos)
-			# offset move_pts path by half the size of our tile size to get center
-			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			var path_blocked = false
 			for mp in move_pts:
-				var mp_coord = round(GameMan.pos_to_cell(mp))
+				var mp_coord = GameMan.pos_to_cell(round(mp))
 				print("ENEMY PATH PT: " + str(mp_coord))
-				if GameMan.is_tile_blocked(mp_coord, false) and move_pts.find(mp) != move_pts.size()-1:
-					path_blocked = true
-					print("ENEMY PATH BLOCKED: " + str(mp_coord))
+				if move_pts.find(mp) != move_pts.size()-1 and move_pts.find(mp) != move_pts.size()-2:
+					if GameMan.is_tile_blocked(mp_coord):
+						path_blocked = true
+						print("ENEMY PATH BLOCKED: " + str(mp_coord))
+			# offset move_pts path by half the size of our tile size to get center
+			# this must be done before movement. FIXME: this sucks
+			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			# if path blocked, wander 1 tile instead and retry
 			if path_blocked:
 				move_pts = grid.get_point_path(current_cell, \
