@@ -81,7 +81,9 @@ func process_moves():
 		var move_valid = true
 		var mover := m.mover
 		var max_move_retries := 20
-		# check if to_coord is occupied or will be
+		# check if move is valid
+		if moves_to_prune.has(m):
+			move_valid = false
 		if coords_being_moved_to.has(to_coord):
 			if m.if_invalid_find_nearest and m.invalid_retry_count < max_move_retries:
 				var new_to = get_free_tile_near(to_coord)
@@ -240,6 +242,7 @@ func is_tile_blocked(coord: Vector2i) -> bool:
 		blocked = true
 	return blocked
 
+# FIXME: THIS SHIT WAS THROWN TOGETHER IN 2 MIN. IT'S ONLY USED IN domain.gd
 func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= false):
 	var _from_coord = entity.current_cell
 	var to_coord := coord
@@ -270,7 +273,8 @@ func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= fal
 	#if is_player_moving_to_tile(to_coord): move_valid = false
 	if !move_valid:
 		return
-	entity.global_position = cell_to_pos(to_coord)
+	entity.global_position = cell_to_pos(to_coord) + \
+	Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0))
 	entity.current_cell = to_coord
 	
 	
