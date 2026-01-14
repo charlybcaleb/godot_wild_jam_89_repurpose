@@ -52,7 +52,7 @@ func tick(_delta: float) -> void:
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
-	if get_target() == null: return
+	if get_target() == null: print("MINI FOUND NO ENEMY!!!"); return
 	set_target(get_target())
 	#if target == null or target.hp <= 0:
 		#if get_target() == null: return
@@ -87,6 +87,7 @@ func tick(_delta: float) -> void:
 	if target != null:
 		var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
 		GameMan.queue_attack(att)
+		print("MINI QUEUED ATTACK!!!")
 		return
 
 func do_move():

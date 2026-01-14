@@ -152,20 +152,20 @@ func process_attacks(player_mode: bool):
 	# now do attacks
 	for a in attacks:
 		# prune invalid
-		if a.attacker == null:
+		if a.attacker == null or a.defender == null:
 			att_to_prune.append(a)
 			continue
 		if a.attacker.hp <= 0:
 			att_to_prune.append(a)
 			continue
-		if a.turn != get_turn():
-			att_to_prune.append(a)
-			continue
+		#if a.turn != get_turn(): # MINIBUG: IT WAS THIS!
+			#att_to_prune.append(a)
+			#continue
 		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
 		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
-			att_to_prune.append(a)
+			att_to_prune.append(a) # MINIBUG THIS IS FINE
 			continue
-		if alrdy_attacked.has(a.attacker):
+		if alrdy_attacked.has(a.attacker): # MINIBUG THIS IS FINE
 			att_to_prune.append(a)
 			continue
 		# skip according to mode
