@@ -1,9 +1,12 @@
 extends Control
 
+#popups
 var enemy_popup: Control
 var enemy_popup_target: Node2D
 var show_popup = false
 var popup_offset:= Vector2(6,-72)
+#map
+@export var map_rooms: Array[Control]
 
 func _ready() -> void:
 	add_to_group("ui")

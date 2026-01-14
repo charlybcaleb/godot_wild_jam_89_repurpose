@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=11 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
 [ext_resource type="Texture2D" uid="uid://epcroqnykgx7" path="res://assets/sprites/ui/128x64frame.png" id="2_k3tac"]
 [ext_resource type="Script" uid="uid://cxtv7hommech2" path="res://scenes/ui/enemy_popup.gd" id="3_epb56"]
 [ext_resource type="Texture2D" uid="uid://df8ckrofmyug4" path="res://assets/sprites/characters/pelfen.png" id="3_nchkn"]
+[ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
 
@@ -24,7 +25,7 @@ font_color = Color(0.99015874, 0, 0.49002457, 1)
 outline_size = 2
 outline_color = Color(0.32950863, 3.9491282e-05, 0.30218852, 1)
 
-[node name="UI" type="Control"]
+[node name="UI" type="Control" node_paths=PackedStringArray("map_rooms")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,6 +33,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8b3e8")
+map_rooms = [NodePath("Map/RoomPanelContainer"), NodePath("Map/RoomPanelContainer2"), NodePath("Map/RoomPanelContainer3"), NodePath("Map/RoomPanelContainer4"), NodePath("Map/RoomPanelContainer5"), NodePath("Map/RoomPanelContainer6"), NodePath("Map/RoomPanelContainer7"), NodePath("Map/RoomPanelContainer8"), NodePath("Map/RoomPanelContainer9"), NodePath("Map/RoomPanelContainer10"), NodePath("Map/RoomPanelContainer11"), NodePath("Map/RoomPanelContainer12"), NodePath("Map/RoomPanelContainer13"), NodePath("Map/RoomPanelContainer14"), NodePath("Map/RoomPanelContainer15"), NodePath("Map/RoomPanelContainer16"), NodePath("Map/RoomPanelContainer17")]
 
 [node name="GridDisplay" type="Control" parent="."]
 unique_name_in_owner = true
@@ -48,10 +50,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 2.6000001
 anchor_bottom = 1.0
-offset_left = 417.0
-offset_top = 83.0
-offset_right = 225.59998
-offset_bottom = 76.0
+offset_left = 572.0
+offset_top = 2.0
+offset_right = 380.59998
+offset_bottom = -5.0
 
 [node name="PanelContainer" type="PanelContainer" parent="GridDisplay/MarginContainer"]
 layout_mode = 2
@@ -186,5 +188,134 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
 layout_mode = 2
 texture = ExtResource("3_nchkn")
 stretch_mode = 4
+
+[node name="Map" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_right = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RoomPanelContainer" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="RoomPanelContainer2" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 68.0
+offset_right = 176.0
+offset_bottom = 132.0
+
+[node name="RoomPanelContainer3" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 0.0
+offset_right = 176.0
+offset_bottom = 64.0
+
+[node name="RoomPanelContainer4" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 228.0
+offset_right = 176.0
+offset_bottom = 292.0
+
+[node name="RoomPanelContainer5" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 68.0
+offset_right = 256.0
+offset_bottom = 132.0
+
+[node name="RoomPanelContainer6" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 0.0
+offset_right = 256.0
+offset_bottom = 64.0
+
+[node name="RoomPanelContainer7" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 228.0
+offset_right = 256.0
+offset_bottom = 292.0
+
+[node name="RoomPanelContainer8" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 68.0
+offset_right = 336.0
+offset_bottom = 132.0
+
+[node name="RoomPanelContainer9" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 0.0
+offset_right = 336.0
+offset_bottom = 64.0
+
+[node name="RoomPanelContainer10" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 228.0
+offset_right = 336.0
+offset_bottom = 292.0
+
+[node name="RoomPanelContainer11" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 68.0
+offset_right = 416.0
+offset_bottom = 132.0
+
+[node name="RoomPanelContainer12" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 0.0
+offset_right = 416.0
+offset_bottom = 64.0
+
+[node name="RoomPanelContainer13" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 228.0
+offset_right = 416.0
+offset_bottom = 292.0
+
+[node name="RoomPanelContainer14" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 68.0
+offset_right = 496.0
+offset_bottom = 132.0
+
+[node name="RoomPanelContainer15" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 0.0
+offset_right = 496.0
+offset_bottom = 64.0
+
+[node name="RoomPanelContainer16" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 228.0
+offset_right = 496.0
+offset_bottom = 292.0
+
+[node name="RoomPanelContainer17" parent="Map" instance=ExtResource("6_o6iqq")]
+layout_mode = 0
+offset_left = 512.0
+offset_top = 0.0
+offset_right = 576.0
+offset_bottom = 64.0
 
 [connection signal="toggled" from="GridDisplay/MarginContainer/PanelContainer/ShowGrid" to="GridDisplay" method="_on_show_grid_toggled"]
