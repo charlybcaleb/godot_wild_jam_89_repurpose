@@ -65,10 +65,12 @@ func tick(_delta: float) -> void:
 			move_pts = grid.get_point_path(current_cell, tpos)
 			var path_blocked = false
 			for mp in move_pts:
-				var mp_coord = GameMan.pos_to_cell(round(mp))
+				var mp_coord = (GameMan.pos_to_cell(mp))
 				print("ENEMY PATH PT: " + str(mp_coord))
-				if move_pts.find(mp) != move_pts.size()-1 and move_pts.find(mp) != move_pts.size()-2:
-					if GameMan.is_tile_blocked(mp_coord):
+				# check if any points aside from start and end are blocked
+				if move_pts.find(mp) != move_pts.size()-1 and \
+				move_pts.find(mp) != 0:
+					if GameMan.is_tile_blocked(mp_coord, false):
 						path_blocked = true
 						print("ENEMY PATH BLOCKED: " + str(mp_coord))
 			# offset move_pts path by half the size of our tile size to get center
