@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=3 format=3 uid="uid://cp7s53fmap7ts"]
+
+[ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_rofav"]
+[ext_resource type="Script" uid="uid://jtl4bsq8gie4" path="res://scripts/dungeon/room_data.gd" id="2_kj4y1"]
+
+[resource]
+script = ExtResource("2_kj4y1")
+name = "start"
+room_scene_path = "res://scenes/rooms/room_start.tscn"
+spawn_weight = 0
+metadata/_custom_type_script = "uid://jtl4bsq8gie4"

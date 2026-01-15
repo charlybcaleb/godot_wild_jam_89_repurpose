@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://c7tjpk3vvjvc"]
+[gd_scene load_steps=8 format=3 uid="uid://c7tjpk3vvjvc"]
 
 [ext_resource type="Texture2D" uid="uid://c47sr8obh0bv" path="res://assets/sprites/env/dungeon0.png" id="1_dn7cs"]
+[ext_resource type="Script" uid="uid://cn181y53klec6" path="res://scenes/entities/door_interactable.gd" id="2_ewl7v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ewl7v"]
 atlas = ExtResource("1_dn7cs")
@@ -52,6 +53,7 @@ sprite_frames = SubResource("SpriteFrames_y1est")
 animation = &"open"
 
 [node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_ewl7v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_dn7cs")

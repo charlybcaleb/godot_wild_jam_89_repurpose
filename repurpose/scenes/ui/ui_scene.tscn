@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=13 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
 [ext_resource type="Texture2D" uid="uid://epcroqnykgx7" path="res://assets/sprites/ui/128x64frame.png" id="2_k3tac"]
 [ext_resource type="Script" uid="uid://cxtv7hommech2" path="res://scenes/ui/enemy_popup.gd" id="3_epb56"]
 [ext_resource type="Texture2D" uid="uid://df8ckrofmyug4" path="res://assets/sprites/characters/pelfen.png" id="3_nchkn"]
+[ext_resource type="Script" uid="uid://ddudijqovpa5e" path="res://scenes/ui/door_popup.gd" id="6_fr74f"]
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
+[ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
 
@@ -184,7 +186,133 @@ layout_mode = 2
 texture = ExtResource("3_nchkn")
 stretch_mode = 4
 
+[node name="DoorPopup" type="Control" parent="." node_paths=PackedStringArray("name_txt", "dmg_txt", "hp_txt")]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 1.0
+offset_top = 66.0
+offset_right = 41.0
+offset_bottom = 106.0
+script = ExtResource("6_fr74f")
+name_txt = NodePath("TitleContainer/TitleLabel")
+dmg_txt = NodePath("DmgTxtContainer/TitleLabel")
+hp_txt = NodePath("HPTxtContainer/TitleLabel")
+
+[node name="PanelContainer" type="PanelContainer" parent="DoorPopup"]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 64.0
+
+[node name="TextureRect" type="TextureRect" parent="DoorPopup/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleContainer" type="PanelContainer" parent="DoorPopup"]
+clip_contents = true
+layout_mode = 0
+offset_left = 39.0
+offset_top = 6.0
+offset_right = 123.0
+offset_bottom = 38.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="DoorPopup/TitleContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="DoorPopup/TitleContainer"]
+layout_mode = 2
+text = "Abandoned Tomb"
+label_settings = SubResource("LabelSettings_u3faw")
+autowrap_mode = 2
+max_lines_visible = 2
+
+[node name="DmgTxtContainer" type="PanelContainer" parent="DoorPopup"]
+visible = false
+clip_contents = true
+layout_mode = 0
+offset_left = 17.0
+offset_top = 42.0
+offset_right = 49.0
+offset_bottom = 58.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="DoorPopup/DmgTxtContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="DoorPopup/DmgTxtContainer"]
+layout_mode = 2
+text = "1d4"
+label_settings = SubResource("LabelSettings_nchkn")
+autowrap_mode = 2
+max_lines_visible = 2
+
+[node name="HPTxtContainer" type="PanelContainer" parent="DoorPopup"]
+visible = false
+clip_contents = true
+layout_mode = 0
+offset_left = 45.0
+offset_top = 42.0
+offset_right = 77.0
+offset_bottom = 58.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="DoorPopup/HPTxtContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="DoorPopup/HPTxtContainer"]
+layout_mode = 2
+text = "9 HP"
+label_settings = SubResource("LabelSettings_nchkn")
+autowrap_mode = 2
+max_lines_visible = 2
+
+[node name="SpecialTxtContainer" type="PanelContainer" parent="DoorPopup"]
+clip_contents = true
+layout_mode = 0
+offset_left = 69.0
+offset_top = 42.0
+offset_right = 117.0
+offset_bottom = 58.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="DoorPopup/SpecialTxtContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="DoorPopup/SpecialTxtContainer"]
+layout_mode = 2
+text = "1-2 enemies"
+label_settings = SubResource("LabelSettings_8b3e8")
+autowrap_mode = 2
+max_lines_visible = 2
+
+[node name="PortraitContainer" type="PanelContainer" parent="DoorPopup"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 38.0
+offset_bottom = 35.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="DoorPopup/PortraitContainer"]
+layout_mode = 2
+texture = ExtResource("7_4bb1o")
+stretch_mode = 4
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 96.0
 offset_top = 60.0

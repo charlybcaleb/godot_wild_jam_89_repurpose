@@ -1,10 +1,15 @@
 extends Control
 
-#popups
+# enemy popup
 var enemy_popup: Control
 var enemy_popup_target: Node2D
-var show_popup = false
-var popup_offset:= Vector2(6,-72)
+var should_show_e_popup = false
+var e_popup_offset:= Vector2(6,-72)
+# door popup
+var door_popup: Control
+var door_popup_target: Node2D
+var should_show_d_popup = false
+var d_popup_offset:= Vector2(6,-72)
 #map
 @export var map_rooms: Array[Node] # 17 rooms total
 
@@ -17,27 +22,39 @@ func _ready() -> void:
 	await get_tree().process_frame
 	enemy_popup = get_tree().get_first_node_in_group("enemy_popup")
 	if enemy_popup == null: print("enemy_popup NOT FOUND")
-	show_popup = false
+	should_show_e_popup = false
 
 func _process(_delta: float) -> void:
-	if show_popup and !enemy_popup.visible:
+	if should_show_e_popup and !enemy_popup.visible:
 		enemy_popup.show()
-	if !show_popup and enemy_popup.visible:
+	if !should_show_e_popup and enemy_popup.visible:
 		enemy_popup.hide()
 
 func show_enemy_popup(npc: Node2D, e= true):
 	if e:
 		enemy_popup_target = npc
-		enemy_popup.global_position = npc.global_position + popup_offset
-		show_popup = true
+		enemy_popup.global_position = npc.global_position + e_popup_offset
+		should_show_e_popup = true
 		enemy_popup.update(npc.data)
 	else:
 		if enemy_popup_target != npc:
 			# without this, would end up turning off after enter when moving 
 			# between two npcs quickly.
 			return
-		show_popup = false
+		should_show_e_popup = false
 
+func show_door_popup(door: Node2D, e= true):
+	if e:
+		door_popup_target = door
+		door_popup.global_position = door.global_position + d_popup_offset
+		should_show_d_popup = true
+		door_popup.update(door.data)
+	else:
+		if door_popup_target != door:
+			# without this, would end up turning off after enter when moving 
+			# between two npcs quickly.
+			return
+		should_show_d_popup = false
 
 ############# DEPRECATED
 

@@ -7,6 +7,7 @@ var click_consumed = false # FIXME: this shit is so cursed. it's a gamejam tho!
 # scenes
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 # rooms
+var room_datas: Array[RoomData]
 var current_room: Node2D
 var incoming_room: Node2D
 # entities
@@ -27,6 +28,45 @@ var spawn_moves: Array[Move]
 var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
+
+# called in register_dun
+func setup() -> void:
+	load_all_rooms()
+	spawn_start_room()
+
+func load_all_rooms():
+	var path = "res://assets/resources/rooms/"
+	var dir = DirAccess.open(path)
+	var rd_loads = []
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				print("Found directory: "+ file_name)
+			else:
+				if file_name.get_extension() == "tres":
+					var full_path = path.path_join(file_name)
+					rd_loads.append(load(full_path))
+					print("added room to load")
+			file_name = dir.get_next()
+	else:
+		print("COuldn't loAd tHe pAtH")
+	
+	for rdl in rd_loads:
+		room_datas.append((rdl))
+
+func spawn_start_room():
+	var start_room_data: RoomData
+	if room_datas.is_empty(): print("gm: roomdatas empty."); return
+	for rd in room_datas:
+		if rd.name == "start":
+			start_room_data = rd
+	if start_room_data == null: print("start room data not found"); return
+	var room_scene = load(start_room_data.room_scene_path)
+	var room_instance = room_scene.instantiate()
+	dun.add_child(room_instance)
+
 
 func pos_to_cell(pos: Vector2):
 	# FIXME: this must account for tweening. should prob round
@@ -429,6 +469,7 @@ func register_soul(s: Node2D):
 
 func register_dun(d: Node2D):
 	dun = d
+	setup()
 
 func SetupCam(cam: Node2D):
 	camera = cam

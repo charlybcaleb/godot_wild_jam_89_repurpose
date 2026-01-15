@@ -10,6 +10,7 @@ map = NodePath("RoomStart")
 soulmaps = [NodePath("TML_Domain")]
 
 [node name="RoomStart" parent="." instance=ExtResource("2_f75cf")]
+visible = false
 
 [node name="TML_Domain" type="TileMapLayer" parent="."]
 texture_filter = 1
