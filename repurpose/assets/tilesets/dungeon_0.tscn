@@ -1,16 +1,12 @@
-[gd_scene load_steps=4 format=4 uid="uid://wriu3c8nph2x"]
+[gd_scene load_steps=3 format=4 uid="uid://wriu3c8nph2x"]
 
 [ext_resource type="Script" uid="uid://cgnuuoe8t3atm" path="res://scripts/dungeon/dungeon.gd" id="1_s4kdp"]
-[ext_resource type="PackedScene" uid="uid://bgqrhhg8pjpj8" path="res://scenes/rooms/room_start.tscn" id="2_f75cf"]
 [ext_resource type="TileSet" uid="uid://ds88b58vvlfsd" path="res://assets/tilesets/domaintiles.tres" id="3_f75cf"]
 
 [node name="Dungeon0" type="Node2D" node_paths=PackedStringArray("map", "soulmaps")]
 script = ExtResource("1_s4kdp")
-map = NodePath("RoomStart")
+map = NodePath("")
 soulmaps = [NodePath("TML_Domain")]
-
-[node name="RoomStart" parent="." instance=ExtResource("2_f75cf")]
-visible = false
 
 [node name="TML_Domain" type="TileMapLayer" parent="."]
 texture_filter = 1

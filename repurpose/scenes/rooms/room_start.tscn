@@ -20,6 +20,7 @@ right_door = NodePath("Door3")
 
 [node name="Door" parent="." instance=ExtResource("5_3xqj6")]
 position = Vector2(264, 136)
+animation = &"locked"
 
 [node name="Door2" parent="." instance=ExtResource("5_3xqj6")]
 position = Vector2(344, 120)

@@ -38,6 +38,8 @@ func setup() -> void:
 		await get_tree().process_frame
 	load_all_rooms()
 	spawn_start_room()
+	player.setup(dun.astar_grid)
+	#dun.setup()
 
 func load_all_rooms():
 	var path = "res://assets/resources/rooms/"
@@ -71,9 +73,14 @@ func spawn_start_room():
 	var room_scene = load(start_room_data.room_scene_path)
 	var room_instance = room_scene.instantiate()
 	dun.add_child(room_instance)
-	current_room = room_instance
-	current_room.setup()
+	register_room(room_instance)
 
+func register_room(room: Node2D):
+	if room == null: print("GM: register room errored, room null")
+	if room.room_tml == null: print("GM: register room errored, room.room_TML null")
+	dun.new_map(room.room_tml)
+	current_room = room
+	current_room.setup()
 
 func pos_to_cell(pos: Vector2):
 	# FIXME: this must account for tweening. should prob round
@@ -465,7 +472,6 @@ func get_turn() -> int:
 
 func register_player(p: Node2D):
 	player_registered = true
-	p.setup(dun.astar_grid)
 	player = p
 	p.play_anim("default")
 
@@ -487,6 +493,7 @@ func register_dun(d: Node2D):
 	dun_registered = true
 	dun = d
 	setup()
+	
 
 func SetupCam(cam: Node2D):
 	camera = cam

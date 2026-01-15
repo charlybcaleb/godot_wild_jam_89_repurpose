@@ -32,7 +32,7 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:
 	var minions = get_tree().get_nodes_in_group("minion")
-	var player = %Player
+	var player = GameMan.player
 	var closest: Node2D
 	# FIXME: needs to be if assassin AND has path to player.
 	if(assassin): return player

@@ -5,6 +5,10 @@ extends Node2D
 var astar_grid: AStarGrid2D
 
 func _ready():
+	GameMan.register_dun(self)
+
+
+func setup():
 	astar_grid = AStarGrid2D.new()
 	astar_grid.default_compute_heuristic = AStarGrid2D.HEURISTIC_MANHATTAN
 	astar_grid.default_estimate_heuristic = AStarGrid2D.HEURISTIC_MANHATTAN
@@ -14,11 +18,10 @@ func _ready():
 	astar_grid.cell_size = map.tile_set.tile_size
 	astar_grid.region = Rect2(Vector2.ZERO, ceil(get_viewport_rect().size / astar_grid.cell_size))
 	astar_grid.update()
-	build_grid()
-	
-	GameMan.register_dun(self)
 
 func build_grid():
+	if astar_grid == null:
+		setup()
 	for id in map.get_used_cells():
 		var data = map.get_cell_tile_data(id)
 		if data:
@@ -39,8 +42,9 @@ func build_grid():
 
 # called by GameMan when moving to new room
 func new_map(m: TileMapLayer):
-	map.queue_free()
+	if map: map.queue_free()
 	map = m
+
 	build_grid()
 	pass
 
