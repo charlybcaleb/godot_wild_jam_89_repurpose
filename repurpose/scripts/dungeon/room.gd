@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var room_data: RoomData
+@export var spawn_points: Array[Node2D]
 #@export var room_type:= RoomType.DUNGEON
 @export var room_tml: TileMapLayer
 @export var left_door: Node2D
@@ -20,8 +21,14 @@ func spawn_enemies():
 		var enemy = room_data.get_enemy_weighted_random()
 		if enemy:
 			# tell gameman to spawn
-			pass
+			var spawn_pos = GameMan.pos_to_cell(get_unused_spawn_point().global_position)
+			GameMan.spawn_npc(enemy, spawn_pos)
 		else:
-			pass
 			# don't do anything, room has no enemies.
-	pass
+			pass
+
+func get_unused_spawn_point() -> Node2D:
+	if spawn_points.is_empty():
+		return null
+	var index = randi_range(0,spawn_points.size()-1)
+	return spawn_points[index]

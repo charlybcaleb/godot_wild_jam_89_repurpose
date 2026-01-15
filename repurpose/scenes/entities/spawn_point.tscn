@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxruwhariua6q"]
+
+[ext_resource type="Texture2D" uid="uid://cbgun67oip5by" path="res://assets/sprites/characters/necro.png" id="1_i55ip"]
+[ext_resource type="Script" uid="uid://br30uxv7rtyys" path="res://scripts/dungeon/spawn_point.gd" id="2_8wqli"]
+
+[node name="SpawnPoint" type="Sprite2D"]
+modulate = Color(0, 0.56812054, 0.88630235, 1)
+texture = ExtResource("1_i55ip")
+script = ExtResource("2_8wqli")

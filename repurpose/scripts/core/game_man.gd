@@ -2,9 +2,12 @@ extends Node
 # system
 var dun: Node = null
 var camera: Node = null
+var player_registered = false
+var dun_registered = false
 # input
 var click_consumed = false # FIXME: this shit is so cursed. it's a gamejam tho!
 # scenes
+var enemy_scene: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 # rooms
 var room_datas: Array[RoomData]
@@ -31,6 +34,8 @@ var minions_slain := 0
 
 # called in register_dun
 func setup() -> void:
+	while !player_registered or !dun_registered:
+		await get_tree().process_frame
 	load_all_rooms()
 	spawn_start_room()
 
@@ -66,6 +71,8 @@ func spawn_start_room():
 	var room_scene = load(start_room_data.room_scene_path)
 	var room_instance = room_scene.instantiate()
 	dun.add_child(room_instance)
+	current_room = room_instance
+	current_room.setup()
 
 
 func pos_to_cell(pos: Vector2):
@@ -296,6 +303,14 @@ func spawn_npc(data: EnemyData, coord: Vector2i, soul: Node2D = null):
 			minion, pos_to_cell(minion.global_position), free_tile, 100, true)
 		queue_spawn_move(move)
 		souls.pop_at(souls.find(soul)) # FIXME: should probably make a queue_deregister_npc thing.
+	elif data != null:
+		var enemy = enemy_scene.instantiate()
+		enemy.setup(dun.astar_grid, data)
+		get_tree().get_root().add_child(enemy)
+		var free_tile = get_free_tile_near(coord)
+		var move = Move.new(
+			enemy, pos_to_cell(enemy.global_position), free_tile, 100, true)
+		queue_spawn_move(move)
 
 func queue_spawn_move(move: Move):
 	spawn_moves.append(move)
@@ -449,6 +464,7 @@ func get_turn() -> int:
 ## INIT STUFF
 
 func register_player(p: Node2D):
+	player_registered = true
 	p.setup(dun.astar_grid)
 	player = p
 	p.play_anim("default")
@@ -468,6 +484,7 @@ func register_soul(s: Node2D):
 	#s.play_anim("default")
 
 func register_dun(d: Node2D):
+	dun_registered = true
 	dun = d
 	setup()
 

@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cky00tw4a57h6"]
+[gd_scene load_steps=5 format=3 uid="uid://cky00tw4a57h6"]
 
 [ext_resource type="PackedScene" uid="uid://cfp21mjv65dgd" path="res://scenes/ui/ui_scene.tscn" id="1_j0xxo"]
 [ext_resource type="Script" uid="uid://bx7xiwh3ljtna" path="res://scripts/camera/camera.gd" id="2_8rffp"]
 [ext_resource type="PackedScene" uid="uid://wriu3c8nph2x" path="res://assets/tilesets/dungeon_0.tscn" id="2_xnanu"]
 [ext_resource type="PackedScene" uid="uid://dpfbr2m80hha8" path="res://scenes/player/player.tscn" id="3_xnanu"]
-[ext_resource type="PackedScene" uid="uid://pcshqpycldlj" path="res://scenes/enemy/enemy.tscn" id="5_mjl0v"]
-[ext_resource type="PackedScene" uid="uid://crxjpxruc3bdb" path="res://scenes/player/minion.tscn" id="6_5b884"]
 
 [node name="crawl" type="Node2D"]
 
@@ -22,18 +20,6 @@ current = true
 [node name="Player" parent="." instance=ExtResource("3_xnanu")]
 unique_name_in_owner = true
 position = Vector2(280, 136)
-
-[node name="Enemy" parent="." instance=ExtResource("5_mjl0v")]
-position = Vector2(360, 136)
-
-[node name="Enemy2" parent="." instance=ExtResource("5_mjl0v")]
-position = Vector2(344, 152)
-
-[node name="Enemy3" parent="." instance=ExtResource("5_mjl0v")]
-position = Vector2(344, 168)
-
-[node name="Minion" parent="." instance=ExtResource("6_5b884")]
-position = Vector2(312, 168)
 
 [node name="UI" parent="." node_paths=PackedStringArray("map_rooms") instance=ExtResource("1_j0xxo")]
 unique_name_in_owner = true
