@@ -63,6 +63,10 @@ func _input(event: InputEvent):
 	elif input_dir == InputDir.DOWN:
 		target_coord.y = current_cell.y + 1
 	
+	# check if door
+	if GameMan.get_door_at_coord(target_coord):
+		print("DOOR STUCK!@!!!!!!")
+		pass
 	# check if occupied. if occ by enemy, queue attack. if occ by mini, swap.
 	# if occ by else, skip input.
 	var occupant := GameMan.get_node_at_coord(target_coord)
@@ -108,7 +112,9 @@ func try_move(target_coord: Vector2i, _was_queued: bool):
 
 func do_move():
 	#print("move_pts size: " + str(move_pts.size()))
-	if move_pts.is_empty(): print("move esa empty!"); return 
+	if move_pts.is_empty():
+		# this happens when trying to move onto a solid cell
+		print (" move esa"); return
 	cur_pt = 0;
 
 	if cur_pt == move_pts.size() -1:

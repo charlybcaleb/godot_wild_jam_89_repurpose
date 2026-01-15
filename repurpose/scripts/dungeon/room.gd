@@ -14,6 +14,10 @@ extends Node2D
 # called by GameMan
 func setup():
 	spawn_enemies()
+	if left_door: GameMan.register_door(left_door)
+	if up_door: GameMan.register_door(up_door)
+	if right_door: GameMan.register_door(right_door)
+	if down_door: GameMan.register_door(down_door)
 
 func spawn_enemies():
 	var enemy_spawn_count = randi_range(room_data.min_enemies, room_data.max_enemies)

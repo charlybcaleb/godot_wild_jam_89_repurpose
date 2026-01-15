@@ -13,6 +13,7 @@ var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 var room_datas: Array[RoomData]
 var current_room: Node2D
 var incoming_room: Node2D
+var doors: Array[Node2D]
 # entities
 var enemies: Array[Node2D]
 var player: Node2D
@@ -75,12 +76,27 @@ func spawn_start_room():
 	dun.add_child(room_instance)
 	register_room(room_instance)
 
+func spawn_new_room():
+	# don't forget to clear doors!
+	doors.clear()
+	pass
+
+func get_door_at_coord(coord: Vector2i):
+	for d in doors:
+		if Vector2i(pos_to_cell(d.global_position)) == coord:
+			return d
+	return null
+
 func register_room(room: Node2D):
 	if room == null: print("GM: register room errored, room null")
 	if room.room_tml == null: print("GM: register room errored, room.room_TML null")
 	dun.new_map(room.room_tml)
 	current_room = room
 	current_room.setup()
+
+func register_door(door: Node2D):
+	if !doors.has(door):
+		doors.append(door)
 
 func pos_to_cell(pos: Vector2):
 	# FIXME: this must account for tweening. should prob round
