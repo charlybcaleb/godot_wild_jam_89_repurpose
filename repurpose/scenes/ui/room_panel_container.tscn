@@ -4,13 +4,14 @@
 [ext_resource type="Script" uid="uid://ddwo8dabv86c" path="res://scenes/ui/map_room.gd" id="1_pms05"]
 [ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="3_dpvns"]
 
-[node name="RoomPanelContainer" type="PanelContainer" node_paths=PackedStringArray("lines")]
+[node name="RoomPanelContainer" type="PanelContainer" node_paths=PackedStringArray("lines", "debug_label")]
 offset_left = 32.0
 offset_top = 148.0
 offset_right = 96.0
 offset_bottom = 212.0
 script = ExtResource("1_pms05")
 lines = [NodePath("PathPreviz"), NodePath("PathPreviz2"), NodePath("PathPreviz3")]
+debug_label = NodePath("Label")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = 4
@@ -42,3 +43,9 @@ top_level = true
 z_index = 3
 width = 1.0
 default_color = Color(0.74554527, 0.49988288, 1, 1)
+
+[node name="Label" type="Label" parent="."]
+z_index = 10
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "0"
