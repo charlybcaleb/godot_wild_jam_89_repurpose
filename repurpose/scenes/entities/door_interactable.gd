@@ -2,10 +2,7 @@ extends Area2D
 
 var ui: Control
 @onready var door := get_parent()
-var show_popup = false
 var popup_offset:= Vector2(6,-72)
-var is_corpse = false
-var the_damned_waiting_for_redemption: Node2D
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -22,6 +19,12 @@ func _on_mouse_shape_exited(_shape_idx: int) -> void:
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		pass
+
+func show_popup():
+	ui.show_door_popup(door)
+
+func hide_popup():
+	ui.show_door_popup(door, false)
 
 #func _process(delta: float) -> void:
 	#if Input.is_action_just_released_by_event()

@@ -21,6 +21,7 @@ func _ready() -> void:
 	add_to_group("ui")
 	await get_tree().process_frame
 	enemy_popup = get_tree().get_first_node_in_group("enemy_popup")
+	door_popup = get_tree().get_first_node_in_group("door_popup")
 	if enemy_popup == null: print("enemy_popup NOT FOUND")
 	should_show_e_popup = false
 
@@ -48,7 +49,7 @@ func show_door_popup(door: Node2D, e= true):
 		door_popup_target = door
 		door_popup.global_position = door.global_position + d_popup_offset
 		should_show_d_popup = true
-		door_popup.update(door.data)
+		door_popup.update(door.room_data)
 	else:
 		if door_popup_target != door:
 			# without this, would end up turning off after enter when moving 

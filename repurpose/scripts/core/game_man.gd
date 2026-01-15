@@ -97,6 +97,7 @@ func register_room(room: Node2D):
 func register_door(door: Node2D):
 	if !doors.has(door):
 		doors.append(door)
+	door.setup(current_room.room_data)
 
 func pos_to_cell(pos: Vector2):
 	# FIXME: this must account for tweening. should prob round

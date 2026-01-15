@@ -64,8 +64,10 @@ func _input(event: InputEvent):
 		target_coord.y = current_cell.y + 1
 	
 	# check if door
-	if GameMan.get_door_at_coord(target_coord):
+	var door = GameMan.get_door_at_coord(target_coord)
+	if door:
 		print("DOOR STUCK!@!!!!!!")
+		door.player_knock_door()
 		pass
 	# check if occupied. if occ by enemy, queue attack. if occ by mini, swap.
 	# if occ by else, skip input.
