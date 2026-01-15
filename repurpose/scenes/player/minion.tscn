@@ -1,9 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://crxjpxruc3bdb"]
+[gd_scene load_steps=17 format=3 uid="uid://crxjpxruc3bdb"]
 
 [ext_resource type="Script" uid="uid://brarbdwq3te8i" path="res://scripts/npc/minion.gd" id="1_wxuj3"]
 [ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="2_aaqyv"]
 [ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="2_viepk"]
-[ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="2_wxuj3"]
+[ext_resource type="Texture2D" uid="uid://bieiq26o653m8" path="res://assets/sprites/characters/pelfen_necro_sheet.png" id="4_keeiw"]
 [ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_keeiw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
@@ -15,11 +15,30 @@ shader = ExtResource("2_viepk")
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 shader_parameter/flash_enabled = false
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_eg7rb"]
+atlas = ExtResource("4_keeiw")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45041"]
+atlas = ExtResource("4_keeiw")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhip4"]
+atlas = ExtResource("4_keeiw")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4xk8"]
+atlas = ExtResource("4_keeiw")
+region = Rect2(48, 0, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_40wdo"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_wxuj3")
+"texture": SubResource("AtlasTexture_eg7rb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45041")
 }],
 "loop": true,
 "name": &"default",
@@ -27,11 +46,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_wxuj3")
+"texture": SubResource("AtlasTexture_uhip4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4xk8")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 15.0
 }]
 
 [sub_resource type="Animation" id="Animation_tjssy"]

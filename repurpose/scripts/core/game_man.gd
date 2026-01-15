@@ -389,6 +389,7 @@ func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	return Vector2i(999,999)
 
 func register_npc_death(npc: Node2D):
+	SoundMan.play_death(npc.data.name)
 	await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
 	if npc.is_in_group("enemy"):
 		enemies.pop_at(enemies.find(npc))
@@ -407,17 +408,21 @@ func get_turn() -> int:
 func register_player(p: Node2D):
 	p.setup(dun.astar_grid)
 	player = p
+	p.play_anim("default")
 
 func register_enemy(e: Node2D):
 	e.setup(dun.astar_grid)
 	enemies.append(e)
+	e.play_anim("default")
 
 func register_minion(m: Node2D):
 	m.setup(dun.astar_grid)
 	minions.append(m)
+	m.play_anim("default")
 
 func register_soul(s: Node2D):
 	souls.append(s)
+	#s.play_anim("default")
 
 func register_dun(d: Node2D):
 	dun = d
