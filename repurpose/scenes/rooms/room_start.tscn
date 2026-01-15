@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=4 uid="uid://bgqrhhg8pjpj8"]
+
+[ext_resource type="TileSet" uid="uid://bnr4lud6qs6xu" path="res://assets/tilesets/dungeon0tileset.tres" id="1_j70ig"]
+[ext_resource type="Script" uid="uid://drbmkf1fa4ala" path="res://scripts/dungeon/room.gd" id="2_3xqj6"]
+[ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="3_r2mul"]
+[ext_resource type="Script" uid="uid://jtl4bsq8gie4" path="res://scripts/dungeon/room_data.gd" id="4_w3tkv"]
+[ext_resource type="PackedScene" uid="uid://c7tjpk3vvjvc" path="res://scenes/entities/door.tscn" id="5_3xqj6"]
+
+[sub_resource type="Resource" id="Resource_p25nh"]
+script = ExtResource("4_w3tkv")
+name = "start"
+metadata/_custom_type_script = "uid://jtl4bsq8gie4"
+
+[node name="RoomStart" type="TileMapLayer" node_paths=PackedStringArray("room_tml", "left_door", "up_door", "right_door")]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAQAAcAAQAAAAAAAAAQAAgAAQAAAAEAAAAQAAkAAQAAAAEAAAAQAAoAAQAAAAEAAAAQAAsAAQAAAAEAAAAQAAwAAQAAAAIAAAARAAcAAQABAAAAAAARAAgAAQADAAEAAAARAAkAAQADAAEAAAARAAoAAQADAAEAAAARAAsAAQADAAEAAAARAAwAAQABAAIAAAASAAcAAQACAAAAAAASAAgAAQABAAEAAAASAAkAAQABAAEAAAASAAoAAQABAAEAAAASAAsAAQABAAEAAAASAAwAAQACAAIAAAATAAcAAQADAAAAAAATAAgAAQACAAEAAAATAAkAAQACAAEAAAATAAoAAQACAAEAAAATAAsAAQACAAEAAAATAAwAAQADAAIAAAAUAAcAAQABAAAAAAAUAAgAAQADAAEAAAAUAAkAAQADAAEAAAAUAAoAAQADAAEAAAAUAAsAAQADAAEAAAAUAAwAAQABAAIAAAAVAAcAAQACAAAAAAAVAAgAAQABAAEAAAAVAAkAAQABAAEAAAAVAAoAAQABAAEAAAAVAAsAAQABAAEAAAAVAAwAAQACAAIAAAAWAAcAAQADAAAAAAAWAAgAAQACAAEAAAAWAAkAAQACAAEAAAAWAAoAAQACAAEAAAAWAAsAAQACAAEAAAAWAAwAAQADAAIAAAAXAAcAAQAEAAAAAAAXAAgAAQAEAAEAAAAXAAkAAQAEAAEAAAAXAAoAAQAEAAEAAAAXAAsAAQAEAAEAAAAXAAwAAQAEAAIAAAA=")
+tile_set = ExtResource("1_j70ig")
+script = ExtResource("2_3xqj6")
+room_data = SubResource("Resource_p25nh")
+room_tml = NodePath(".")
+left_door = NodePath("Door")
+up_door = NodePath("Door2")
+right_door = NodePath("Door3")
+
+[node name="Door" parent="." instance=ExtResource("5_3xqj6")]
+position = Vector2(264, 136)
+
+[node name="Door2" parent="." instance=ExtResource("5_3xqj6")]
+position = Vector2(344, 120)
+
+[node name="Door3" parent="." instance=ExtResource("5_3xqj6")]
+position = Vector2(376, 168)

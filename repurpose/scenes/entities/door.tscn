@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://c7tjpk3vvjvc"]
+
+[ext_resource type="Texture2D" uid="uid://c47sr8obh0bv" path="res://assets/sprites/env/dungeon0.png" id="1_dn7cs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewl7v"]
+atlas = ExtResource("1_dn7cs")
+region = Rect2(128, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_htbgl"]
+atlas = ExtResource("1_dn7cs")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_de05j"]
+atlas = ExtResource("1_dn7cs")
+region = Rect2(144, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y1est"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ewl7v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_htbgl")
+}],
+"loop": true,
+"name": &"locked",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ewl7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_de05j")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dn7cs"]
+size = Vector2(16, 16)
+
+[node name="Door" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_y1est")
+animation = &"open"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_dn7cs")

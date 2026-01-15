@@ -121,14 +121,13 @@ script = ExtResource("1_a3pup")
 data = ExtResource("2_cwlon")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("RectangleShape2D_dovo2")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_40wdo")
 sprite_frames = SubResource("SpriteFrames_40wdo")
-animation = &"walk"
-frame_progress = 0.47900352
 
 [node name="PathPreviz" type="Line2D" parent="."]
 visible = false
@@ -150,6 +149,7 @@ libraries = {
 script = ExtResource("5_gl05p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 shape = SubResource("RectangleShape2D_cwlon")
 
 [connection signal="input_event" from="Area2D" to="Area2D" method="_on_input_event"]

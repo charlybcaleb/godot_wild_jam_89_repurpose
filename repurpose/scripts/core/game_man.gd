@@ -6,6 +6,9 @@ var camera: Node = null
 var click_consumed = false # FIXME: this shit is so cursed. it's a gamejam tho!
 # scenes
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
+# rooms
+var current_room: Node2D
+var incoming_room: Node2D
 # entities
 var enemies: Array[Node2D]
 var player: Node2D
