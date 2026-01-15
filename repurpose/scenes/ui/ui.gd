@@ -8,34 +8,60 @@ var popup_offset:= Vector2(6,-72)
 #map
 @export var map_rooms: Array[Control] # 17 rooms total
 
-# FIXME: this is terrible code and just made for jam it's so bad
+# FIXME: this is terrible code and just made for jam it's so bad fuck myu life
 func link_map_rooms():
-	var c1_link_count = 0
-	for mr in map_rooms:
-		var mr_index = map_rooms.find(mr)
-		# room 0 column 0
-		if mr_index == 0:
-			# if first room, make link to each in next column (mr[1,2,3])
-			var link_count = randi_range(3,3)
-			for lc in link_count:
-				var to_room = map_rooms[1+lc]
-				if !to_room.is_disabled:
-					mr.set_link(lc, map_rooms[1+lc])
-		# rooms 1-3 column 1 set here
-		if mr_index == 1:
-			# first turn off 0-1 random rooms in next column
-			var turn_off_a_room = randi_range(0,1)
-			if turn_off_a_room == 1:
-				var random_mr_in_next_column = randi_range(4,6)
-				map_rooms[random_mr_in_next_column].set_disabled(true)
-		if mr_index > 0 and mr_index < 3:
+	# room 0 column 0
+	# if first room, make link to each in next column (mr[1,2,3])
+	var link_count = randi_range(3,3)
+	for lc in link_count:
+		var from_room = map_rooms[0]
+		var to_room = map_rooms[1+lc]
+		if !to_room.is_disabled:
+			var new_link = MapRoomLink.new(from_room, to_room)
+			map_rooms[0].add_link(new_link)
+	# rooms 1-3 / column 1 
+	turn_off_next_col_rooms(1)
+	link_adj_rooms_in_column(1)
+	link_col_rooms_to_next_col(1, randi_range(1,2))
+
+func turn_off_next_col_rooms(col_start_index: int):
+	var turn_off_a_room = randi_range(0,1)
+	if turn_off_a_room == 1:
+		var random_mr_in_next_column = randi_range(col_start_index+3,col_start_index+5)
+		map_rooms[random_mr_in_next_column].set_disabled(true)
+
+func link_adj_rooms_in_column(col_start_index: int):
+	var mr_index = col_start_index
+	for i in range(3): # run 3 times
+		if mr_index >= col_start_index and mr_index < col_start_index+3:
 			# for now, we link all adjacent column rooms.
-			var from = map_rooms[mr_index]
-			if from.is_disabled: continue # don't start link from disabled room
-			var to = map_rooms[mr_index+1]
-			if to.is_disabled and mr_index != 3:
-				to = map_rooms[to+1]
-			map_rooms[mr_index].set_link(0, to)
+			var from_room = map_rooms[mr_index]
+			if from_room.is_disabled: return # don't start link from disabled room
+			var to_room = map_rooms[mr_index+1]
+			if to_room.is_disabled and mr_index != col_start_index+2:
+				to_room = map_rooms[to_room+1]
+			var new_link = MapRoomLink.new(from_room, to_room)
+			map_rooms[mr_index].add_link(new_link)
+		mr_index += 1
+
+func link_col_rooms_to_next_col(col_start_index: int, forward_links: int):
+	var mr_index = col_start_index
+	var unpicked_from_rooms:= [col_start_index,col_start_index+1,col_start_index+2]
+	# pick 1-2 random rooms to link forward
+	for i in range(forward_links):
+		var from_room: int
+		var to_room: int
+		from_room = unpicked_from_rooms[randi_range(0,unpicked_from_rooms.size()-1)]
+		to_room = randi_range(col_start_index+3,col_start_index+5)
+		if map_rooms[to_room].is_disabled:
+			forward_links+=1
+			continue
+		else:
+			unpicked_from_rooms.pop_at(unpicked_from_rooms.find(from_room))
+			var new_link = MapRoomLink.new(map_rooms[from_room], map_rooms[to_room])
+			map_rooms[mr_index].add_link(new_link)
+
+#func link_map_rooms_in_column(col_start_index)
 
 func _ready() -> void:
 	add_to_group("ui")

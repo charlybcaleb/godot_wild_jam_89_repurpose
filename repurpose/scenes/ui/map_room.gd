@@ -9,16 +9,19 @@ extends PanelContainer
 var room_data: RoomData
 var center_offset = Vector2(32,32)
 var is_disabled = false
+var map_room_links: Array[MapRoomLink] 
 
 func set_icon_sprite(sprite: Texture2D):
 	icon_sprite.texture = sprite
 
 # set link 0 1 or 2 to another map_room
-func set_link(link_slot: int, to_room: Control):
-	lines[link_slot].clear_points()
-	lines[link_slot].add_point(global_position+center_offset)
-	lines[link_slot].add_point(to_room.global_position+center_offset)
-	print("line set with point count " + str(lines[link_slot].get_point_count()))
+func add_link(map_room_link: MapRoomLink):
+	map_room_links.append(map_room_link)
+	lines[map_room_links.size()-1].clear_points()
+	lines[map_room_links.size()-1].add_point(global_position+center_offset)
+	lines[map_room_links.size()-1].add_point(map_room_link.to.global_position+center_offset)
+	print("line set with point count " + str(lines[map_room_links.size()-1].get_point_count()))
 
 func set_disabled(e= true):
 	is_disabled = e
+	hide()
