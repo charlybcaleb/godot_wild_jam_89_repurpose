@@ -63,11 +63,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "show grid"
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 0
-offset_right = 44.0
-offset_bottom = 40.0
-
 [node name="EnemyPopup" type="Control" parent="." node_paths=PackedStringArray("name_txt", "dmg_txt", "hp_txt")]
 unique_name_in_owner = true
 anchors_preset = 0
@@ -195,34 +190,41 @@ offset_left = 96.0
 offset_top = 60.0
 offset_right = 544.0
 offset_bottom = 420.0
+mouse_filter = 2
 theme_override_constants/separation = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="VBoxContainer5" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="Map" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -246,6 +248,7 @@ offset_right = 160.0
 offset_bottom = 124.0
 
 [node name="RoomPanelContainer4" parent="Map" instance=ExtResource("6_o6iqq")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 96.0
@@ -270,6 +273,7 @@ offset_right = 256.0
 offset_bottom = 124.0
 
 [node name="RoomPanelContainer7" parent="Map" instance=ExtResource("6_o6iqq")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 192.0
@@ -286,6 +290,7 @@ offset_right = 256.0
 offset_bottom = 284.0
 
 [node name="RoomPanelContainer9" parent="Map" instance=ExtResource("6_o6iqq")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 288.0
@@ -302,6 +307,7 @@ offset_right = 352.0
 offset_bottom = 204.0
 
 [node name="RoomPanelContainer11" parent="Map" instance=ExtResource("6_o6iqq")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 288.0
@@ -318,6 +324,7 @@ offset_right = 448.0
 offset_bottom = 124.0
 
 [node name="RoomPanelContainer13" parent="Map" instance=ExtResource("6_o6iqq")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 384.0
@@ -342,6 +349,7 @@ offset_right = 544.0
 offset_bottom = 122.0
 
 [node name="RoomPanelContainer16" parent="Map" instance=ExtResource("6_o6iqq")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 480.0

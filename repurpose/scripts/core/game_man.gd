@@ -40,8 +40,9 @@ func tick():
 	#await get_tree().create_timer(0.08).timeout
 	process_moves()
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
-	process_attacks(true) # process player attacks
-	process_attacks(false) # process npc attacks
+	process_attacks(true) # process player ally attacks
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	process_attacks(false) # process enemy attacks
 	# make corpses interactable etc
 	process_corpses()
 	turn += 1
@@ -145,6 +146,8 @@ func process_moves():
 			mover.cur_pt += 1
 			# the to_coord we receive is in tile space. tween_move works in global space.
 			tween_move(mover, cell_to_pos(to_coord) + Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0)))
+			mover.play_anim("walk")
+			mover.play_anim("default", GlobalConstants.MOVE_TWEEN_DURATION)
 			moves_to_prune.append(m)
 			moves_performed += 1
 	# cleanup
@@ -183,11 +186,16 @@ func process_attacks(player_mode: bool):
 			att_to_prune.append(a)
 			continue
 		# skip according to mode
-		if player_mode and !a.attacker.is_in_group("player"):
+		var is_player_ally = true
+		if !a.attacker.is_in_group("player") or !a.attacker.is_in_group("minion"):
+			is_player_ally = false
+		if player_mode and !is_player_ally:
 			continue
-		if !player_mode and a.attacker.is_in_group("player"):
+		if !player_mode and is_player_ally:
 			continue
 		# do attack
+		# delay slightly between each
+		#await get_tree().create_timer(0.05).timeout
 		var die = a.dmg_die
 		var rolls = a.dmg_rolls
 		var damage := 0
@@ -201,6 +209,7 @@ func process_attacks(player_mode: bool):
 		a.defender.name + " " + a.defender.data.name + 
 			" for " + str(damage) + " damage!" + str(a.from) + " to " +
 			str(a.to) + ". TURN " + str(get_turn()))
+		SoundMan.play_hit()
 	# now cleanup attacks
 	for a in att_to_prune:
 		attacks.pop_at(attacks.find(a))

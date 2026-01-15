@@ -24,6 +24,7 @@ func add_link(map_room_link: MapRoomLink):
 
 func remove_link(map_room_link: MapRoomLink):
 	if map_room_links.has(map_room_link):
+		lines[map_room_links.find(map_room_link)].clear_points()
 		map_room_links.pop_at(map_room_links.find(map_room_link))
 
 func set_disabled(e= true):

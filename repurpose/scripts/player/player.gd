@@ -155,7 +155,7 @@ func die():
 
 #### ANIMATION / VISUALS ####################################
 
-func play_anim_delayed(anim: String, delay: float):
+func play_anim(anim: String, delay= 0.0):
 	await get_tree().create_timer(delay).timeout
 	%AnimSprite.play(anim)
 

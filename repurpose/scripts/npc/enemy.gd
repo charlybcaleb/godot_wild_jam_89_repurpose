@@ -115,7 +115,6 @@ func do_move():
 		#tween_move(move_pts[-1])
 		# viz
 		$PathPreviz.points = []; 
-		play_move_anim(false)
 		pass
 	else:
 		var move = Move.new(
@@ -165,11 +164,9 @@ func recalc_path():
 	$PathPreviz.points = move_pts
 	target_cell = tpos
 
-func play_move_anim(m: bool):
-	if m:
-		%AnimSprite.play("walk")
-	else:
-		%AnimSprite.play("default")
+func play_anim(anim: String, delay= 0.0):
+	await get_tree().create_timer(delay).timeout
+	%AnimSprite.play(anim)
 
 func set_facing_vis(dir: Vector2):
 	if dir.y == 0.0:

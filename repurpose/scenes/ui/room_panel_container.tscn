@@ -9,6 +9,7 @@ offset_left = 32.0
 offset_top = 148.0
 offset_right = 96.0
 offset_bottom = 212.0
+mouse_filter = 2
 script = ExtResource("1_pms05")
 lines = [NodePath("PathPreviz"), NodePath("PathPreviz2"), NodePath("PathPreviz3")]
 debug_label = NodePath("Label")
