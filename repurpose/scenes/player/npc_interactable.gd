@@ -29,6 +29,7 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 			GameMan.click_consumed = true
 			if valid:
 				send_soul_to_domain(the_damned_waiting_for_redemption)
+				is_corpse = false
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 			GameMan.click_consumed = false
 

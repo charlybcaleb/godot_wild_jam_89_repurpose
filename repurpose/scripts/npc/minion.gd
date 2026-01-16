@@ -31,7 +31,7 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	if _data:
 		data = _data
 	hp = data.hp
-	max_hp = 6
+	max_hp = data.hp
 
 # FIXME: should go by path length, not global pos distance
 # the minion version of this prioritizes enemies closest to player

@@ -24,8 +24,9 @@ position = Vector2(280, 136)
 
 [node name="UI" parent="." node_paths=PackedStringArray("map_rooms") instance=ExtResource("1_j0xxo")]
 unique_name_in_owner = true
-map_rooms = [NodePath("Map/RoomPanelContainer"), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+map_rooms = []
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_mjl0v")
 volume_db = -4.913
+autoplay = true
