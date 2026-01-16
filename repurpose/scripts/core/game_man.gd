@@ -21,6 +21,7 @@ var enemies: Array[Node2D]
 var player: Node2D
 var minions: Array[Node2D]
 var souls: Array[Node2D]
+var corpses: Array[Node2D]
 # queues
 var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
@@ -99,10 +100,10 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 	current_room.hide()
 	hide_all_enemies()
 	hide_all_minions()
-	# send all minions to domain (kill them all)
+	# cleanup current scene
 	kill_all_minions()
-	# kill all enemies
-	#kill_all_enemies()
+	cleanup_corpses()
+	
 	####### SEQUENCE
 	await get_tree().process_frame
 	if ui: ui.should_show_d_popup = false
@@ -152,6 +153,20 @@ func hide_all_enemies():
 func show_all_enemies():
 	for e in enemies:
 		e.show()
+func cleanup_corpses():
+	for c in corpses:
+		c.queue_free()
+	corpses.clear()
+func remove_npc(npc: Node2D):
+	if npc.is_in_group("enemy"):
+		var c_to_prune: Array[Node2D]
+		for c in corpses:
+			if c == npc:
+				c_to_prune.append(c)
+		for c in c_to_prune:
+			corpses.pop_at(corpses.find(c))
+	npc.queue_free()
+
 
 func get_next_room(room_type= RoomType.NORMAL):
 	var sum:= 0.0
@@ -564,9 +579,11 @@ func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	return Vector2i(999,999)
 
 func register_npc_death(npc: Node2D):
+	if npc == null: print("GM.reg_npc_death: tried to register but npc is null"); return
 	SoundMan.play_death(npc.data.name)
 	await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
 	if npc.is_in_group("enemy"):
+		corpses.append(npc)
 		enemies.pop_at(enemies.find(npc))
 		enemies_slain += 1
 		print("enemy slain: " + npc.data.name)
@@ -605,7 +622,6 @@ func register_dun(d: Node2D):
 	dun_registered = true
 	dun = d
 	setup()
-	
 
 func SetupCam(cam: Node2D):
 	camera = cam

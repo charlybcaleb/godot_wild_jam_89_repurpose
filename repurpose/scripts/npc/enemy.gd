@@ -65,24 +65,35 @@ func tick(_delta: float) -> void:
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
 		if tpos != tpos+Vector2i.UP: # FIXME: lol i turned this check off. cuz it was making enemies not move.!
-			move_pts = grid.get_point_path(current_cell, tpos)
+			move_pts = grid.get_point_path(current_cell, tpos, true)
 			var path_blocked = false
 			for mp in move_pts:
 				var mp_coord = (GameMan.pos_to_cell(mp))
 				print("ENEMY PATH PT: " + str(mp_coord))
 				# check if any points aside from start and end are blocked
 				if move_pts.find(mp) != move_pts.size()-1 and \
-				move_pts.find(mp) != 0:
+				move_pts.find(mp) != 0 and \
+				current_cell.distance_to(Vector2i(mp_coord)) > 1 and \
+				tpos != Vector2i(mp_coord):
 					if GameMan.is_tile_blocked(mp_coord, false):
-						path_blocked = true
-						print("ENEMY PATH BLOCKED: " + str(mp_coord))
+						if 1==1:
+							path_blocked = true
+						else:
+							var oldmp = mp
+							mp = GameMan.cell_to_pos( \
+							GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(mp_coord)))
+							print("CHANGED MP FROM " + str(oldmp) + "TO " + str(mp))
+						#print("ENEMY PATH BLOCKED: " + str(mp_coord))
 			# offset move_pts path by half the size of our tile size to get center
 			# this must be done before movement. FIXME: this sucks
 			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			# if path blocked, wander 1 tile instead and retry
 			if path_blocked:
+				var dir_to_target = Vector2(tpos - current_cell).normalized()
+				var one_tile_closer = current_cell + Vector2i(dir_to_target)
+				var two_tiles_closer = current_cell + Vector2i(dir_to_target*2)
 				move_pts = grid.get_point_path(current_cell, \
-				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(current_cell)))
+				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(two_tiles_closer)))
 				move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			target_cell = tpos
 			do_move()

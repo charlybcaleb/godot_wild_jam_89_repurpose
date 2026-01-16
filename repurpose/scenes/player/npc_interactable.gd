@@ -47,4 +47,4 @@ func send_soul_to_domain(_npc: Node2D):
 	ui.show_enemy_popup(npc, false)
 	# delete corpse after delay to prevent instant summon lol FIXME: terrible.
 	await get_tree().create_timer(0.300).timeout
-	npc.queue_free()
+	GameMan.remove_npc(npc)
