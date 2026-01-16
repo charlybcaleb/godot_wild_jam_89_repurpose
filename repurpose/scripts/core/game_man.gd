@@ -497,6 +497,17 @@ func get_node_at_coord(coord: Vector2i) -> Node2D:
 		return player
 	return null
 
+func is_tile_in_room(coord: Vector2i) -> bool:
+	for c in dun.room_floor_coords:
+		print("FUCK THIS COORD: " + str(c))
+		if c == coord:
+			return true
+	return false
+func is_tile_in_domain(coord: Vector2i) -> bool:
+	if dun.domain_floor_coords.has(coord):
+		return true
+	else: return false
+
 func is_tile_occupied(coord: Vector2i, count_corpses = true) -> bool:
 	var occupied = false
 	var node_at_coord = get_node_at_coord(coord)

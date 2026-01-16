@@ -29,4 +29,3 @@ map_rooms = []
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_mjl0v")
 volume_db = -4.913
-autoplay = true

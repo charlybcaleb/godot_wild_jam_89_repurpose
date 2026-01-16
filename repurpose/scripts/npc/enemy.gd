@@ -35,8 +35,11 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	hp = data.hp
 	max_hp = data.hp
 	
-	if data.sprite_frames_path:
-		$AnimSprite.sprite_frames = load(data.sprite_frames_path)
+	var sprite_frames: SpriteFrames
+	sprite_frames = load(data.get_frames_path())
+	if sprite_frames:
+		$AnimSprite.sprite_frames = sprite_frames
+	else: print("SETUP ERROR: sprite frames not found for " + name)
 
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:

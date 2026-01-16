@@ -35,8 +35,10 @@ func _process(_delta: float) -> void:
 				return
 		if !GameMan.souls.is_empty():
 			var soul = GameMan.souls[0]
-			var click_coord = GameMan.pos_to_cell(get_global_mouse_position())
+			var click_coord = Vector2i(GameMan.pos_to_cell(get_global_mouse_position()))
 			var valid = true
+			if !GameMan.is_tile_in_room(click_coord):
+				valid = false
 			if GameMan.click_consumed:
 				valid = false
 			print("SUMMON CLICK AT COORD " + str(click_coord))

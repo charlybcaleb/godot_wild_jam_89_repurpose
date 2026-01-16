@@ -3,10 +3,11 @@ extends Node2D
 @export var map: TileMapLayer
 @export var soulmaps: Array[TileMapLayer]
 var astar_grid: AStarGrid2D
+var room_floor_coords: Array[Vector2i]
+var domain_floor_coords: Array[Vector2i]
 
 func _ready():
 	GameMan.register_dun(self)
-
 
 func setup():
 	astar_grid = AStarGrid2D.new()
@@ -20,6 +21,7 @@ func setup():
 	astar_grid.update()
 
 func build_grid():
+	room_floor_coords.clear()
 	if astar_grid == null:
 		setup()
 	for id in map.get_used_cells():
@@ -30,6 +32,10 @@ func build_grid():
 			else:
 				# if empty space
 				astar_grid.set_point_solid(id, false)
+				room_floor_coords.append(id)
+				print("APPENDED " + str(id))
+	
+	domain_floor_coords.clear()
 	for sm in soulmaps:
 		for id in sm.get_used_cells():
 			var data = sm.get_cell_tile_data(id)
@@ -38,6 +44,8 @@ func build_grid():
 					astar_grid.set_point_solid(id, true)
 				else:
 					astar_grid.set_point_solid(id, false)
+					domain_floor_coords.append(id)
+	
 	%UI/%GridDisplay.grid = astar_grid
 
 # called by GameMan when moving to new room

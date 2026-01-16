@@ -11,3 +11,15 @@ extends Resource
 @export var speed := 10
 #special
 @export var goblin_dance:= false
+
+func get_frames_path() -> String:
+	var directory = "res://assets/sprites/characters/"
+	var file_name = name.to_lower()
+	var suffix = "_frames.tres"
+	return directory + file_name + suffix
+
+func get_necrofied_frames_path() -> String:
+	var directory = "res://assets/sprites/characters/"
+	var file_name = name.to_lower()
+	var suffix = "_necro_frames.tres"
+	return directory + file_name + suffix

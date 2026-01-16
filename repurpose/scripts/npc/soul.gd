@@ -1,17 +1,8 @@
-extends CharacterBody2D
+extends BaseMinion
 
 @export var soul_data: SoulData
-var data: EnemyData
 var soul_state:= SoulState.IDLE
-var entity_props: EntityProperties
-
 @export var mouse_follow_speed:= 50.0
-var grid: AStarGrid2D
-var current_cell: Vector2i
-var cur_pt: int
-var target_cell: Vector2i
-var move_pts: Array
-var hp := 6
 
 enum SoulState { IDLE, CHANNEL, WORK, HELD }
 
@@ -21,11 +12,8 @@ func _ready():
 	set_physics_process(false)
 
 # called by Domain but should be called by GameMAn
-func setup(_grid: AStarGrid2D, d: EnemyData):
-	grid = _grid
-	current_cell = GameMan.pos_to_cell(global_position)
-	target_cell = current_cell
-	data = d
+func setup(_grid: AStarGrid2D, _data: EnemyData = null):
+	super.setup(_grid, _data)
 
 func _process(delta: float) -> void:
 	if soul_state == SoulState.HELD:

@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name BaseMinion
 
 ## if true, targets player unless has no path to player, then targets nearest min
 @export var assassin := false
@@ -33,6 +34,12 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 		data = _data
 	hp = data.hp
 	max_hp = data.hp
+	
+	var sprite_frames: SpriteFrames
+	sprite_frames = load(data.get_necrofied_frames_path())
+	if sprite_frames:
+		$AnimSprite.sprite_frames = sprite_frames
+	else: print("SETUP ERROR: sprite frames not found for " + name)
 
 func set_entity_props(ep: EntityProperties):
 	entity_props = ep
