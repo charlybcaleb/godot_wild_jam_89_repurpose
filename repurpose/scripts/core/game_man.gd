@@ -2,6 +2,7 @@ extends Node
 # system
 var dun: Node = null
 var camera: Node = null
+var ui: Control
 var player_registered = false
 var dun_registered = false
 # input
@@ -34,6 +35,11 @@ var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
 
+func _ready():
+	await get_tree().process_frame
+	ui = get_tree().get_first_node_in_group("ui")
+	if ui == null: print("GAMEMAN: UI NOT FOUND")
+
 # called in register_dun
 func setup() -> void:
 	while !player_registered or !dun_registered:
@@ -57,7 +63,7 @@ func load_all_rooms():
 				if file_name.get_extension() == "tres":
 					var full_path = path.path_join(file_name)
 					rd_loads.append(load(full_path))
-					print("added room to load")
+					print("GAMEMAN: added room to load with path " + full_path)
 			file_name = dir.get_next()
 	else:
 		print("COuldn't loAd tHe pAtH")
@@ -96,6 +102,10 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 	# kill all enemies
 	#kill_all_enemies()
 	####### SEQUENCE
+	await get_tree().process_frame
+	if ui: ui.should_show_d_popup = false
+	else: print("wtf no ui")
+	
 	tween_move(player, original_door_pos)
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	# get new room's left door position and tween player there
