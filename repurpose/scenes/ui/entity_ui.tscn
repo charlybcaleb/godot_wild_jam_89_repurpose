@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://ds6kpn7hko2da"]
+
+[ext_resource type="Script" uid="uid://bf0q4chcqgehb" path="res://scripts/ui/entity_ui.gd" id="1_ys6eq"]
+
+[sub_resource type="Theme" id="Theme_ol8rg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ys6eq"]
+bg_color = Color(0.6784314, 0.18431373, 0.27058825, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ol8rg"]
+bg_color = Color(0.3882353, 0.67058825, 0.24705882, 1)
+
+[node name="EntityUI" type="Node2D" node_paths=PackedStringArray("health_bar")]
+script = ExtResource("1_ys6eq")
+health_bar = NodePath("HealthProgressBar")
+
+[node name="HealthProgressBar" type="ProgressBar" parent="."]
+offset_left = -8.0
+offset_top = 6.0
+offset_right = 8.0
+offset_bottom = 8.0
+theme = SubResource("Theme_ol8rg")
+theme_override_styles/background = SubResource("StyleBoxFlat_ys6eq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ol8rg")
+value = 20.0
+show_percentage = false

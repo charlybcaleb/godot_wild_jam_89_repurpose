@@ -10,6 +10,7 @@ var click_consumed = false # FIXME: this shit is so cursed. it's a gamejam tho!
 # scenes
 var enemy_scene: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
+var entity_ui_scene: PackedScene = preload("res://scenes/ui/entity_ui.tscn")
 # rooms
 var room_datas: Array[RoomData]
 var error_room: RoomData = preload("res://assets/resources/rooms/room_error.tres")
@@ -176,7 +177,7 @@ func remove_npc(npc: Node2D):
 	npc.queue_free()
 
 
-func get_next_room(room_type= RoomType.NORMAL):
+func get_next_room(_room_type= RoomType.NORMAL):
 	var sum:= 0.0
 	for i in range(room_datas.size()):
 		sum += room_datas[i].spawn_weight
@@ -475,7 +476,6 @@ func _process(delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_spawn_moves()
 
-enum npc_type { ENEMY, MINION, }
 
 
 
@@ -619,20 +619,30 @@ func get_turn() -> int:
 
 ## INIT STUFF
 
+func spawn_entity_ui(entity: Node2D):
+	var e_ui_instance = entity_ui_scene.instantiate()
+	entity.add_child(e_ui_instance)
+	e_ui_instance.position = Vector2.ZERO
+	e_ui_instance.setup(entity)
+
 func register_player(p: Node2D):
 	player_registered = true
 	player = p
 	p.play_anim("default")
+	spawn_entity_ui(p)
 
 func register_enemy(e: Node2D):
 	e.setup(dun.astar_grid)
 	enemies.append(e)
 	e.play_anim("default")
+	spawn_entity_ui(e)
 
 func register_minion(m: Node2D):
 	m.setup(dun.astar_grid)
 	minions.append(m)
 	m.play_anim("default")
+	spawn_entity_ui(m)
+	
 
 func register_soul(s: Node2D):
 	souls.append(s)

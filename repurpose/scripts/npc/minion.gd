@@ -3,6 +3,7 @@ extends CharacterBody2D
 ## if true, targets player unless has no path to player, then targets nearest min
 @export var assassin := false
 @export var hp := 6
+@export var max_hp := 6
 @export var data: EnemyData
 var target: Node2D = null
 
@@ -13,6 +14,9 @@ var target_cell: Vector2i
 var move_pts: Array
 
 var facing_right: bool
+var entity_type = GlobalConstants.EntityType.MINION
+
+signal health_changed(new_hp, _max_hp)
 
 func _ready(): 
 	GameMan.register_minion(self)
@@ -27,6 +31,7 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	if _data:
 		data = _data
 	hp = data.hp
+	max_hp = 6
 
 # FIXME: should go by path length, not global pos distance
 # the minion version of this prioritizes enemies closest to player
@@ -134,6 +139,7 @@ func do_move():
 
 
 func take_damage(damage: float):
+	emit_signal("health_changed", hp-damage, max_hp)
 	if hp <= 0:
 		return
 	hp -= damage

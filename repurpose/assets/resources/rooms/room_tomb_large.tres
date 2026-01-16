@@ -8,7 +8,7 @@
 script = ExtResource("3_l34n6")
 name = "Giant Tomb"
 room_scene_path = "res://scenes/rooms/room_tomb_large.tscn"
-spawn_weight = 10
+spawn_weight = 50
 enemy_table = Dictionary[ExtResource("1_6sy8e"), float]({
 ExtResource("2_ynuen"): 10.0
 })

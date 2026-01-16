@@ -1,7 +1,9 @@
 extends CharacterBody2D
 
 @export var hp:= 9
+@export var max_hp:= 9
 @export var data: EnemyData
+var entity_type = GlobalConstants.EntityType.PLAYER
 
 # nav / movement
 var grid: AStarGrid2D
@@ -21,10 +23,13 @@ var queued_move: Vector2i
 # viz
 var facing_right: bool
 
+signal health_changed(new_hp, _max_hp)
+
 func _ready() -> void:
 	GameMan.register_player(self)
 	add_to_group("player")
 	hp = data.hp
+	max_hp = data.hp
 	await get_tree().create_timer(0.2).timeout
 	block_inputs=false
 
@@ -32,6 +37,7 @@ func setup(_grid: AStarGrid2D):
 	grid = _grid
 	current_cell = GameMan.pos_to_cell(global_position)
 	target_cell = current_cell
+	
 
 func _physics_process(delta: float) -> void:
 	time_since_last_move += delta
@@ -160,6 +166,7 @@ func tween_move(to: Vector2):
 		.set_ease(Tween.EASE_IN)
 
 func take_damage(damage: float):
+	emit_signal("health_changed", hp-damage, max_hp)
 	damage = int(round(damage))
 	$HitFlashAnim.play("hit")
 	hp -= damage
