@@ -69,7 +69,7 @@ func tick(_delta: float) -> void:
 			var path_blocked = false
 			for mp in move_pts:
 				var mp_coord = (GameMan.pos_to_cell(mp))
-				print("ENEMY PATH PT: " + str(mp_coord))
+				#print("ENEMY PATH PT: " + str(mp_coord))
 				# check if any points aside from start and end are blocked
 				if move_pts.find(mp) != move_pts.size()-1 and \
 				move_pts.find(mp) != 0 and \
@@ -90,7 +90,7 @@ func tick(_delta: float) -> void:
 			# if path blocked, wander 1 tile instead and retry
 			if path_blocked:
 				var dir_to_target = Vector2(tpos - current_cell).normalized()
-				var one_tile_closer = current_cell + Vector2i(dir_to_target)
+				#var one_tile_closer = current_cell + Vector2i(dir_to_target)
 				var two_tiles_closer = current_cell + Vector2i(dir_to_target*2)
 				move_pts = grid.get_point_path(current_cell, \
 				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(two_tiles_closer)))

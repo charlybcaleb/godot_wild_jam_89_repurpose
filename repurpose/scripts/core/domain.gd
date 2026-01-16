@@ -1,11 +1,11 @@
 extends Node2D
 
 var spawn_moves: Array[Move]
-var domain_center:= Vector2i(19,18)
+var domain_center:= Vector2i(19,19)
 var soul_scene: PackedScene = preload("res://scenes/player/soul.tscn")
 var npc_at_mouse: Node2D
 
-# domain spans from x 0 to 39 and y 15 to 21
+# domain spans from x 0 to 39 and y 16 to 21
 
 func new_soul(corpse: Node2D):
 	var soul = soul_scene.instantiate()
@@ -62,7 +62,7 @@ func mouse_over_npc(npc: Node2D, clear= false):
 	if clear and npc == npc_at_mouse:
 		await get_tree().create_timer(0.250).timeout
 		npc_at_mouse = null
-		print("no mo npc!!!!!!!")
+		#print("no mo npc!!!!!!!")
 
 #func _input(event: InputEvent) -> void:
 	## if left click, summon_at pos

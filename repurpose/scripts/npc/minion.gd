@@ -52,7 +52,7 @@ func tick(_delta: float) -> void:
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout
-	if get_target() == null: print("MINI FOUND NO ENEMY!!!"); return
+	if get_target() == null: return
 	set_target(get_target())
 	#if target == null or target.hp <= 0:
 		#if get_target() == null: return
@@ -78,8 +78,11 @@ func tick(_delta: float) -> void:
 			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			# if path blocked, wander 1 tile instead and retry
 			if path_blocked:
+				var dir_to_target = Vector2(tpos - current_cell).normalized()
+				#var one_tile_closer = current_cell + Vector2i(dir_to_target)
+				var two_tiles_closer = current_cell + Vector2i(dir_to_target*2)
 				move_pts = grid.get_point_path(current_cell, \
-				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(current_cell)))
+				GameMan.get_free_tile_near(GameMan.get_random_neighbor_tile(two_tiles_closer)))
 				move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
 			target_cell = tpos
 			do_move()

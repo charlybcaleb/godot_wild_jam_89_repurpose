@@ -14,8 +14,8 @@ var d_popup_offset:= Vector2(6,-72)
 @export var map_rooms: Array[Node] # 17 rooms total
 
 
-
-#func link_map_rooms_in_column(col_start_index)
+func set_health_bar(npc: Node2D):
+	 
 
 func _ready() -> void:
 	add_to_group("ui")
@@ -60,6 +60,8 @@ func show_door_popup(door: Node2D, e= true):
 			# between two npcs quickly.
 			return
 		should_show_d_popup = false
+
+
 
 ############# DEPRECATED
 

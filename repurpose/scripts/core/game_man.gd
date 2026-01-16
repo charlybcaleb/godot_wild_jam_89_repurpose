@@ -12,10 +12,17 @@ var enemy_scene: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 # rooms
 var room_datas: Array[RoomData]
-@export var error_room: RoomData
+var error_room: RoomData = preload("res://assets/resources/rooms/room_error.tres")
 var current_room: Node2D
 var incoming_room: Node2D
 var doors: Array[Node2D]
+# domain
+var domain_top_left:= Vector2i(17,16)
+var domain_bottom_right:= Vector2i(23,21)
+var domain_tiles: Array[Vector2i]
+var max_domain_top_left:= Vector2i(17,16)
+var max_domain_bottom_right:= Vector2i(23,21)
+var max_domain_tiles: Array[Vector2i]
 # entities
 var enemies: Array[Node2D]
 var player: Node2D
@@ -130,8 +137,9 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 	player.block_inputs = false
 	# lock all doors until player slays all enemies!
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
-	for d in doors:
-		d.close_and_lock()
+	if current_room.room_data.min_enemies > 0:
+		for d in doors:
+			d.close_and_lock()
 
 func room_cleared():
 	for d in doors:
@@ -410,7 +418,8 @@ func queue_attack(attack: Attack):
 		valid = false; aq_log += "att expired, "
 	if valid: attacks.append(attack)
 	else:
-		print("QUEUE_ATTACK: failed because " + aq_log)
+		#print("QUEUE_ATTACK: failed because " + aq_log)
+		pass
 
 func process_corpses():
 	for e in enemies:

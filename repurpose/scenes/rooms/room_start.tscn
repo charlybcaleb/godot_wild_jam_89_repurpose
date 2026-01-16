@@ -36,3 +36,25 @@ position = Vector2(360, 168)
 
 [node name="SpawnPoint3" parent="." instance=ExtResource("5_r2mul")]
 position = Vector2(328, 168)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 56.0
+offset_top = 32.0
+offset_right = 468.0
+offset_bottom = 61.0
+theme_override_colors/font_color = Color(0.705981, 0.69679815, 0.89298415, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "left click on a corpse to take its soul into your domain. 
+there, they will do your bidding..."
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 280.0
+offset_top = 72.0
+offset_right = 608.0
+offset_bottom = 89.0
+theme_override_colors/font_color = Color(0.9358971, 0.59896016, 0.7847918, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "left click in the dungeon to summon your minion...
+or, left click in your domain to assign a soul to work..."

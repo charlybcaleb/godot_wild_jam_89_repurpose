@@ -37,7 +37,7 @@ func _physics_process(delta: float) -> void:
 	time_since_last_move += delta
 	if queued_move != Vector2i.ZERO and time_since_last_move >= move_cooldown:
 		try_move(queued_move, true)
-		print("DID QUEUED MOVE!!!")
+		#print("DID QUEUED MOVE!!!")
 
 enum InputDir { LEFT, RIGHT, UP, DOWN, NONE, }
 

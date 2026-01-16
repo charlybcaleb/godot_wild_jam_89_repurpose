@@ -6,6 +6,7 @@ var is_locked:= true
 var is_open = false
 
 func setup(rd: RoomData):
+	if to_room_data != null: return
 	to_room_data = rd
 
 func player_knock_door():
