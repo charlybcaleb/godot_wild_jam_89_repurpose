@@ -75,6 +75,8 @@ func _input(event: InputEvent):
 		if !door.is_open:
 			door.player_knock_door()
 		else:
+			if door.to_room_data == null: # FIXME: Bandaid fix.
+				door.to_room_data = GameMan.get_next_room()
 			GameMan.move_to_room(door.to_room_data, door)
 		pass
 	# check if occupied. if occ by enemy, queue attack. if occ by mini, swap.

@@ -97,6 +97,8 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 	
 	spawn_new_room(rd)
 	current_room.hide()
+	hide_all_enemies()
+	hide_all_minions()
 	# send all minions to domain (kill them all)
 	kill_all_minions()
 	# kill all enemies
@@ -115,6 +117,8 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	# show room
 	current_room.show()
+	show_all_enemies()
+	show_all_minions()
 	# tween move player one cell to the right
 	tween_move(player, target_move_pos+Vector2(16,0))
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -136,9 +140,18 @@ func room_cleared():
 func kill_all_minions():
 	for m in minions:
 		m.die()
-func kill_all_enemies():
+func hide_all_minions():
+	for m in minions:
+		m.hide()
+func show_all_minions():
+	for m in minions:
+		m.show()
+func hide_all_enemies():
 	for e in enemies:
-		e.die()
+		e.hide()
+func show_all_enemies():
+	for e in enemies:
+		e.show()
 
 func get_next_room(room_type= RoomType.NORMAL):
 	var sum:= 0.0
