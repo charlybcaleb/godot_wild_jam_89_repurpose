@@ -178,19 +178,30 @@ func remove_npc(npc: Node2D):
 
 func get_next_room(room_type= RoomType.NORMAL):
 	var sum:= 0.0
-	for rd in room_datas:
-		var weight = rd.spawn_weight
-		sum += weight
+	for i in range(room_datas.size()):
+		sum += room_datas[i].spawn_weight
 	var r = randf_range(0.0, sum)
-	var chosen_rd: RoomData
-	for rd in room_datas:
-		var weight = rd.spawn_weight
-		if r < weight:
-			chosen_rd = rd
-	if chosen_rd:
-		return chosen_rd
-	else:
-		return error_room
+	for i in range(room_datas.size()):
+		if r < room_datas[i].spawn_weight:
+			return room_datas[i]
+		r -= room_datas[i].spawn_weight
+	print("failed to weight choice room, returning error room.")
+	return error_room
+	
+	#var sum:= 0.0
+	#for rd in room_datas:
+		#var weight = rd.spawn_weight
+		#sum += weight
+	#var r = randf_range(0.0, sum)
+	#var chosen_rd: RoomData
+	#for rd in room_datas:
+		#var weight = rd.spawn_weight
+		#if r < weight:
+			#chosen_rd = rd
+	#if chosen_rd:
+		#return chosen_rd
+	#else:
+		#return error_room
 
 
 enum RoomType { NORMAL, BOSS, REST }

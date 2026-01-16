@@ -23,4 +23,7 @@ func get_enemy_weighted_random() -> EnemyData:
 		var weight = enemy_table[key]
 		if r < weight:
 			chosen_enemy = key
-	return chosen_enemy
+			return chosen_enemy
+		r -= weight
+	print("room_data: failed to weight choice enemy, returning pelfen")
+	return null

@@ -14,8 +14,8 @@ var d_popup_offset:= Vector2(6,-72)
 @export var map_rooms: Array[Node] # 17 rooms total
 
 
-func set_health_bar(npc: Node2D):
-	 
+#func set_health_bar(npc: Node2D):
+	 #
 
 func _ready() -> void:
 	add_to_group("ui")
