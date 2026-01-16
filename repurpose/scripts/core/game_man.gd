@@ -11,6 +11,7 @@ var enemy_scene: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 # rooms
 var room_datas: Array[RoomData]
+@export var error_room: RoomData
 var current_room: Node2D
 var incoming_room: Node2D
 var doors: Array[Node2D]
@@ -76,10 +77,77 @@ func spawn_start_room():
 	dun.add_child(room_instance)
 	register_room(room_instance)
 
-func spawn_new_room():
-	# don't forget to clear doors!
-	doors.clear()
+func spawn_new_room(rd: RoomData):
+	var room_scene = load(rd.room_scene_path)
+	var room_instance = room_scene.instantiate()
+	dun.add_child(room_instance)
+	register_room(room_instance)
+
 	pass
+
+func move_to_room(rd: RoomData, from_door: Node2D):
+	player.block_inputs = true
+	var original_door_pos = (from_door.global_position)
+	
+	spawn_new_room(rd)
+	current_room.hide()
+	# send all minions to domain (kill them all)
+	kill_all_minions()
+	# kill all enemies
+	#kill_all_enemies()
+	####### SEQUENCE
+	tween_move(player, original_door_pos)
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	# get new room's left door position and tween player there
+	print(str(pos_to_cell(current_room.left_door.global_position)))
+	var target_move_pos = (current_room.left_door.global_position)
+	tween_move(player, target_move_pos)
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	# show room
+	current_room.show()
+	# tween move player one cell to the right
+	tween_move(player, target_move_pos+Vector2(16,0))
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	# close left door, then lock it
+	current_room.left_door.close_and_lock()
+	####### END SEQUENCE
+	tele_to_coord(player, pos_to_cell(target_move_pos+Vector2(16,0)), false, true)
+	player.block_inputs = false
+	# lock all doors until player slays all enemies!
+	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
+	for d in doors:
+		d.close_and_lock()
+
+func room_cleared():
+	for d in doors:
+		if d == current_room.left_door: continue
+		d.unlock()
+
+func kill_all_minions():
+	for m in minions:
+		m.die()
+func kill_all_enemies():
+	for e in enemies:
+		e.die()
+
+func get_next_room(room_type= RoomType.NORMAL):
+	var sum:= 0.0
+	for rd in room_datas:
+		var weight = rd.spawn_weight
+		sum += weight
+	var r = randf_range(0.0, sum)
+	var chosen_rd: RoomData
+	for rd in room_datas:
+		var weight = rd.spawn_weight
+		if r < weight:
+			chosen_rd = rd
+	if chosen_rd:
+		return chosen_rd
+	else:
+		return error_room
+
+
+enum RoomType { NORMAL, BOSS, REST }
 
 func get_door_at_coord(coord: Vector2i):
 	for d in doors:
@@ -90,14 +158,16 @@ func get_door_at_coord(coord: Vector2i):
 func register_room(room: Node2D):
 	if room == null: print("GM: register room errored, room null")
 	if room.room_tml == null: print("GM: register room errored, room.room_TML null")
+	doors.clear()
 	dun.new_map(room.room_tml)
 	current_room = room
 	current_room.setup()
 
-func register_door(door: Node2D):
+func register_door(door: Node2D, perma_locked= false):
 	if !doors.has(door):
 		doors.append(door)
-	door.setup(current_room.room_data)
+	door.is_locked = perma_locked
+	door.setup(get_next_room())
 
 func pos_to_cell(pos: Vector2):
 	# FIXME: this must account for tweening. should prob round
@@ -477,6 +547,8 @@ func register_npc_death(npc: Node2D):
 		enemies.pop_at(enemies.find(npc))
 		enemies_slain += 1
 		print("enemy slain: " + npc.data.name)
+		if enemies.is_empty():
+			room_cleared()
 	elif npc.is_in_group("minion"):
 		minions.pop_at(minions.find(npc))
 		minions_slain += 1

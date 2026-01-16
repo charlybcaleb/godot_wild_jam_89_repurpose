@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var room_data: RoomData
+var next_room_data: RoomData
 @export var spawn_points: Array[Node2D]
 #@export var room_type:= RoomType.DUNGEON
 @export var room_tml: TileMapLayer
@@ -14,7 +15,7 @@ extends Node2D
 # called by GameMan
 func setup():
 	spawn_enemies()
-	if left_door: GameMan.register_door(left_door)
+	if left_door: GameMan.register_door(left_door, true) # need to make this locked
 	if up_door: GameMan.register_door(up_door)
 	if right_door: GameMan.register_door(right_door)
 	if down_door: GameMan.register_door(down_door)

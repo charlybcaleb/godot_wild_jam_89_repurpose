@@ -31,17 +31,17 @@ animations = [{
 "texture": SubResource("AtlasTexture_htbgl")
 }],
 "loop": true,
-"name": &"locked",
+"name": &"lock",
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 2.0,
+"duration": 0.2,
 "texture": SubResource("AtlasTexture_ewl7v")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_de05j")
 }],
-"loop": true,
+"loop": false,
 "name": &"open",
 "speed": 5.0
 }]

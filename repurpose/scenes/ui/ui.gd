@@ -30,6 +30,10 @@ func _process(_delta: float) -> void:
 		enemy_popup.show()
 	if !should_show_e_popup and enemy_popup.visible:
 		enemy_popup.hide()
+	if should_show_d_popup and !door_popup.visible:
+		door_popup.show()
+	if !should_show_d_popup and door_popup.visible:
+		door_popup.hide()
 
 func show_enemy_popup(npc: Node2D, e= true):
 	if e:
@@ -49,7 +53,7 @@ func show_door_popup(door: Node2D, e= true):
 		door_popup_target = door
 		door_popup.global_position = door.global_position + d_popup_offset
 		should_show_d_popup = true
-		door_popup.update(door.room_data)
+		door_popup.update(door.to_room_data)
 	else:
 		if door_popup_target != door:
 			# without this, would end up turning off after enter when moving 

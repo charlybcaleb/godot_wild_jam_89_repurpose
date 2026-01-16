@@ -9,6 +9,7 @@ var current_cell: Vector2i
 var cur_pt: int
 var target_cell: Vector2i
 var move_pts: Array
+var block_inputs = true
 # move / attack target
 var target: Vector2 = Vector2.ZERO
 
@@ -24,6 +25,8 @@ func _ready() -> void:
 	GameMan.register_player(self)
 	add_to_group("player")
 	hp = data.hp
+	await get_tree().create_timer(0.2).timeout
+	block_inputs=false
 
 func setup(_grid: AStarGrid2D):
 	grid = _grid
@@ -40,6 +43,8 @@ enum InputDir { LEFT, RIGHT, UP, DOWN, NONE, }
 
 func _input(event: InputEvent):
 	if event is InputEventMouseMotion: return
+	
+	if block_inputs: return
 	
 	var input_dir := InputDir.NONE
 	var target_coord = current_cell
@@ -67,7 +72,10 @@ func _input(event: InputEvent):
 	var door = GameMan.get_door_at_coord(target_coord)
 	if door:
 		print("DOOR STUCK!@!!!!!!")
-		door.player_knock_door()
+		if !door.is_open:
+			door.player_knock_door()
+		else:
+			GameMan.move_to_room(door.to_room_data, door)
 		pass
 	# check if occupied. if occ by enemy, queue attack. if occ by mini, swap.
 	# if occ by else, skip input.

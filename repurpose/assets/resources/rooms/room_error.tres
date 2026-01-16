@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=4 format=3 uid="uid://baiiagwu5xe3l"]
+
+[ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_yd88q"]
+[ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="2_b203r"]
+[ext_resource type="Script" uid="uid://jtl4bsq8gie4" path="res://scripts/dungeon/room_data.gd" id="3_wuyw6"]
+
+[resource]
+script = ExtResource("3_wuyw6")
+name = "Error"
+room_scene_path = "res://scenes/rooms/room_start.tscn"
+spawn_weight = 0
+enemy_table = Dictionary[ExtResource("1_yd88q"), float]({
+ExtResource("2_b203r"): 10.0
+})
+min_enemies = 1
+max_enemies = 2
+metadata/_custom_type_script = "uid://jtl4bsq8gie4"
