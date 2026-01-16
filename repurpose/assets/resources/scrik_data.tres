@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://1y5he2oot7r4"]
+
+[ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_y6cq8"]
+
+[resource]
+script = ExtResource("1_y6cq8")
+name = "Scrik"
+sprite_frames_path = "res://assets/sprites/characters/scrik_frames.tres"
+hp = 11
+dmg_die = 3
+speed = 20
+goblin_dance = true
+metadata/_custom_type_script = "uid://c08irn7x3105s"

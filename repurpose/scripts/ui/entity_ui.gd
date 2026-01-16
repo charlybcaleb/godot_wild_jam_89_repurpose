@@ -18,13 +18,11 @@ func setup(e: Node2D) -> void:
 	entity.health_changed.connect(_on_entity_health_changed)
 	print ("e type: " + str(e.entity_type))
 	if e.entity_type == GlobalConstants.EntityType.MINION:
-		print("MINION!!!!!!!!!!!!!!!!")
 		var fill_sbox = health_bar.get_theme_stylebox("fill")
 		fill_sbox.bg_color = minion_fill_color
 		var bg_sbox = health_bar.get_theme_stylebox("background")
 		bg_sbox.bg_color = minion_bg_color
 	else:
-		print("!!!!!!!!NOT MINIONT!!!!!!!!!!!!!!!!")
 		var fill_sbox = health_bar.get_theme_stylebox("fill")
 		fill_sbox.bg_color = enemy_fill_color
 		var bg_sbox = health_bar.get_theme_stylebox("background")

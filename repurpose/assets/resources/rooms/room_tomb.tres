@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="RoomData" load_steps=4 format=3 uid="uid://cgalqjkfw2dh2"]
+[gd_resource type="Resource" script_class="RoomData" load_steps=5 format=3 uid="uid://cgalqjkfw2dh2"]
 
 [ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_4f3ij"]
 [ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="2_a6wj7"]
+[ext_resource type="Resource" uid="uid://1y5he2oot7r4" path="res://assets/resources/scrik_data.tres" id="3_a6wj7"]
 [ext_resource type="Script" uid="uid://jtl4bsq8gie4" path="res://scripts/dungeon/room_data.gd" id="3_byd76"]
 
 [resource]
@@ -10,7 +11,8 @@ name = "Abandoned Tomb"
 room_scene_path = "res://scenes/rooms/room_tomb.tscn"
 spawn_weight = 100
 enemy_table = Dictionary[ExtResource("1_4f3ij"), float]({
-ExtResource("2_a6wj7"): 10.0
+ExtResource("2_a6wj7"): 10.0,
+ExtResource("3_a6wj7"): 3.0
 })
 min_enemies = 1
 max_enemies = 3

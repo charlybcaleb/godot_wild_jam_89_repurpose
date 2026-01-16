@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var max_hp:= 9
 @export var data: EnemyData
 var entity_type = GlobalConstants.EntityType.PLAYER
+var entity_props: EntityProperties
 
 # nav / movement
 var grid: AStarGrid2D
@@ -91,14 +92,14 @@ func _input(event: InputEvent):
 	if occupant:
 		if occupant.is_in_group("enemy"):
 			print("--------PLAYER ATTACK QUEUEING from: " + str(current_cell) + " to " + str((occupant.current_cell)))
-			var att = Attack.new(self, occupant, data.dmgDie, data.dmgRolls, data.speed)
+			var att = Attack.new(self, occupant, entity_props.dmg_die, entity_props.dmg_rolls, entity_props.speed)
 			GameMan.queue_attack(att)
 			GameMan.player_acted()
 			return
 		elif occupant.is_in_group("minion"):
 			print("--------PLAYER MOVE SWAP QUEUEING from: " + str(current_cell) + " to " + str((occupant.current_cell)))
 			var move = Move.new(
-				self, current_cell, target_coord, data.speed)
+				self, current_cell, target_coord, entity_props.speed)
 			GameMan.queue_swap_move(move)
 		else:
 			return
@@ -148,7 +149,7 @@ func do_move():
 		#current_cell = GameMan.pos_to_cell(move_pts[cur_pt+1])
 		#cur_pt += 1
 		var move = Move.new(
-			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), data.speed)
+			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), entity_props.speed)
 		GameMan.queue_move(move)
 		# viz
 		play_move_anim(true)

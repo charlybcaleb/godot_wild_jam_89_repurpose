@@ -40,7 +40,7 @@ func show_enemy_popup(npc: Node2D, e= true):
 		enemy_popup_target = npc
 		enemy_popup.global_position = npc.global_position + e_popup_offset
 		should_show_e_popup = true
-		enemy_popup.update(npc.data)
+		enemy_popup.update(npc.entity_props)
 	else:
 		if enemy_popup_target != npc:
 			# without this, would end up turning off after enter when moving 

@@ -5,8 +5,9 @@ extends CharacterBody2D
 @export var hp := 6
 @export var max_hp := 6
 @export var data: EnemyData
-var target: Node2D = null
+var entity_props: EntityProperties
 
+var target: Node2D = null
 var grid: AStarGrid2D
 var current_cell: Vector2i
 var cur_pt: int
@@ -32,6 +33,10 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 		data = _data
 	hp = data.hp
 	max_hp = data.hp
+
+func set_entity_props(ep: EntityProperties):
+	entity_props = ep
+	emit_signal("health_changed", hp, entity_props.hp)
 
 # FIXME: should go by path length, not global pos distance
 # the minion version of this prioritizes enemies closest to player
@@ -94,7 +99,7 @@ func tick(_delta: float) -> void:
 			recalc_path()
 	## ACTIONS
 	if target != null:
-		var att = Attack.new(self, target, data.dmgDie, data.dmgRolls, data.speed)
+		var att = Attack.new(self, target, entity_props.dmg_die, entity_props.dmg_rolls, entity_props.speed)
 		GameMan.queue_attack(att)
 		print("MINI QUEUED ATTACK!!!")
 		return
@@ -115,7 +120,7 @@ func do_move():
 	
 	if cur_pt == move_pts.size() -1:
 		var move = Move.new(
-			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[-1]), data.speed)
+			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[-1]), entity_props.speed)
 		GameMan.queue_move(move)
 		# FIXME: do arrival logic
 		#current_cell = GameMan.pos_to_cell(global_position)
@@ -125,7 +130,7 @@ func do_move():
 		pass
 	else:
 		var move = Move.new(
-			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), data.speed)
+			self, GameMan.pos_to_cell(global_position), GameMan.pos_to_cell(move_pts[cur_pt+1]), entity_props.speed)
 		GameMan.queue_move(move)
 		#print(name + " queued move!")
 		# can we move here?

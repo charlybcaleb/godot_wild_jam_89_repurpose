@@ -1,0 +1,60 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://cpovmj501u8im"]
+
+[ext_resource type="Texture2D" uid="uid://dhplyur7m1cif" path="res://assets/sprites/characters/Scrik-Sheet.png" id="1_u8ntd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vxtbx"]
+atlas = ExtResource("1_u8ntd")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4n5vo"]
+atlas = ExtResource("1_u8ntd")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55fl6"]
+atlas = ExtResource("1_u8ntd")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkfin"]
+atlas = ExtResource("1_u8ntd")
+region = Rect2(64, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vxtbx")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4n5vo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_55fl6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qkfin")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4n5vo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_55fl6")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]

@@ -625,27 +625,35 @@ func spawn_entity_ui(entity: Node2D):
 	e_ui_instance.position = Vector2.ZERO
 	e_ui_instance.setup(entity)
 
+func setup_entity_props(entity: Node2D):
+	var ep = EntityProperties.new(entity.data)
+	entity.entity_props = ep
+
 func register_player(p: Node2D):
 	player_registered = true
 	player = p
+	setup_entity_props(p)
 	p.play_anim("default")
 	spawn_entity_ui(p)
 
 func register_enemy(e: Node2D):
 	e.setup(dun.astar_grid)
 	enemies.append(e)
+	setup_entity_props(e)
 	e.play_anim("default")
 	spawn_entity_ui(e)
 
 func register_minion(m: Node2D):
 	m.setup(dun.astar_grid)
 	minions.append(m)
+	if m.entity_props == null: setup_entity_props(m)
 	m.play_anim("default")
 	spawn_entity_ui(m)
 	
 
 func register_soul(s: Node2D):
 	souls.append(s)
+	if s.entity_props == null: setup_entity_props(s)
 	#s.play_anim("default")
 
 func register_dun(d: Node2D):

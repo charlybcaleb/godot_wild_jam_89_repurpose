@@ -1,0 +1,52 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://cj6qfiv748y35"]
+
+[ext_resource type="Texture2D" uid="uid://bieiq26o653m8" path="res://assets/sprites/characters/pelfen_necro_sheet.png" id="1_2s7dq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eg7rb"]
+atlas = ExtResource("1_2s7dq")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45041"]
+atlas = ExtResource("1_2s7dq")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhip4"]
+atlas = ExtResource("1_2s7dq")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4xk8"]
+atlas = ExtResource("1_2s7dq")
+region = Rect2(48, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eg7rb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45041")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45041")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uhip4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4xk8")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 15.0
+}]
