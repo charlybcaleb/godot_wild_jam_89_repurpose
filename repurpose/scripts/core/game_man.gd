@@ -741,7 +741,7 @@ func register_npc_death(npc: Node2D, silent= false):
 	if npc == null: print("GM.reg_npc_death: tried to register but npc is null"); return
 	if !silent:
 		SoundMan.play_death(npc.data.name)
-	#await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
+	await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
 	if npc.is_in_group("enemy"):
 		corpses.append(npc)
 		enemies.pop_at(enemies.find(npc))
