@@ -48,7 +48,7 @@ var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
 # player resources
-var summon_charges := 0
+var summon_charges := 2
 var max_summon_charges := 1
 
 signal max_summon_charges_changed(amt)
@@ -106,17 +106,19 @@ func process_effects():
 		# for persistent effects, we mark processed so we can stop adding its effect 
 		# after added once, but still keep it in the stack for later removal
 		if !e.processed:
-			fe.summon_charges += e.summon_charges
-			#print("ADDED SUMMON CHARGES " + str(e.summon_charges))
-			fe.max_summon_charges += e.max_summon_charges
-			fe.dmg_die_flat += e.dmg_die_flat
-			fe.dmg_rolls_flat += e.dmg_rolls_flat
-			if e.dmg_die_mlp:
-				fe.dmg_die_flat = fe.dmg_die_flat * e.dmg_die_mlp
-				fe.dmg_die_mlp += e.dmg_die_mlp # just for debug/viz
-			fe.hp_flat += e.hp_flat
-			fe.max_hp += e.max_hp
+			#fe.summon_charges += e.summon_charges
+			##print("ADDED SUMMON CHARGES " + str(e.summon_charges))
+			#fe.max_summon_charges += e.max_summon_charges
+			#fe.dmg_die_flat += e.dmg_die_flat
+			#fe.dmg_rolls_flat += e.dmg_rolls_flat
+			#if e.dmg_die_mlp:
+				#fe.dmg_die_flat = fe.dmg_die_flat * e.dmg_die_mlp
+				#fe.dmg_die_mlp += e.dmg_die_mlp # just for debug/viz
+			#fe.hp_flat += e.hp_flat
+			#fe.max_hp += e.max_hp
+			update_summon_charges(e.summon_charges)
 			e.processed = true
+			e.entity.effect_processed()
 		# set tracking values
 		if e.consumable:
 			e.remaining_charges -= 1
@@ -126,10 +128,10 @@ func process_effects():
 	active_effect = fe
 	#print("_____FINAL EFFECT_____")
 	#print(str(fe.get_property_list()))
-	if fe.max_summon_charges > 0:
-		update_max_summon_charges(fe.max_summon_charges)
-	if fe.summon_charges > 0:
-		update_summon_charges(fe.summon_charges)
+	#if fe.max_summon_charges > 0:
+		#update_max_summon_charges(fe.max_summon_charges)
+	#if fe.summon_charges > 0:
+		#update_summon_charges(fe.summon_charges)
 
 func sort_by_order(a, b):
 	return a.order < b.order
@@ -241,6 +243,7 @@ func room_cleared():
 
 func kill_all_minions():
 	for m in minions:
+		print("KILLLED MINIONNNNNNNNNNNNNNN")
 		m.die(true)
 func kill_all_room_workables():
 	for w in workables:

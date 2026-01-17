@@ -28,6 +28,9 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	super.setup(_grid, _data)
 	entity_type = GlobalConstants.EntityType.WORKABLE
 
+func effect_processed():
+	pass
+
 func revive():
 	# so, we have to call this for non_workable workables.
 	# that's because we manage their die() differently.
@@ -53,12 +56,12 @@ func add_charges(amt: int):
 	emit_signal("health_changed", charges, max_charges)
 	$HitFlashAnim.play("hit")
 
-func take_damage(damage: float):
-	if !currently_workable:
-		emit_signal("health_changed", charges-damage, max_charges)
-		$HitFlashAnim.play("hit")
-	else:
-		super.take_damage(damage)
+#func take_damage(damage: float):
+	#if !currently_workable:
+		#emit_signal("health_changed", charges-damage, max_charges)
+		#$HitFlashAnim.play("hit")
+	#else:
+		#super.take_damage(damage)
 
 func remove_charges(amt: int):
 	charges -= amt
