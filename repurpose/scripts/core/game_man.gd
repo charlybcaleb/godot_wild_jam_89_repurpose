@@ -51,11 +51,15 @@ var minions_slain := 0
 var summon_charges := 0
 var max_summon_charges := 1
 
+signal max_summon_charges_changed(amt)
+signal summon_charges_changed(amt)
+
 func update_summon_charges(amt: int):
 	if summon_charges + amt <= max_summon_charges and \
-	summon_charges + amt > 0:
+	summon_charges + amt > -1:
 		summon_charges += amt
 		on_summon_charges_updated(summon_charges)
+		print("ADDED SUMMON CHARGE, CURRENT AMOUNT " + str(summon_charges))
 
 func update_max_summon_charges(amt: int):
 	if max_summon_charges + amt <= 20 and \
@@ -65,10 +69,12 @@ func update_max_summon_charges(amt: int):
 
 func on_summon_charges_updated(amt: int):
 	# emit signal
+	#summon_charges_changed.emit(amt)
 	emit_signal("summon_charges_changed", amt)
 	pass
 func on_max_summon_charges_updated(amt: int):
 	# emit signal
+	#max_summon_charges_changed.emit(amt)
 	emit_signal("max_summon_charges_changed", amt)
 	pass
 
@@ -97,23 +103,33 @@ func process_effects():
 			effect_stack.pop_at(effect_stack.find(e))
 	# add effects
 	for e in effect_stack:
+		# for persistent effects, we mark processed so we can stop adding its effect 
+		# after added once, but still keep it in the stack for later removal
+		if !e.processed:
+			fe.summon_charges += e.summon_charges
+			#print("ADDED SUMMON CHARGES " + str(e.summon_charges))
+			fe.max_summon_charges += e.max_summon_charges
+			fe.dmg_die_flat += e.dmg_die_flat
+			fe.dmg_rolls_flat += e.dmg_rolls_flat
+			if e.dmg_die_mlp:
+				fe.dmg_die_flat = fe.dmg_die_flat * e.dmg_die_mlp
+				fe.dmg_die_mlp += e.dmg_die_mlp # just for debug/viz
+			fe.hp_flat += e.hp_flat
+			fe.max_hp += e.max_hp
+			e.processed = true
+		# set tracking values
 		if e.consumable:
 			e.remaining_charges -= 1
 		if e.expires:
 			e.duration -= 1
-		fe.summon_charges += e.summon_charges
-		fe.max_summon_charges += e.max_summon_charges
-		fe.dmg_die_flat += e.dmg_die_flat
-		fe.dmg_rolls_flat += e.dmg_rolls_flat
-		if e.dmg_die_mlp:
-			fe.dmg_die_flat = fe.dmg_die_flat * e.dmg_die_mlp
-			fe.dmg_die_mlp += e.dmg_die_mlp # just for debug/viz
-		fe.hp_flat += e.hp_flat
-		fe.max_hp += e.max_hp
 	# set effect active
 	active_effect = fe
-	print("_____FINAL EFFECT_____")
-	print(str(fe.get_property_list()))
+	#print("_____FINAL EFFECT_____")
+	#print(str(fe.get_property_list()))
+	if fe.max_summon_charges > 0:
+		update_max_summon_charges(fe.max_summon_charges)
+	if fe.summon_charges > 0:
+		update_summon_charges(fe.summon_charges)
 
 func sort_by_order(a, b):
 	return a.order < b.order
@@ -334,6 +350,7 @@ func tick():
 	soul_tick()
 	workable_tick()
 	#await get_tree().create_timer(0.08).timeout
+	process_effects()
 	process_moves()
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	process_attacks(true) # process player ally attacks

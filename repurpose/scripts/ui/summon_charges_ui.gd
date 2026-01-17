@@ -1,0 +1,16 @@
+extends Control
+
+@export var charge_icons: Array[Sprite2D]
+
+func _ready() -> void:
+	#connect("summon_charges_changed", Callable(self, "_on_summon_charges_changed"))
+	GameMan.connect("summon_charges_changed", Callable(self, "_on_summon_charges_changed"))
+func _on_summon_charges_changed(amt: int):
+	show_x_charge_icons(amt)
+	
+func show_x_charge_icons(x: int):
+	for i in range(charge_icons.size()):
+		if i > x:
+			charge_icons[i].hide()
+		else:
+			charge_icons[i].show()

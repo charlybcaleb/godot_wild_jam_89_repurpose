@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=17 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://ddudijqovpa5e" path="res://scenes/ui/door_popup.gd" id="6_fr74f"]
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 [ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
+[ext_resource type="Script" uid="uid://1mg3oqy00ckj" path="res://scripts/ui/summon_charges_ui.gd" id="11_1v2lq"]
+[ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="11_y0qlw"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
 
@@ -581,5 +583,104 @@ offset_left = 560.0
 offset_top = 140.0
 offset_right = 624.0
 offset_bottom = 204.0
+
+[node name="SoulCharges" type="Control" parent="." node_paths=PackedStringArray("charge_icons")]
+anchors_preset = 0
+offset_left = 296.0
+offset_top = 256.0
+offset_right = 336.0
+offset_bottom = 296.0
+script = ExtResource("11_1v2lq")
+charge_icons = [NodePath("Sprite2D"), NodePath("Sprite2D2"), NodePath("Sprite2D3"), NodePath("Sprite2D4"), NodePath("Sprite2D5"), NodePath("Sprite2D6"), NodePath("Sprite2D7"), NodePath("Sprite2D8"), NodePath("Sprite2D9"), NodePath("Sprite2D10"), NodePath("Sprite2D11"), NodePath("Sprite2D12"), NodePath("Sprite2D13"), NodePath("Sprite2D14"), NodePath("Sprite2D15"), NodePath("Sprite2D16"), NodePath("Sprite2D17"), NodePath("Sprite2D18"), NodePath("Sprite2D19"), NodePath("Sprite2D20")]
+
+[node name="Label" type="Label" parent="SoulCharges"]
+layout_mode = 0
+offset_left = -48.0
+offset_top = -11.0
+offset_right = 19.0
+offset_bottom = 6.0
+theme_override_colors/font_color = Color(0.6583978, 0.643859, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "SUMMONS REMAINING:"
+
+[node name="Sprite2D" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(24, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D2" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(32, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D3" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(40, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D4" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(48, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D5" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(56, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D6" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(64, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D7" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(72, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D8" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(80, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D9" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(88, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D10" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(96, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D11" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(104, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D12" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(112, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D13" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(120, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D14" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(128, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D15" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(136, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D16" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(144, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D17" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(152, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D18" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(160, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D19" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(168, -8)
+texture = ExtResource("11_y0qlw")
+
+[node name="Sprite2D20" type="Sprite2D" parent="SoulCharges"]
+position = Vector2(176, -8)
+texture = ExtResource("11_y0qlw")
 
 [connection signal="toggled" from="GridDisplay/MarginContainer/PanelContainer/ShowGrid" to="GridDisplay" method="_on_show_grid_toggled"]

@@ -36,6 +36,7 @@ enabled=PackedStringArray("res://addons/script_splitter/plugin.cfg")
 
 [gui]
 
+theme/custom="uid://bhpd7tee65bxo"
 theme/custom_font="uid://jloqvexmrxhi"
 
 [input]

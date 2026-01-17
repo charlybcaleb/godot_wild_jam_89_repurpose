@@ -29,6 +29,9 @@ func _process(_delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_soul_spawn_moves()
 	if Input.is_action_just_pressed("lmb"):
+		# check props
+		if GameMan.summon_charges <= 0:
+			return
 		# if there is a corpse at this position, do not summon.
 		if npc_at_mouse:
 			if npc_at_mouse.hp <= 0:
@@ -46,6 +49,7 @@ func _process(_delta: float) -> void:
 				valid = false
 			if valid: 
 				summon_at(click_coord, soul)
+				GameMan.update_summon_charges(-1)
 	if Input.is_action_just_pressed("debug"):
 		var click_coord = round(GameMan.pos_to_cell(get_global_mouse_position()))
 		print("DEBUG CLICK AT COORD " + str(click_coord))

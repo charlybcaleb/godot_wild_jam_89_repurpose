@@ -6,6 +6,9 @@ var name = "no_name"
 var entity: Node2D #entity that is linked to this effect, if any.
 var order = -1 #if -1, has no order set. order is set by placement in domain. (top left = first)
 var remaining_charges= 0
+# for persistent effects, we mark processed so we can stop adding its effect after added once,
+# but still keep it in the stack so when it needs to be removed we can remove its effect
+var processed = false 
 var consumable = false # if true, removed from stack when charges_left = 0
 var duration= 0 # in turns. if duration 0, lasts until removed from stack
 var expires = false

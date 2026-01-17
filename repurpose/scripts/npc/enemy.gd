@@ -160,6 +160,7 @@ func do_move():
 
 func take_damage(damage: float):
 	emit_signal("health_changed", hp-damage, max_hp)
+
 	if hp <= 0:
 		return
 	hp -= damage

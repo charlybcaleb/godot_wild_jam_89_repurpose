@@ -16,8 +16,6 @@ func _ready() -> void:
 	set_physics_process(false)
 
 func tick(_delta: float):
-	if !currently_workable and charges == 0:
-		hp = 0 
 	add_charges(charges_gained_per_turn)
 	if charges == max_charges:
 		var effect = Effect.new(charged_effect, self)
@@ -51,9 +49,16 @@ func add_charges(amt: int):
 		#revive()
 	charges += amt
 	if charges > max_charges: charges = max_charges
-	emit_signal("charges_changed", charges, max_hp)
-	take_damage(-amt) # by giving negative number to take_damage we can use
+	#emit_signal("charges_changed", charges, max_hp)
+	emit_signal("health_changed", charges, max_charges)
+	$HitFlashAnim.play("hit")
 
+func take_damage(damage: float):
+	if !currently_workable:
+		emit_signal("health_changed", charges-damage, max_charges)
+		$HitFlashAnim.play("hit")
+	else:
+		super.take_damage(damage)
 
 func remove_charges(amt: int):
 	charges -= amt
