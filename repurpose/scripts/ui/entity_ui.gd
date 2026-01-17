@@ -16,8 +16,11 @@ func set_health_bar(hp: float, max_hp: float):
 	health_bar.value = hp
 
 func setup(e: Node2D) -> void:
+	#if e.is_in_group("workable"):
+		#if !e.currently_workable:
+#			
 	entity = e
-	entity.health_changed.connect(_on_entity_health_changed)
+	entity.health_changed.connect(_on_entity_health_changed) ###################################
 	print ("e type: " + str(e.entity_type))
 	if e.entity_type == GlobalConstants.EntityType.MINION:
 		var fill_sbox = health_bar.get_theme_stylebox("fill")

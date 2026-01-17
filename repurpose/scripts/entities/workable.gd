@@ -1,6 +1,13 @@
 extends BaseMinion
 
+@export var currently_workable = false
+@export var charges_gained_per_turn = 1
+@export var max_charges = 5
+@export var charged_effect: EffectData
+var charges: int
 var domain = false
+
+signal charges_changed(new_charges, _max_charges)
 
 func _ready() -> void:
 	await get_tree().create_timer(0.2).timeout
@@ -9,7 +16,12 @@ func _ready() -> void:
 	set_physics_process(false)
 
 func tick(_delta: float):
-	return
+	if !currently_workable and charges == 0:
+		hp = 0 
+	add_charges(charges_gained_per_turn)
+	if charges == max_charges:
+		var effect = Effect.new(charged_effect, self)
+		GameMan.add_effect(effect)
 
 func get_target() -> Node2D:
 	return
@@ -18,6 +30,14 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	super.setup(_grid, _data)
 	entity_type = GlobalConstants.EntityType.WORKABLE
 
+func revive():
+	# so, we have to call this for non_workable workables.
+	# that's because we manage their die() differently.
+	# when a persistent workable dies, it isn't destroyed
+	# it then revives itself when it gains its first charge back
+	# actually fuck that!!!!! for now
+	GameMan.register_workable(self)
+
 func die(silent=true):
 	GameMan.register_npc_death(self,silent)
 	#$Area2D.become_corpse(self, true)
@@ -25,3 +45,17 @@ func die(silent=true):
 	#await %AnimSprite.animation_finished
 	GameMan.spawn_loot(data, GameMan.pos_to_cell(global_position))
 	queue_free()
+
+func add_charges(amt: int):
+	#if hp <= 0: # the idea is that when this is caleld, if the worker
+		#revive()
+	charges += amt
+	if charges > max_charges: charges = max_charges
+	emit_signal("charges_changed", charges, max_hp)
+	take_damage(-amt) # by giving negative number to take_damage we can use
+
+
+func remove_charges(amt: int):
+	charges -= amt
+	if charges < 0: charges = 0
+	emit_signal("charges_changed", charges, max_hp)

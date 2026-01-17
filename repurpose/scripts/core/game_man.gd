@@ -32,7 +32,7 @@ var souls: Array[Node2D]
 var corpses: Array[Node2D]
 var workables: Array[Node2D]
 var loots: Array[Node2D]
-# queues
+# queues and stacks
 var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
 var alrdy_attacked: Array[Node2D] # this is a bandaid fix for the jam.
@@ -41,10 +41,82 @@ var swap_moves: Array[Move]
 var moves_to_prune: Array[Move] # this is a bandaid fix for the jam.
 var coords_being_moved_to: Array[Vector2i]
 var spawn_moves: Array[Move]
+var effect_stack: Array[Effect]
+var active_effect: Effect
 # stats
 var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
+# player resources
+var summon_charges := 0
+var max_summon_charges := 1
+
+func update_summon_charges(amt: int):
+	if summon_charges + amt <= max_summon_charges and \
+	summon_charges + amt > 0:
+		summon_charges += amt
+		on_summon_charges_updated(summon_charges)
+
+func update_max_summon_charges(amt: int):
+	if max_summon_charges + amt <= 20 and \
+	max_summon_charges + amt > 0:
+		max_summon_charges += amt
+		on_max_summon_charges_updated(max_summon_charges)
+
+func on_summon_charges_updated(amt: int):
+	# emit signal
+	emit_signal("summon_charges_changed", amt)
+	pass
+func on_max_summon_charges_updated(amt: int):
+	# emit signal
+	emit_signal("max_summon_charges_changed", amt)
+	pass
+
+func add_effect(effect: Effect):
+	effect_stack.append(effect)
+	process_effects()
+
+func process_effects():
+	## FIXME: right now, only enables global effects, and vars aren't named to reflect that.
+	# make a 'final effect' which compounds all effects into a final product by their order
+	var fe = Effect.new()
+	# sort by order to allow compounding effects
+	effect_stack.sort_custom(sort_by_order)
+	# prune expired and consumable effects that no longer have charges
+	var to_prune = []
+	for e in effect_stack:
+		if e.consumable and e.remaining_charges <= 0:
+			to_prune.append(e)
+		if e.expires and e.duration <= 0:
+			if !to_prune.has(e):
+				to_prune.append(e)
+	for e in to_prune:
+		if e.entity:
+			e.entity.notify_effect_consumed(e)
+		if effect_stack.has(e):
+			effect_stack.pop_at(effect_stack.find(e))
+	# add effects
+	for e in effect_stack:
+		if e.consumable:
+			e.remaining_charges -= 1
+		if e.expires:
+			e.duration -= 1
+		fe.summon_charges += e.summon_charges
+		fe.max_summon_charges += e.max_summon_charges
+		fe.dmg_die_flat += e.dmg_die_flat
+		fe.dmg_rolls_flat += e.dmg_rolls_flat
+		if e.dmg_die_mlp:
+			fe.dmg_die_flat = fe.dmg_die_flat * e.dmg_die_mlp
+			fe.dmg_die_mlp += e.dmg_die_mlp # just for debug/viz
+		fe.hp_flat += e.hp_flat
+		fe.max_hp += e.max_hp
+	# set effect active
+	active_effect = fe
+	print("_____FINAL EFFECT_____")
+	print(str(fe.get_property_list()))
+
+func sort_by_order(a, b):
+	return a.order < b.order
 
 func _ready():
 	await get_tree().process_frame
@@ -260,6 +332,7 @@ func tick():
 	minion_tick()
 	enemy_tick()
 	soul_tick()
+	workable_tick()
 	#await get_tree().create_timer(0.08).timeout
 	process_moves()
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -281,6 +354,10 @@ func minion_tick():
 func soul_tick():
 	for s in souls:
 		s.tick(GlobalConstants.DELTA)
+
+func workable_tick():
+	for w in workables:
+		w.tick(GlobalConstants.DELTA)
 
 func player_acted():
 	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -659,6 +736,14 @@ func register_npc_death(npc: Node2D, silent= false):
 	elif npc.is_in_group("workable"):
 		workables.pop_at(workables.find(npc))
 		print("byby workable!!!")
+	# prune effects owned by this entity
+	var e_to_prune = []
+	for e in effect_stack:
+		if e.entity == npc:
+			e_to_prune.append(e)
+	for e in e_to_prune:
+		if effect_stack.has(e):
+			effect_stack.pop_at(effect_stack.find(e))
 
 func get_turn() -> int:
 	return turn

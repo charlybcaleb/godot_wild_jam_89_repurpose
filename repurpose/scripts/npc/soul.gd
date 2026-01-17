@@ -82,7 +82,7 @@ func get_target() -> Node2D:
 	if workables.size() > 0:
 		for w in workables:
 			var dist = GameMan.player.current_cell.distance_to(w.current_cell)
-			if w.hp > 0 and dist < lowest_dist:
+			if w.currently_workable and w.hp > 0 and dist < lowest_dist:
 				lowest_dist = dist
 				closest = w
 		return closest
