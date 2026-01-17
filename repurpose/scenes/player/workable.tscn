@@ -7,6 +7,7 @@
 [sub_resource type="Resource" id="Resource_r57ch"]
 script = ExtResource("2_2b4xa")
 name = "workable_dark_flower"
+sprite_frames_path = ""
 metadata/_custom_type_script = "uid://c08irn7x3105s"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]

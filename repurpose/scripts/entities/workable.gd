@@ -22,4 +22,6 @@ func die(silent=true):
 	GameMan.register_npc_death(self,silent)
 	#$Area2D.become_corpse(self, true)
 	%AnimSprite.play("die")
-	await %AnimSprite.animation_finished
+	#await %AnimSprite.animation_finished
+	GameMan.spawn_loot(data, GameMan.pos_to_cell(global_position))
+	queue_free()

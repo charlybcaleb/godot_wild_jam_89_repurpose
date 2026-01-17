@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LootData" load_steps=2 format=3 uid="uid://y0kajo0db4we"]
+
+[ext_resource type="Script" uid="uid://d0n2ewvi43tcr" path="res://scripts/dungeon/loot_data.gd" id="1_nb7pe"]
+
+[resource]
+script = ExtResource("1_nb7pe")
+loot_path_table = Dictionary[String, float]({
+"res://scenes/loot/gem_5_50.tscn": 100.0
+})
+max_loot = 1
+metadata/_custom_type_script = "uid://d0n2ewvi43tcr"

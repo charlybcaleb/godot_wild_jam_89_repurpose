@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://cehndietas6ph"]
+
+[ext_resource type="Script" uid="uid://7a53tl603tns" path="res://scripts/entities/loot.gd" id="1_2q420"]
+[ext_resource type="Texture2D" uid="uid://cy4fj2xsp4jfg" path="res://assets/sprites/ui/gem_loot.png" id="2_2q420"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
+size = Vector2(16, 16)
+
+[node name="Gem5_50" type="CharacterBody2D"]
+script = ExtResource("1_2q420")
+loot_name = "Soulgems"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(8, 8)
+texture = ExtResource("2_2q420")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 13.0
+offset_top = 11.0
+offset_right = 28.0
+offset_bottom = 20.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 6
+text = "1"
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

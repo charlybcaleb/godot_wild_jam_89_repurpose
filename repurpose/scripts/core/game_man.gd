@@ -31,6 +31,7 @@ var minions: Array[Node2D]
 var souls: Array[Node2D]
 var corpses: Array[Node2D]
 var workables: Array[Node2D]
+var loots: Array[Node2D]
 # queues
 var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
@@ -157,6 +158,10 @@ func kill_all_room_workables():
 	for w in workables:
 		if !w.domain: continue
 		w.die(true)
+func kill_all_room_loots():
+	for l in loots:
+		if !l.domain: continue
+		l.die(true)
 func hide_all_minions():
 	for m in minions:
 		m.hide()
@@ -513,6 +518,9 @@ func get_node_at_coord(coord: Vector2i) -> Node2D:
 	for s in souls:
 		if s.current_cell == coord:
 			return s
+	for w in workables:
+		if w.current_cell == coord:
+			return w
 	if player.current_cell == coord:
 		return player
 	return null
@@ -633,7 +641,7 @@ func register_npc_death(npc: Node2D, silent= false):
 	if npc == null: print("GM.reg_npc_death: tried to register but npc is null"); return
 	if !silent:
 		SoundMan.play_death(npc.data.name)
-	await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
+	#await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
 	if npc.is_in_group("enemy"):
 		corpses.append(npc)
 		enemies.pop_at(enemies.find(npc))
@@ -645,11 +653,26 @@ func register_npc_death(npc: Node2D, silent= false):
 		minions.pop_at(minions.find(npc))
 		minions_slain += 1
 		print("minion slain: " + npc.data.name)
+	elif npc.is_in_group("workable"):
+		workables.pop_at(workables.find(npc))
+		print("byby workable!!!")
 
 func get_turn() -> int:
 	return turn
 
 ## INIT STUFF
+
+func spawn_loot(enemy_data: EnemyData, coord: Vector2i):
+	var loot_data = load(enemy_data.loot_data_path)
+	if loot_data == null: print("SPAWN LOOT FIALED LOOT DATA NUILL"); return
+	var loot_rolls = randi_range(loot_data.min_loot, loot_data.max_loot)
+	for i in range(loot_rolls):
+		var loot_path = loot_data.get_loot_path_weighted_random()
+		if loot_path == "null": continue
+		var loot_instance = load(loot_path).instantiate()
+		dun.add_child(loot_instance)
+		loot_instance.global_position = cell_to_pos(coord)
+		loot_instance.setup()
 
 func spawn_entity_ui(entity: Node2D):
 	var e_ui_instance = entity_ui_scene.instantiate()
@@ -695,6 +718,13 @@ func register_workable(w: Node2D):
 	if w.entity_props == null: setup_entity_props(w)
 	w.play_anim("default")
 	spawn_entity_ui(w)
+
+func register_loot(w: Node2D):
+	w.setup()
+	loots.append(w)
+	#if w.entity_props == null: setup_entity_props(w)
+	#w.play_anim("default")
+	#spawn_entity_ui(w)
 
 func register_dun(d: Node2D):
 	dun_registered = true

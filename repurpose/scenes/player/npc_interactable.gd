@@ -13,11 +13,13 @@ func _ready() -> void:
 	if ui == null: print("UI NOT FOUND")
 
 func _on_mouse_shape_entered(_shape_idx: int) -> void:
+	if ui == null: return
 	ui.show_enemy_popup(npc)
 	Domain.mouse_over_npc(npc)
 
 func _on_mouse_shape_exited(_shape_idx: int) -> void:
 	# hide popup
+	if ui == null: return
 	ui.show_enemy_popup(npc, false)
 	Domain.mouse_over_npc(npc, true)
 
