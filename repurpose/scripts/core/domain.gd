@@ -1,7 +1,7 @@
 extends Node2D
 
 var spawn_moves: Array[Move]
-var domain_center:= Vector2i(19,19)
+var domain_center:= Vector2i(20,18)
 var soul_scene: PackedScene = preload("res://scenes/player/soul.tscn")
 var npc_at_mouse: Node2D
 

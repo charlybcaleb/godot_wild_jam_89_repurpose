@@ -159,8 +159,8 @@ func take_damage(damage: float):
 	if hp <= 0:
 		die()
 
-func die():
-	GameMan.register_npc_death(self)
+func die(silent=false):
+	GameMan.register_npc_death(self, silent)
 	$Area2D.become_corpse(self, true)
 	%AnimSprite.play("die")
 	await %AnimSprite.animation_finished

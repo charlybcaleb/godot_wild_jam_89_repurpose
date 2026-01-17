@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://bgqrhhg8pjpj8"]
+[gd_scene load_steps=7 format=4 uid="uid://bgqrhhg8pjpj8"]
 
 [ext_resource type="TileSet" uid="uid://bnr4lud6qs6xu" path="res://assets/tilesets/dungeon0tileset.tres" id="1_j70ig"]
 [ext_resource type="Script" uid="uid://drbmkf1fa4ala" path="res://scripts/dungeon/room.gd" id="2_3xqj6"]
 [ext_resource type="Resource" uid="uid://cp7s53fmap7ts" path="res://assets/resources/rooms/room_start.tres" id="3_j70ig"]
 [ext_resource type="PackedScene" uid="uid://c7tjpk3vvjvc" path="res://scenes/entities/door.tscn" id="5_3xqj6"]
 [ext_resource type="PackedScene" uid="uid://dxruwhariua6q" path="res://scenes/entities/spawn_point.tscn" id="5_r2mul"]
+[ext_resource type="Texture2D" uid="uid://dtw4uqw0air7l" path="res://assets/sprites/ui/crystal_128x64frame.png" id="6_r2mul"]
 
 [node name="RoomStart" type="TileMapLayer" node_paths=PackedStringArray("spawn_points", "room_tml", "left_door", "up_door", "right_door")]
 texture_filter = 1
@@ -45,7 +46,7 @@ offset_bottom = 61.0
 theme_override_colors/font_color = Color(0.705981, 0.69679815, 0.89298415, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 12
-text = "left click on a corpse to take its soul into your domain. 
+text = "left click on a corpse to pay     and take its soul into your domain. 
 there, they will do your bidding..."
 
 [node name="Label2" type="Label" parent="."]
@@ -58,3 +59,35 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 12
 text = "left click in the dungeon to summon your minion...
 or, left click in your domain to assign a soul to work..."
+
+[node name="Label3" type="Label" parent="."]
+offset_left = 144.0
+offset_top = 256.0
+offset_right = 249.0
+offset_bottom = 328.0
+theme_override_colors/font_color = Color(0.705981, 0.69679815, 0.89298415, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "Your soul manifests
+in a form you can
+understand - space."
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="."]
+offset_left = 384.0
+offset_top = 256.0
+offset_right = 489.0
+offset_bottom = 333.0
+theme_override_colors/font_color = Color(0.705981, 0.69679815, 0.89298415, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "While derelict now,
+with the labor of
+lesser souls, there
+is tremendous
+potential."
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(233, 37)
+texture = ExtResource("6_r2mul")

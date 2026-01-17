@@ -30,6 +30,7 @@ var player: Node2D
 var minions: Array[Node2D]
 var souls: Array[Node2D]
 var corpses: Array[Node2D]
+var workables: Array[Node2D]
 # queues
 var attacks: Array[Attack]
 var att_to_prune: Array[Attack]
@@ -108,8 +109,10 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 	current_room.hide()
 	hide_all_enemies()
 	hide_all_minions()
+	hide_all_domain_workables()
 	# cleanup current scene
 	kill_all_minions()
+	kill_all_room_workables()
 	cleanup_corpses()
 	
 	####### SEQUENCE
@@ -149,7 +152,11 @@ func room_cleared():
 
 func kill_all_minions():
 	for m in minions:
-		m.die()
+		m.die(true)
+func kill_all_room_workables():
+	for w in workables:
+		if !w.domain: continue
+		w.die(true)
 func hide_all_minions():
 	for m in minions:
 		m.hide()
@@ -159,6 +166,14 @@ func show_all_minions():
 func hide_all_enemies():
 	for e in enemies:
 		e.hide()
+func hide_all_domain_workables():
+	for w in workables:
+		if !w.domain: continue
+		w.hide()
+func show_all_domain_workables():
+	for w in workables:
+		if !w.domain: continue
+		w.show()
 func show_all_enemies():
 	for e in enemies:
 		e.show()
@@ -239,6 +254,7 @@ func tick():
 	process_swap_moves()
 	minion_tick()
 	enemy_tick()
+	soul_tick()
 	#await get_tree().create_timer(0.08).timeout
 	process_moves()
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -256,6 +272,10 @@ func enemy_tick():
 func minion_tick():
 	for m in minions:
 		m.tick(GlobalConstants.DELTA)
+
+func soul_tick():
+	for s in souls:
+		s.tick(GlobalConstants.DELTA)
 
 func player_acted():
 	#await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
@@ -499,7 +519,7 @@ func get_node_at_coord(coord: Vector2i) -> Node2D:
 
 func is_tile_in_room(coord: Vector2i) -> bool:
 	for c in dun.room_floor_coords:
-		print("FUCK THIS COORD: " + str(c))
+		#print("FUCK THIS COORD: " + str(c))
 		if c == coord:
 			return true
 	return false
@@ -609,9 +629,10 @@ func get_free_tile_near(start_coord: Vector2i) -> Vector2i:
 	# if none found, return invalid coord
 	return Vector2i(999,999)
 
-func register_npc_death(npc: Node2D):
+func register_npc_death(npc: Node2D, silent= false):
 	if npc == null: print("GM.reg_npc_death: tried to register but npc is null"); return
-	SoundMan.play_death(npc.data.name)
+	if !silent:
+		SoundMan.play_death(npc.data.name)
 	await get_tree().create_timer(0.2).timeout # this fixes corpse click summon problem.
 	if npc.is_in_group("enemy"):
 		corpses.append(npc)
@@ -660,12 +681,20 @@ func register_minion(m: Node2D):
 	if m.entity_props == null: setup_entity_props(m)
 	m.play_anim("default")
 	spawn_entity_ui(m)
-	
 
 func register_soul(s: Node2D):
+	s.setup(dun.astar_grid)
 	souls.append(s)
 	if s.entity_props == null: setup_entity_props(s)
-	#s.play_anim("default")
+	s.play_anim("default")
+	spawn_entity_ui(s)
+
+func register_workable(w: Node2D):
+	w.setup(dun.astar_grid)
+	workables.append(w)
+	if w.entity_props == null: setup_entity_props(w)
+	w.play_anim("default")
+	spawn_entity_ui(w)
 
 func register_dun(d: Node2D):
 	dun_registered = true

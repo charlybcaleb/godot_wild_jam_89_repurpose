@@ -11,7 +11,7 @@ const DELTA = 0.0167
 # stats etc
 enum ResourceType { MP, HP, GOLD, }
 enum MapRoomType { PRESENT, EMPTY }
-enum EntityType { ENEMY, MINION, SOUL, PLAYER, RESOURCE, }
+enum EntityType { ENEMY, MINION, SOUL, PLAYER, WORKABLE, }
 
 # VIZ
 const MOVE_TWEEN_DURATION = 0.15
