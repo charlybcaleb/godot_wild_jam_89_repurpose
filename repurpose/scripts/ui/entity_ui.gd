@@ -6,6 +6,8 @@ extends Node2D
 @export var minion_bg_color: Color
 @export var enemy_fill_color: Color
 @export var enemy_bg_color: Color
+@export var workable_fill_color: Color
+@export var workable_bg_color: Color
 
 func set_health_bar(hp: float, max_hp: float):
 	if hp == max_hp or hp <= 0.0: health_bar.hide(); return
@@ -22,6 +24,11 @@ func setup(e: Node2D) -> void:
 		fill_sbox.bg_color = minion_fill_color
 		var bg_sbox = health_bar.get_theme_stylebox("background")
 		bg_sbox.bg_color = minion_bg_color
+	elif e.entity_type == GlobalConstants.EntityType.WORKABLE:
+		var fill_sbox = health_bar.get_theme_stylebox("fill")
+		fill_sbox.bg_color = workable_fill_color
+		var bg_sbox = health_bar.get_theme_stylebox("background")
+		bg_sbox.bg_color = workable_bg_color
 	else:
 		var fill_sbox = health_bar.get_theme_stylebox("fill")
 		fill_sbox.bg_color = enemy_fill_color

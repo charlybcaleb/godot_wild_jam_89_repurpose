@@ -19,6 +19,8 @@ minion_fill_color = Color(0.8, 0.18431373, 0.48235294, 1)
 minion_bg_color = Color(0.4117647, 0.14117648, 0.39215687, 1)
 enemy_fill_color = Color(0.3882353, 0.67058825, 0.24705882, 1)
 enemy_bg_color = Color(0.6784314, 0.18431373, 0.27058825, 1)
+workable_fill_color = Color(0.8411648, 0.7791691, 0.9508942, 1)
+workable_bg_color = Color(0.17197731, 0.147365, 0.36846545, 1)
 
 [node name="HealthProgressBar" type="ProgressBar" parent="."]
 offset_left = -7.0

@@ -1,10 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=15 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
+[ext_resource type="Texture2D" uid="uid://dtw4uqw0air7l" path="res://assets/sprites/ui/crystal_128x64frame.png" id="2_4bb1o"]
 [ext_resource type="Texture2D" uid="uid://epcroqnykgx7" path="res://assets/sprites/ui/128x64frame.png" id="2_k3tac"]
 [ext_resource type="Script" uid="uid://cxtv7hommech2" path="res://scenes/ui/enemy_popup.gd" id="3_epb56"]
 [ext_resource type="Texture2D" uid="uid://df8ckrofmyug4" path="res://assets/sprites/characters/pelfen.png" id="3_nchkn"]
+[ext_resource type="Texture2D" uid="uid://3i6r067xrstg" path="res://assets/sprites/ui/hp_crystal_128x64frame.png" id="4_awamv"]
 [ext_resource type="Script" uid="uid://ddudijqovpa5e" path="res://scenes/ui/door_popup.gd" id="6_fr74f"]
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 [ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
@@ -36,6 +38,64 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8b3e8")
 map_rooms = [NodePath("Map/RoomPanelContainer"), NodePath("Map/RoomPanelContainer3"), NodePath("Map/RoomPanelContainer4"), NodePath("Map/RoomPanelContainer5"), NodePath("Map/RoomPanelContainer6"), NodePath("Map/RoomPanelContainer7"), NodePath("Map/RoomPanelContainer8"), NodePath("Map/RoomPanelContainer9"), NodePath("Map/RoomPanelContainer10"), NodePath("Map/RoomPanelContainer11"), NodePath("Map/RoomPanelContainer12"), NodePath("Map/RoomPanelContainer13"), NodePath("Map/RoomPanelContainer14"), NodePath("Map/RoomPanelContainer15"), NodePath("Map/RoomPanelContainer16"), NodePath("Map/RoomPanelContainer17"), NodePath("Map/RoomPanelContainer2")]
+
+[node name="StatsAndResources" type="Control" parent="."]
+z_index = 5
+anchors_preset = 0
+offset_top = 168.0
+offset_right = 40.0
+offset_bottom = 208.0
+
+[node name="PanelContainer" type="PanelContainer" parent="StatsAndResources"]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 64.0
+
+[node name="TextureRect" type="TextureRect" parent="StatsAndResources/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="Gem" type="Control" parent="StatsAndResources"]
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 24.0
+offset_right = 104.0
+offset_bottom = 64.0
+
+[node name="Sprite2D" type="Sprite2D" parent="StatsAndResources/Gem"]
+position = Vector2(8, 8)
+texture = ExtResource("2_4bb1o")
+
+[node name="Label" type="Label" parent="StatsAndResources/Gem"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 4.0
+offset_right = 64.0
+offset_bottom = 21.0
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 12
+text = "10011"
+
+[node name="HP" type="Control" parent="StatsAndResources"]
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 8.0
+offset_right = 104.0
+offset_bottom = 48.0
+
+[node name="Sprite2D" type="Sprite2D" parent="StatsAndResources/HP"]
+position = Vector2(8, 0)
+texture = ExtResource("4_awamv")
+
+[node name="Label" type="Label" parent="StatsAndResources/HP"]
+layout_mode = 0
+offset_left = 16.0
+offset_right = 64.0
+offset_bottom = 17.0
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 12
+text = "16"
 
 [node name="GridDisplay" type="Control" parent="."]
 unique_name_in_owner = true

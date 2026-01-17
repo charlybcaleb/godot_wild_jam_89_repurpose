@@ -46,6 +46,10 @@ texture = ExtResource("1_8prii")
 0:6/0 = 0
 1:6/0 = 0
 2:6/0 = 0
+5:0/0 = 0
+5:0/0/custom_data_0 = true
+6:0/0 = 0
+6:0/0/custom_data_0 = true
 
 [resource]
 custom_data_layer_0/name = "obstacle"

@@ -436,7 +436,10 @@ func process_attacks(player_mode: bool):
 		a.defender.name + " " + a.defender.data.name + 
 			" for " + str(damage) + " damage!" + str(a.from) + " to " +
 			str(a.to) + ". TURN " + str(get_turn()))
-		SoundMan.play_hit()
+		if a.defender.entity_type != GlobalConstants.EntityType.WORKABLE:
+			SoundMan.play_hit()
+		else:
+			SoundMan.play_hit(GlobalConstants.EntityType.WORKABLE)
 	# now cleanup attacks
 	for a in att_to_prune:
 		attacks.pop_at(attacks.find(a))

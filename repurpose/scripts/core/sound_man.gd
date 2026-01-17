@@ -22,9 +22,10 @@ func _ready() -> void:
 	death_sound_player = audio_player_scene.instantiate()
 	get_tree().current_scene.add_child(death_sound_player)
 
-func play_hit():
-	hit_sound_player.stream = hit_sounds[randi_range(0,2)]
-	hit_sound_player.play()
+func play_hit(entity_type= GlobalConstants.EntityType.ENEMY):
+	if entity_type != GlobalConstants.EntityType.WORKABLE:
+		hit_sound_player.stream = hit_sounds[randi_range(0,2)]
+		hit_sound_player.play()
 
 func play_death(npc_name: String):
 	if npc_name == "Pelfen":

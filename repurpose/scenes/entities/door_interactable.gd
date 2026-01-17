@@ -10,12 +10,12 @@ func _ready() -> void:
 	if ui == null: print("DOOR: UI NOT FOUND")
 
 func _on_mouse_shape_entered(_shape_idx: int) -> void:
-	if door == null: return
+	if door == null or ui == null: return
 	ui.show_door_popup(door)
 
 func _on_mouse_shape_exited(_shape_idx: int) -> void:
 	# hide popup
-	if door == null: return
+	if door == null or ui == null: return
 	ui.show_door_popup(door, false)
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
