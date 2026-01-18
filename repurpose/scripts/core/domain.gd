@@ -4,8 +4,10 @@ var spawn_moves: Array[Move]
 var domain_center:= Vector2i(20,18)
 var soul_scene: PackedScene = preload("res://scenes/player/soul.tscn")
 var npc_at_mouse: Node2D
+var menu_open= false
 
 signal show_summon_menu(pos)
+
 
 # domain spans from x 0 to 39 and y 16 to 21
 
@@ -32,6 +34,8 @@ func _process(_delta: float) -> void:
 		process_soul_spawn_moves()
 	if Input.is_action_just_pressed("lmb"):
 		# check props
+		if menu_open:
+			return
 		#if GameMan.mana < 1:
 			#return
 		# if there is a corpse at this position, do not summon.
@@ -60,7 +64,7 @@ func _process(_delta: float) -> void:
 ## spawns first unassigned soul in at coord as minion, unless other soul is provided.
 func summon_at(coord: Vector2i, soul: Node2D = null):
 	GameMan.spawn_npc(soul.data, coord, soul)
-	soul.queue_free()
+	soul.die(true)
 
 # called by npc_interactable twice, with the latter removing the npc after a delay,
 # to prevent race condition

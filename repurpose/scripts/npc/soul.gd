@@ -98,3 +98,8 @@ func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int
 		else:
 			#todo: check and see if over valid tile.
 			soul_state = SoulState.IDLE
+
+func die(silent=false):
+	GameMan.register_npc_death(self, silent)
+	%AnimSprite.play("die")
+	await %AnimSprite.animation_finished

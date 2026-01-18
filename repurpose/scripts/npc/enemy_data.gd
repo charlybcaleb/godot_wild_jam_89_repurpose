@@ -2,7 +2,7 @@ class_name EnemyData
 extends Resource
 
 @export var name: String
-@export var icon_path = "res://assets/sprites/ui/crystal_128x64frame.png"
+@export var icon_path = "res://assets/sprites/characters/pelfen_icon.png"
 @export var sprite_frames_path = "res://assets/sprites/characters/pelfen_frames.tres"
 @export var loot_data_path = "res://assets/resources/loot_data/5_50_gem_loot_data.tres"
 #stats
@@ -24,4 +24,10 @@ func get_necrofied_frames_path() -> String:
 	var directory = "res://assets/sprites/characters/"
 	var file_name = name.to_lower()
 	var suffix = "_necro_frames.tres"
+	return directory + file_name + suffix
+
+func get_icon_path() -> String:
+	var directory = "res://assets/sprites/characters/"
+	var file_name = name.to_lower()
+	var suffix = "_icon.png"
 	return directory + file_name + suffix

@@ -10,9 +10,11 @@ var dmg_die: int
 var dmg_rolls:= 1
 var speed: int
 var hp: int
+var data: EnemyData
 # set by this
 
 func _init(enemy_data: EnemyData):
+	data = enemy_data
 	name = enemy_data.name
 	dmg_die = enemy_data.dmg_die
 	dmg_rolls = enemy_data.dmg_rolls

@@ -129,7 +129,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "show grid"
 
-[node name="EnemyPopup" type="Control" parent="." node_paths=PackedStringArray("name_txt", "dmg_txt", "hp_txt", "icon_rect")]
+[node name="EnemyPopup" type="Control" parent="." node_paths=PackedStringArray("name_txt", "dmg_txt", "hp_txt")]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_right = 40.0
@@ -138,7 +138,6 @@ script = ExtResource("3_epb56")
 name_txt = NodePath("TitleContainer/TitleLabel")
 dmg_txt = NodePath("DmgTxtContainer/TitleLabel")
 hp_txt = NodePath("HPTxtContainer/TitleLabel")
-icon_rect = NodePath("PortraitContainer/TextureRect")
 
 [node name="PanelContainer" type="PanelContainer" parent="EnemyPopup"]
 layout_mode = 0

@@ -54,6 +54,7 @@ var max_mana := 1
 signal max_mana_changed(amt)
 signal mana_changed(amt)
 signal souls_changed(s)
+signal began_tick
 
 func update_mana(amt: int):
 	if mana + amt <= max_mana and \
@@ -349,6 +350,7 @@ func cell_to_pos(cell: Vector2i):
 	return cell * GlobalConstants.TILE_SIZE
 
 func tick():
+	emit_signal("began_tick")
 	process_swap_moves()
 	minion_tick()
 	enemy_tick()
@@ -667,6 +669,11 @@ func is_tile_blocked(coord: Vector2i, count_corpses = true) -> bool:
 		blocked = true
 	return blocked
 
+func get_soul_from_enemy_data(ed: EnemyData):
+	for s in souls:
+		if s.data == ed:
+			return s
+
 # FIXME: THIS SHIT WAS THROWN TOGETHER IN 2 MIN. IT'S ONLY USED IN domain.gd
 func tele_to_coord(entity: Node2D, coord: Vector2i, if_invalid_find_nearest= false, forced= false):
 	var _from_coord = entity.current_cell
@@ -758,6 +765,10 @@ func register_npc_death(npc: Node2D, silent= false):
 	elif npc.is_in_group("workable"):
 		workables.pop_at(workables.find(npc))
 		print("byby workable!!!")
+	elif npc.is_in_group("soul"):
+		souls.pop_at(souls.find(npc))
+		npc.queue_free()
+		print("soul spawned")
 	# prune effects owned by this entity
 	var e_to_prune = []
 	for e in effect_stack:
