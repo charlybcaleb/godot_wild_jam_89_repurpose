@@ -5,6 +5,8 @@ var domain_center:= Vector2i(20,18)
 var soul_scene: PackedScene = preload("res://scenes/player/soul.tscn")
 var npc_at_mouse: Node2D
 
+signal show_summon_menu(pos)
+
 # domain spans from x 0 to 39 and y 16 to 21
 
 func new_soul(corpse: Node2D):
@@ -30,8 +32,8 @@ func _process(_delta: float) -> void:
 		process_soul_spawn_moves()
 	if Input.is_action_just_pressed("lmb"):
 		# check props
-		if GameMan.summon_charges <= 0:
-			return
+		#if GameMan.mana < 1:
+			#return
 		# if there is a corpse at this position, do not summon.
 		if npc_at_mouse:
 			if npc_at_mouse.hp <= 0:
@@ -48,8 +50,9 @@ func _process(_delta: float) -> void:
 			if GameMan.is_tile_blocked(click_coord):
 				valid = false
 			if valid: 
-				summon_at(click_coord, soul)
-				GameMan.update_summon_charges(-1)
+				emit_signal("show_summon_menu", get_global_mouse_position())
+				#summon_at(click_coord, soul)
+				GameMan.update_mana(-1)
 	if Input.is_action_just_pressed("debug"):
 		var click_coord = round(GameMan.pos_to_cell(get_global_mouse_position()))
 		print("DEBUG CLICK AT COORD " + str(click_coord))

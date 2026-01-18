@@ -17,6 +17,8 @@ var move_pts: Array
 
 var facing_right: bool
 var entity_type = GlobalConstants.EntityType.MINION
+var ticks_alive= 0
+var secs_alive = 0
 
 signal health_changed(new_hp, _max_hp)
 
@@ -24,6 +26,9 @@ func _ready():
 	GameMan.register_minion(self)
 	add_to_group("minion")
 	set_physics_process(false)
+
+func _process(delta: float) -> void:
+	secs_alive += delta
 
 # called by GameMan
 func setup(_grid: AStarGrid2D, _data: EnemyData = null):
@@ -66,6 +71,7 @@ func set_target(t: Node2D):
 ## called by GameMan when player moves
 func tick(_delta: float) -> void:
 	if hp <= 0: return
+	ticks_alive+=1
 	## MOVEMENT
 	# FIXME: this is ratchet af, but maybe it will work to make enemies move after player and not overlap???
 	await get_tree().create_timer(0.08).timeout

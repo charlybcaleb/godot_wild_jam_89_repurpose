@@ -48,34 +48,35 @@ var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
 # player resources
-var summon_charges := 2
-var max_summon_charges := 1
+var mana := 0
+var max_mana := 1
 
-signal max_summon_charges_changed(amt)
-signal summon_charges_changed(amt)
+signal max_mana_changed(amt)
+signal mana_changed(amt)
+signal souls_changed(s)
 
-func update_summon_charges(amt: int):
-	if summon_charges + amt <= max_summon_charges and \
-	summon_charges + amt > -1:
-		summon_charges += amt
-		on_summon_charges_updated(summon_charges)
-		print("ADDED SUMMON CHARGE, CURRENT AMOUNT " + str(summon_charges))
+func update_mana(amt: int):
+	if mana + amt <= max_mana and \
+	mana + amt > -1:
+		mana += amt
+		on_mana_updated(mana)
+		print("ADDED SUMMON CHARGE, CURRENT AMOUNT " + str(mana))
 
-func update_max_summon_charges(amt: int):
-	if max_summon_charges + amt <= 20 and \
-	max_summon_charges + amt > 0:
-		max_summon_charges += amt
-		on_max_summon_charges_updated(max_summon_charges)
+func update_max_mana(amt: int):
+	if max_mana + amt <= 20 and \
+	max_mana + amt > 0:
+		max_mana += amt
+		on_max_mana_updated(max_mana)
 
-func on_summon_charges_updated(amt: int):
+func on_mana_updated(amt: int):
 	# emit signal
-	#summon_charges_changed.emit(amt)
-	emit_signal("summon_charges_changed", amt)
+	#mana_changed.emit(amt)
+	emit_signal("mana_changed", amt)
 	pass
-func on_max_summon_charges_updated(amt: int):
+func on_max_mana_updated(amt: int):
 	# emit signal
-	#max_summon_charges_changed.emit(amt)
-	emit_signal("max_summon_charges_changed", amt)
+	#max_mana_changed.emit(amt)
+	emit_signal("max_mana_changed", amt)
 	pass
 
 func add_effect(effect: Effect):
@@ -106,9 +107,9 @@ func process_effects():
 		# for persistent effects, we mark processed so we can stop adding its effect 
 		# after added once, but still keep it in the stack for later removal
 		if !e.processed:
-			#fe.summon_charges += e.summon_charges
-			##print("ADDED SUMMON CHARGES " + str(e.summon_charges))
-			#fe.max_summon_charges += e.max_summon_charges
+			#fe.mana += e.mana
+			##print("ADDED SUMMON CHARGES " + str(e.mana))
+			#fe.max_mana += e.max_mana
 			#fe.dmg_die_flat += e.dmg_die_flat
 			#fe.dmg_rolls_flat += e.dmg_rolls_flat
 			#if e.dmg_die_mlp:
@@ -116,7 +117,7 @@ func process_effects():
 				#fe.dmg_die_mlp += e.dmg_die_mlp # just for debug/viz
 			#fe.hp_flat += e.hp_flat
 			#fe.max_hp += e.max_hp
-			update_summon_charges(e.summon_charges)
+			update_mana(e.mana)
 			e.processed = true
 			e.entity.effect_processed()
 		# set tracking values
@@ -128,10 +129,10 @@ func process_effects():
 	active_effect = fe
 	#print("_____FINAL EFFECT_____")
 	#print(str(fe.get_property_list()))
-	#if fe.max_summon_charges > 0:
-		#update_max_summon_charges(fe.max_summon_charges)
-	#if fe.summon_charges > 0:
-		#update_summon_charges(fe.summon_charges)
+	#if fe.max_mana > 0:
+		#update_max_mana(fe.max_mana)
+	#if fe.mana > 0:
+		#update_mana(fe.mana)
 
 func sort_by_order(a, b):
 	return a.order < b.order
@@ -237,6 +238,7 @@ func move_to_room(rd: RoomData, from_door: Node2D):
 			d.close_and_lock()
 
 func room_cleared():
+	kill_all_minions()
 	for d in doors:
 		if d == current_room.left_door: continue
 		d.unlock()
@@ -819,6 +821,7 @@ func register_soul(s: Node2D):
 	if s.entity_props == null: setup_entity_props(s)
 	s.play_anim("default")
 	spawn_entity_ui(s)
+	emit_signal("souls_changed", s)
 
 func register_workable(w: Node2D):
 	w.setup(dun.astar_grid)

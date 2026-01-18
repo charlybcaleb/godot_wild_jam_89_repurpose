@@ -32,6 +32,9 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 			if valid:
 				send_soul_to_domain(the_damned_waiting_for_redemption)
 				is_corpse = false
+		else:
+			if npc.is_in_group("minion"):
+				if npc.secs_alive > 0.1: npc.die()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 			GameMan.click_consumed = false
 

@@ -12,8 +12,8 @@ var processed = false
 var consumable = false # if true, removed from stack when charges_left = 0
 var duration= 0 # in turns. if duration 0, lasts until removed from stack
 var expires = false
-var summon_charges= 0
-var max_summon_charges= 0
+var mana= 0
+var max_mana= 0
 var dmg_die_flat: int
 var dmg_rolls_flat: int
 var dmg_die_mlp: float
@@ -22,8 +22,8 @@ var max_hp: int
 # set by this
 
 func _init(effect_data: EffectData = null, _entity: Node2D = null, _name = "omni", \
-_remaining_charges= 0, _consumable = false, _duration = 0, _summon_charges = 0, \
-_max_summon_charges = 0, _dmg_die_flat = 0, _dmg_rolls_flat = 0, _dmg_die_mlp = 0, \
+_remaining_charges= 0, _consumable = false, _duration = 0, _mana = 0, \
+_max_mana = 0, _dmg_die_flat = 0, _dmg_rolls_flat = 0, _dmg_die_mlp = 0, \
 _hp_flat = 0, _max_hp = 0 ):
 	if effect_data:
 		name = effect_data.name
@@ -32,8 +32,8 @@ _hp_flat = 0, _max_hp = 0 ):
 		consumable = effect_data.consumable
 		duration =effect_data.duration
 		if duration > 0: expires = true
-		summon_charges = effect_data.summon_charges
-		max_summon_charges = effect_data.max_summon_charges
+		mana = effect_data.mana
+		max_mana = effect_data.max_mana
 		dmg_die_flat = effect_data.dmg_die_flat
 		dmg_rolls_flat = effect_data.dmg_rolls_flat
 		dmg_die_mlp = effect_data.dmg_die_mlp
@@ -45,8 +45,8 @@ _hp_flat = 0, _max_hp = 0 ):
 		remaining_charges = _remaining_charges
 		consumable = _consumable
 		duration = _duration
-		summon_charges = _summon_charges
-		max_summon_charges = _max_summon_charges
+		mana = _mana
+		max_mana = _max_mana
 		dmg_die_flat = _dmg_die_flat
 		dmg_die_mlp = _dmg_die_mlp
 		hp_flat = _hp_flat

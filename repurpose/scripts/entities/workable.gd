@@ -1,9 +1,12 @@
 extends BaseMinion
 
+@export var workable_when_charged = false
 @export var currently_workable = false
+@export var destroy_on_worked = false
 @export var charges_gained_per_turn = 1
 @export var max_charges = 5
 @export var charged_effect: EffectData
+@export var worked_effect: EffectData
 var charges: int
 var domain = false
 
@@ -17,9 +20,11 @@ func _ready() -> void:
 
 func tick(_delta: float):
 	add_charges(charges_gained_per_turn)
-	if charges == max_charges:
+	if charges == max_charges and charged_effect != null:
 		var effect = Effect.new(charged_effect, self)
 		GameMan.add_effect(effect)
+	if charges == max_charges:
+		currently_workable = true
 
 func get_target() -> Node2D:
 	return
@@ -40,12 +45,18 @@ func revive():
 	GameMan.register_workable(self)
 
 func die(silent=true):
-	GameMan.register_npc_death(self,silent)
-	#$Area2D.become_corpse(self, true)
+	# when worked this is called.
+	if worked_effect:
+		GameMan.add_effect(Effect.new(worked_effect, self))
 	%AnimSprite.play("die")
-	#await %AnimSprite.animation_finished
-	GameMan.spawn_loot(data, GameMan.pos_to_cell(global_position))
-	queue_free()
+	var loot_data = load(data.loot_data_path)
+	if loot_data.min_loot > 0:
+		GameMan.spawn_loot(data, GameMan.pos_to_cell(global_position))
+	if destroy_on_worked:
+		GameMan.register_npc_death(self,silent)
+		#$Area2D.become_corpse(self, true)
+		#await %AnimSprite.animation_finished
+		queue_free()
 
 func add_charges(amt: int):
 	#if hp <= 0: # the idea is that when this is caleld, if the worker

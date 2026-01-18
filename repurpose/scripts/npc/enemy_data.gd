@@ -2,6 +2,7 @@ class_name EnemyData
 extends Resource
 
 @export var name: String
+@export var icon_path = "res://assets/sprites/ui/crystal_128x64frame.png"
 @export var sprite_frames_path = "res://assets/sprites/characters/pelfen_frames.tres"
 @export var loot_data_path = "res://assets/resources/loot_data/5_50_gem_loot_data.tres"
 #stats

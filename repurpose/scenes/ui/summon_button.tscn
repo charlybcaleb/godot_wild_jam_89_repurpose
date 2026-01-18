@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdrie4ivotcm3"]
+
+[ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="1_ssari"]
+
+[node name="SummonButton" type="TextureButton"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_ssari")
+stretch_mode = 0

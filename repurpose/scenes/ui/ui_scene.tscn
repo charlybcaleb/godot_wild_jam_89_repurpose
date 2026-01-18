@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=19 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
@@ -10,8 +10,10 @@
 [ext_resource type="Script" uid="uid://ddudijqovpa5e" path="res://scenes/ui/door_popup.gd" id="6_fr74f"]
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 [ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
-[ext_resource type="Script" uid="uid://1mg3oqy00ckj" path="res://scripts/ui/summon_charges_ui.gd" id="11_1v2lq"]
-[ext_resource type="Texture2D" uid="uid://qpfkrmoeym2j" path="res://assets/sprites/characters/pelfen_necro.png" id="11_y0qlw"]
+[ext_resource type="Script" uid="uid://c65sivmixmfxi" path="res://scripts/ui/mana_ui.gd" id="11_1v2lq"]
+[ext_resource type="Texture2D" uid="uid://6bxq5inxe1g8" path="res://assets/sprites/ui/mana_gem.png" id="12_1v2lq"]
+[ext_resource type="Script" uid="uid://dmbiq7gosm26q" path="res://scripts/ui/radial_menu_button.gd" id="13_dnmvj"]
+[ext_resource type="PackedScene" uid="uid://cdrie4ivotcm3" path="res://scenes/ui/summon_button.tscn" id="14_weg4l"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
 
@@ -584,7 +586,7 @@ offset_top = 140.0
 offset_right = 624.0
 offset_bottom = 204.0
 
-[node name="SoulCharges" type="Control" parent="." node_paths=PackedStringArray("charge_icons")]
+[node name="Mana" type="Control" parent="." node_paths=PackedStringArray("charge_icons")]
 anchors_preset = 0
 offset_left = 296.0
 offset_top = 256.0
@@ -593,7 +595,7 @@ offset_bottom = 296.0
 script = ExtResource("11_1v2lq")
 charge_icons = [NodePath("Sprite2D"), NodePath("Sprite2D2"), NodePath("Sprite2D3"), NodePath("Sprite2D4"), NodePath("Sprite2D5"), NodePath("Sprite2D6"), NodePath("Sprite2D7"), NodePath("Sprite2D8"), NodePath("Sprite2D9"), NodePath("Sprite2D10"), NodePath("Sprite2D11"), NodePath("Sprite2D12"), NodePath("Sprite2D13"), NodePath("Sprite2D14"), NodePath("Sprite2D15"), NodePath("Sprite2D16"), NodePath("Sprite2D17"), NodePath("Sprite2D18"), NodePath("Sprite2D19"), NodePath("Sprite2D20")]
 
-[node name="Label" type="Label" parent="SoulCharges"]
+[node name="Label" type="Label" parent="Mana"]
 layout_mode = 0
 offset_left = -48.0
 offset_top = -11.0
@@ -601,86 +603,107 @@ offset_right = 19.0
 offset_bottom = 6.0
 theme_override_colors/font_color = Color(0.6583978, 0.643859, 1, 1)
 theme_override_font_sizes/font_size = 8
-text = "SUMMONS REMAINING:"
+text = "MANA"
 
-[node name="Sprite2D" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(24, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D" type="Sprite2D" parent="Mana"]
+position = Vector2(-25, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D2" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(32, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D2" type="Sprite2D" parent="Mana"]
+position = Vector2(-17, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D3" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(40, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D3" type="Sprite2D" parent="Mana"]
+position = Vector2(-9, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D4" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(48, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D4" type="Sprite2D" parent="Mana"]
+position = Vector2(-1, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D5" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(56, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D5" type="Sprite2D" parent="Mana"]
+position = Vector2(7, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D6" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(64, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D6" type="Sprite2D" parent="Mana"]
+position = Vector2(15, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D7" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(72, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D7" type="Sprite2D" parent="Mana"]
+position = Vector2(23, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D8" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(80, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D8" type="Sprite2D" parent="Mana"]
+position = Vector2(31, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D9" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(88, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D9" type="Sprite2D" parent="Mana"]
+position = Vector2(39, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D10" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(96, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D10" type="Sprite2D" parent="Mana"]
+position = Vector2(47, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D11" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(104, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D11" type="Sprite2D" parent="Mana"]
+position = Vector2(55, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D12" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(112, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D12" type="Sprite2D" parent="Mana"]
+position = Vector2(63, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D13" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(120, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D13" type="Sprite2D" parent="Mana"]
+position = Vector2(71, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D14" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(128, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D14" type="Sprite2D" parent="Mana"]
+position = Vector2(79, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D15" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(136, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D15" type="Sprite2D" parent="Mana"]
+position = Vector2(87, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D16" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(144, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D16" type="Sprite2D" parent="Mana"]
+position = Vector2(95, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D17" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(152, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D17" type="Sprite2D" parent="Mana"]
+position = Vector2(103, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D18" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(160, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D18" type="Sprite2D" parent="Mana"]
+position = Vector2(111, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D19" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(168, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D19" type="Sprite2D" parent="Mana"]
+position = Vector2(119, -8)
+texture = ExtResource("12_1v2lq")
 
-[node name="Sprite2D20" type="Sprite2D" parent="SoulCharges"]
-position = Vector2(176, -8)
-texture = ExtResource("11_y0qlw")
+[node name="Sprite2D20" type="Sprite2D" parent="Mana"]
+position = Vector2(127, -8)
+texture = ExtResource("12_1v2lq")
+
+[node name="RadialMenuButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 59.0
+offset_right = 202.0
+offset_bottom = 91.0
+mouse_filter = 2
+texture_normal = ExtResource("7_4bb1o")
+stretch_mode = 0
+script = ExtResource("13_dnmvj")
+summon_button_scene = ExtResource("14_weg4l")
+
+[node name="Buttons" type="Control" parent="RadialMenuButton"]
+anchors_preset = 0
+offset_left = 11.0
+offset_top = 13.0
+offset_right = 51.0
+offset_bottom = 53.0
+mouse_filter = 2
 
 [connection signal="toggled" from="GridDisplay/MarginContainer/PanelContainer/ShowGrid" to="GridDisplay" method="_on_show_grid_toggled"]
+[connection signal="pressed" from="RadialMenuButton" to="RadialMenuButton" method="_on_pressed"]
