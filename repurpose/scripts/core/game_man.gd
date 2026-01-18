@@ -584,7 +584,6 @@ func spawn_npc(data: EnemyData, coord: Vector2i, soul: Node2D = null):
 		var move = Move.new(
 			minion, pos_to_cell(minion.global_position), free_tile, 100, true)
 		queue_spawn_move(move)
-		souls.pop_at(souls.find(soul)) # FIXME: should probably make a queue_deregister_npc thing.
 	elif data != null:
 		var enemy = enemy_scene.instantiate()
 		enemy.setup(dun.astar_grid, data)

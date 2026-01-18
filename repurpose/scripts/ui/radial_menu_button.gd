@@ -25,7 +25,6 @@ func setup_buttons():
 func _on_began_tick():
 	if active:
 		hide_menu()
-		Domain.menu_open = false
 	
 
 func _on_show_summon_menu(pos: Vector2):
@@ -35,19 +34,20 @@ func _on_show_summon_menu(pos: Vector2):
 	for b in buttons:
 		b.queue_free()
 	for s in GameMan.souls:
-		create_button(s.data)
+		create_button(s.data, s)
 	setup_buttons()
 	show_menu()
 
 func _on_souls_changed(_s: Node2D):
 	pass
 
-func create_button(data: EnemyData):
+func create_button(data: EnemyData, soul: Node2D):
 	var button = summon_button_scene.instantiate()
 	$Buttons.add_child(button)
 	var icon = load(data.get_icon_path())
 	button.texture_normal = icon
 	button.enemy_data = data
+	button.soul = soul
 
 func show_menu():
 	print("showing")

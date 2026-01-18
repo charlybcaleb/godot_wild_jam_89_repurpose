@@ -33,6 +33,7 @@ func _process(_delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_soul_spawn_moves()
 	if Input.is_action_just_pressed("lmb"):
+		print("SOUL COUNT ON SUMMON MENU CLICK " + str(GameMan.souls.size()))
 		# check props
 		if menu_open:
 			return
