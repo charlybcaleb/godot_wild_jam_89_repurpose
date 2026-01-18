@@ -167,7 +167,7 @@ func setup() -> void:
 	load_all_rooms()
 	spawn_start_room()
 	player.setup(dun.astar_grid)
-	add_gems(200)
+	add_gems(20022)
 	#dun.setup()
 
 func load_all_rooms():
@@ -537,11 +537,13 @@ func process_attacks(player_mode: bool):
 				continue
 		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
 		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
-			att_to_prune.append(a) # MINIBUG THIS IS FINE
-			continue
+			if !a.attacker.is_in_group("player"):
+				att_to_prune.append(a) # MINIBUG THIS IS FINE
+				continue
 		if alrdy_attacked.has(a.attacker): # MINIBUG THIS IS FINE
-			att_to_prune.append(a)
-			continue
+			if !a.attacker.is_in_group("player"):
+				att_to_prune.append(a)
+				continue
 		# skip according to mode
 		var is_player_ally = true
 		if !a.attacker.is_in_group("player") or !a.attacker.is_in_group("minion"):

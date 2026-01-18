@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=26 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
@@ -14,16 +14,23 @@
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 [ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
 [ext_resource type="Script" uid="uid://c041cjix48u8n" path="res://scenes/ui/main_menu.gd" id="8_50b52"]
+[ext_resource type="Texture2D" uid="uid://kgi5pjqj5uw" path="res://assets/sprites/characters/necro_icon.png" id="8_m3rok"]
 [ext_resource type="Texture2D" uid="uid://cffskgene5s3i" path="res://assets/sprites/ui/maintitle.png" id="8_ofhg1"]
 [ext_resource type="Script" uid="uid://c65sivmixmfxi" path="res://scripts/ui/mana_ui.gd" id="11_1v2lq"]
 [ext_resource type="Texture2D" uid="uid://6bxq5inxe1g8" path="res://assets/sprites/ui/mana_gem.png" id="12_1v2lq"]
 [ext_resource type="Script" uid="uid://dmbiq7gosm26q" path="res://scripts/ui/radial_menu_button.gd" id="13_dnmvj"]
 [ext_resource type="PackedScene" uid="uid://cdrie4ivotcm3" path="res://scenes/ui/summon_button.tscn" id="14_weg4l"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8b3e8"]
+font_size = 9
+font_color = Color(0.99015874, 0, 0.49002457, 1)
+outline_size = 2
+outline_color = Color(0.32950863, 3.9491282e-05, 0.30218852, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_weg4l"]
 bg_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_u3faw"]
 font_size = 12
@@ -32,12 +39,6 @@ outline_color = Color(0.32950863, 3.9491282e-05, 0.30218852, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_nchkn"]
 font_size = 9
-outline_size = 2
-outline_color = Color(0.32950863, 3.9491282e-05, 0.30218852, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_8b3e8"]
-font_size = 9
-font_color = Color(0.99015874, 0, 0.49002457, 1)
 outline_size = 2
 outline_color = Color(0.32950863, 3.9491282e-05, 0.30218852, 1)
 
@@ -121,6 +122,50 @@ offset_bottom = 17.0
 theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 12
 text = "16"
+
+[node name="Label2" type="Label" parent="StatsAndResources/HP"]
+layout_mode = 0
+offset_left = 35.0
+offset_right = 83.0
+offset_bottom = 17.0
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 12
+text = "HP"
+
+[node name="PortraitContainer" type="PanelContainer" parent="StatsAndResources"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 38.0
+offset_bottom = 35.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="StatsAndResources/PortraitContainer"]
+layout_mode = 2
+texture = ExtResource("8_m3rok")
+stretch_mode = 4
+
+[node name="SpecialTxtContainer" type="PanelContainer" parent="StatsAndResources"]
+clip_contents = true
+layout_mode = 0
+offset_left = 69.0
+offset_top = 42.0
+offset_right = 117.0
+offset_bottom = 58.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="StatsAndResources/SpecialTxtContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="StatsAndResources/SpecialTxtContainer"]
+layout_mode = 2
+text = "NECROMANCER"
+label_settings = SubResource("LabelSettings_8b3e8")
+autowrap_mode = 2
+max_lines_visible = 2
 
 [node name="YouDied" type="Control" parent="."]
 visible = false
