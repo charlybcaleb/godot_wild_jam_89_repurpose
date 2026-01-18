@@ -7,11 +7,15 @@ extends Resource
 @export var loot_data_path = "res://assets/resources/loot_data/5_50_gem_loot_data.tres"
 #stats
 @export var hp := 9
+@export var die_on_spawn = false
+@export var attack_on_death = false
+@export var no_movement = false
 # default = 1d4
 @export var dmg_rolls := 1
 @export var dmg_die := 4
 @export var speed := 10
 @export var cost := 200
+@export var mana_cost := 2
 #special
 @export var goblin_dance:= false
 

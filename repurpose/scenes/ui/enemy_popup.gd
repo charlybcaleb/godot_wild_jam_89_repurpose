@@ -18,3 +18,5 @@ func update(entity_props: EntityProperties):
 	hp_txt.text = str(entity_props.hp)
 	icon_rect.texture = load(entity_props.data.get_icon_path())
 	cost_txt.text = str(entity_props.data.cost)
+	if entity_props.data.cost == 0:
+		cost_txt.text = "FREE"

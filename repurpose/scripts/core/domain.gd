@@ -38,8 +38,8 @@ func _process(_delta: float) -> void:
 		if menu_open:
 			emit_signal("click_while_menu_open")
 			return
-		#if GameMan.mana < 1:
-			#return
+		if GameMan.mana < 1:
+			return
 		# if there is a corpse at this position, do not summon.
 		if npc_at_mouse:
 			if npc_at_mouse.hp <= 0:
@@ -58,7 +58,6 @@ func _process(_delta: float) -> void:
 			if valid: 
 				emit_signal("show_summon_menu", get_global_mouse_position())
 				#summon_at(click_coord, soul)
-				GameMan.update_mana(-1)
 	if Input.is_action_just_pressed("debug"):
 		var click_coord = round(GameMan.pos_to_cell(get_global_mouse_position()))
 		print("DEBUG CLICK AT COORD " + str(click_coord))
@@ -68,6 +67,7 @@ func summon_at(coord: Vector2i, soul: Node2D = null, _cost= 0):
 	#SoundMan.play_chaching()
 	GameMan.spawn_npc(soul.data, coord, soul)
 	soul.die(true)
+	GameMan.update_mana(soul.data.mana_cost)
 
 # called by npc_interactable twice, with the latter removing the npc after a delay,
 # to prevent race condition

@@ -1,17 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://pcshqpycldlj"]
+[gd_scene load_steps=12 format=3 uid="uid://6vuaera7q0na"]
 
-[ext_resource type="Script" uid="uid://cvfvhlyxb21v5" path="res://scripts/npc/enemy.gd" id="1_a3pup"]
-[ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="2_40wdo"]
-[ext_resource type="Resource" uid="uid://bv0lcw6kikn8j" path="res://assets/resources/red_flower_data.tres" id="2_gl05p"]
-[ext_resource type="SpriteFrames" uid="uid://dne7u38utlfqi" path="res://assets/sprites/characters/gnoll_necro_frames.tres" id="4_gl05p"]
-[ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_gl05p"]
+[ext_resource type="Script" uid="uid://da8pkvmsj3ser" path="res://scripts/npc/static_minion.gd" id="1_nn1nw"]
+[ext_resource type="Resource" uid="uid://bv0lcw6kikn8j" path="res://assets/resources/red_flower_data.tres" id="2_nn1nw"]
+[ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="3_cntll"]
+[ext_resource type="SpriteFrames" uid="uid://bvif1bhmou8r2" path="res://assets/sprites/characters/healing flower_frames.tres" id="4_nn1nw"]
+[ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_gharp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(16, 16)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_40wdo"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_viepk"]
 resource_local_to_scene = true
-shader = ExtResource("2_40wdo")
+shader = ExtResource("3_cntll")
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 shader_parameter/flash_enabled = false
 
@@ -26,7 +26,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
+"update": 1,
 "values": [false]
 }
 
@@ -43,7 +43,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
+"update": 1,
 "values": [true, false]
 }
 
@@ -53,22 +53,21 @@ _data = {
 &"hit": SubResource("Animation_40wdo")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cwlon"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eg7rb"]
 size = Vector2(16, 16)
 
-[node name="Enemy" type="CharacterBody2D"]
-script = ExtResource("1_a3pup")
-data = ExtResource("2_gl05p")
+[node name="Minion" type="CharacterBody2D"]
+script = ExtResource("1_nn1nw")
+data = ExtResource("2_nn1nw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("RectangleShape2D_dovo2")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_40wdo")
-sprite_frames = ExtResource("4_gl05p")
-animation = &"walk"
+material = SubResource("ShaderMaterial_viepk")
+sprite_frames = ExtResource("4_nn1nw")
+animation = &"die"
 
 [node name="PathPreviz" type="Line2D" parent="."]
 visible = false
@@ -87,11 +86,10 @@ libraries = {
 }
 
 [node name="Area2D" type="Area2D" parent="."]
-script = ExtResource("5_gl05p")
+script = ExtResource("5_gharp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-visible = false
-shape = SubResource("RectangleShape2D_cwlon")
+shape = SubResource("RectangleShape2D_eg7rb")
 
 [connection signal="input_event" from="Area2D" to="Area2D" method="_on_input_event"]
 [connection signal="mouse_shape_entered" from="Area2D" to="Area2D" method="_on_mouse_shape_entered"]

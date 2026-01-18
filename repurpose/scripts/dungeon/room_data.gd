@@ -7,6 +7,7 @@ extends Resource
 @export var enemy_table: Dictionary[EnemyData, float] # enemy, weight
 @export var min_enemies:= 0
 @export var max_enemies:= 0
+@export var kill_on_spawn = false
 # soul room stuff
 #@export var resource := GlobalConstants.ResourceType.MP
 #@export var wu_needed := 3 # each soul nets 1 wu per tick
@@ -23,6 +24,7 @@ func get_enemy_weighted_random() -> EnemyData:
 		var weight = enemy_table[key]
 		if r < weight:
 			chosen_enemy = key
+			if kill_on_spawn: chosen_enemy.die_on_spawn = true
 			return chosen_enemy
 		r -= weight
 	print("room_data: failed to weight choice enemy, returning pelfen")

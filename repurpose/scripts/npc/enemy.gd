@@ -40,6 +40,10 @@ func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	if sprite_frames:
 		$AnimSprite.sprite_frames = sprite_frames
 	else: print("SETUP ERROR: sprite frames not found for " + name)
+	
+	if _data:
+		print("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+
 
 # FIXME: should go by path length, not global pos distance
 func get_target() -> Node2D:
@@ -120,6 +124,7 @@ func tick(_delta: float) -> void:
 
 
 func do_move():
+	if data.no_movement: return
 	#print("move_pts size: " + str(move_pts.size()))
 	if move_pts.is_empty(): return 
 	cur_pt = 0;
@@ -168,9 +173,9 @@ func take_damage(damage: float):
 	if hp <= 0:
 		die()
 
-func die():
+func die(silent=false):
 	# npc_interactable.become_corpse is start of flow for all npcs to
-	GameMan.register_npc_death(self)
+	GameMan.register_npc_death(self, silent)
 	await get_tree().create_timer(GlobalConstants.MOVE_TWEEN_DURATION).timeout
 	%AnimSprite.play("die")
 	$Area2D.become_corpse(self)

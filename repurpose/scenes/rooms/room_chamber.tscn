@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=4 uid="uid://c0p0m8fooklkc"]
+
+[ext_resource type="TileSet" uid="uid://bnr4lud6qs6xu" path="res://assets/tilesets/dungeon0tileset.tres" id="1_jt6rc"]
+[ext_resource type="Script" uid="uid://drbmkf1fa4ala" path="res://scripts/dungeon/room.gd" id="2_eun45"]
+[ext_resource type="Resource" uid="uid://b1he4uun78ouw" path="res://assets/resources/rooms/room_chamber.tres" id="3_jt6rc"]
+[ext_resource type="PackedScene" uid="uid://c7tjpk3vvjvc" path="res://scenes/entities/door.tscn" id="4_05h2t"]
+[ext_resource type="PackedScene" uid="uid://dxruwhariua6q" path="res://scenes/entities/spawn_point.tscn" id="5_qk5n0"]
+
+[node name="RoomTomb" type="TileMapLayer" node_paths=PackedStringArray("spawn_points", "room_tml", "left_door", "up_door", "right_door")]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAQAAcAAAACAAgAAAAQAAgAAAADAAkAAAAQAAkAAAAFAAAAAAAQAAoAAAACAAAAAAAQAAsAAAADAAkAAAAQAAwAAAADAAoAAAARAAcAAAADAAgAAAARAAgAAAABAAkAAAARAAkAAAAGAAAAAAARAAoAAAADAAAAAAARAAsAAAABAAkAAAARAAwAAAABAAoAAAASAAcAAQACAAAAAAASAAgAAAACAAkAAAASAAkAAAACAAkAAAASAAoAAAACAAkAAAASAAsAAAACAAkAAAASAAwAAAACAAoAAAATAAcAAAABAAgAAAATAAgAAAADAAkAAAATAAkAAAADAAkAAAATAAoAAAADAAkAAAATAAsAAAADAAkAAAATAAwAAAADAAoAAAAUAAcAAAACAAgAAAAUAAgAAAABAAkAAAAUAAkAAAABAAkAAAAUAAoAAAABAAkAAAAUAAsAAAABAAkAAAAUAAwAAAABAAoAAAAVAAcAAAADAAgAAAAVAAgAAAACAAkAAAAVAAkAAAACAAkAAAAVAAoAAAACAAkAAAAVAAsAAAACAAkAAAAVAAwAAAACAAoAAAAWAAcAAAABAAgAAAAWAAgAAAADAAkAAAAWAAkAAAAFAAAAAAAWAAoAAAABAAAAAAAWAAsAAAADAAkAAAAWAAwAAAADAAoAAAAXAAcAAAABAAgAAAAXAAgAAAABAAkAAAAXAAkAAAAGAAAAAAAXAAoAAAADAAAAAAAXAAsAAAABAAkAAAAXAAwAAAABAAoAAAAOAAgAAAABAAkAAAAPAAgAAAACAAkAAAAOAAkAAAABAAkAAAAPAAkAAAACAAkAAAAOAAoAAAABAAkAAAAPAAoAAAACAAkAAAAOAAsAAAABAAkAAAAPAAsAAAACAAkAAAAYAAgAAAACAAkAAAAZAAgAAAADAAkAAAAYAAkAAAACAAkAAAAZAAkAAAADAAkAAAAYAAoAAAACAAkAAAAZAAoAAAADAAkAAAAYAAsAAAACAAkAAAAZAAsAAAADAAkAAAAPAAcAAAABAAgAAAAYAAcAAAACAAgAAAANAAcAAAAAAAgAAAANAAgAAAAAAAgAAAANAAkAAAAAAAkAAAANAAoAAQAAAAEAAAANAAsAAAAAAAgAAAANAAwAAAAAAAoAAAAOAAwAAAABAAoAAAAPAAwAAAACAAoAAAAYAAwAAAACAAoAAAAZAAwAAAADAAoAAAAaAAwAAAAEAAoAAAAaAAcAAAAEAAgAAAAaAAgAAAAEAAgAAAAZAAcAAAADAAgAAAAOAAcAAAABAAgAAAAaAAkAAAAEAAgAAAAaAAoAAAAEAAkAAAAaAAsAAAAEAAgAAAA=")
+tile_set = ExtResource("1_jt6rc")
+script = ExtResource("2_eun45")
+room_data = ExtResource("3_jt6rc")
+spawn_points = [NodePath("SpawnPoint"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3")]
+room_tml = NodePath(".")
+left_door = NodePath("Door")
+up_door = NodePath("Door2")
+right_door = NodePath("Door3")
+
+[node name="Door" parent="." instance=ExtResource("4_05h2t")]
+position = Vector2(216, 168)
+
+[node name="Door2" parent="." instance=ExtResource("4_05h2t")]
+position = Vector2(392, 200)
+
+[node name="Door3" parent="." instance=ExtResource("4_05h2t")]
+position = Vector2(296, 200)
+animation = &"lock"
+
+[node name="SpawnPoint" parent="." instance=ExtResource("5_qk5n0")]
+position = Vector2(264, 136)
+
+[node name="SpawnPoint2" parent="." instance=ExtResource("5_qk5n0")]
+position = Vector2(360, 136)
+
+[node name="SpawnPoint3" parent="." instance=ExtResource("5_qk5n0")]
+position = Vector2(328, 168)

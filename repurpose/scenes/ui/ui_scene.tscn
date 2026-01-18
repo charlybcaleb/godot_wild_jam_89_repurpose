@@ -366,7 +366,7 @@ expand_mode = 1
 
 [node name="TitleLabel" type="Label" parent="EnemyPopup/Name"]
 layout_mode = 2
-text = "Pelfen"
+text = "Null"
 label_settings = SubResource("LabelSettings_u3faw")
 autowrap_mode = 2
 max_lines_visible = 2

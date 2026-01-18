@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SoulData" load_steps=2 format=3 uid="uid://cgywpbpgp4gsb"]
+
+[ext_resource type="Script" uid="uid://dh4rrw3p1ms2r" path="res://scripts/npc/soul_data.gd" id="1_2ff1j"]
+
+[resource]
+script = ExtResource("1_2ff1j")
+name = "Soul"
+enemy_data_name = "Healing Flower"
+metadata/_custom_type_script = "uid://dh4rrw3p1ms2r"

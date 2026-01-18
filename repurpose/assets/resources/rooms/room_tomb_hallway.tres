@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("5_2jquf")
-name = "Giant Tomb"
+name = "Ransacked Cloister"
 room_scene_path = "res://scenes/rooms/room_tomb_hallway.tscn"
 spawn_weight = 100
 enemy_table = Dictionary[ExtResource("1_i6c1w"), float]({

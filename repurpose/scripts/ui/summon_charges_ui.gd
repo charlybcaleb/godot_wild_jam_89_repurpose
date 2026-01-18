@@ -4,8 +4,8 @@ extends Control
 
 func _ready() -> void:
 	#connect("summon_charges_changed", Callable(self, "_on_summon_charges_changed"))
-	GameMan.connect("summon_charges_changed", Callable(self, "_on_summon_charges_changed"))
-func _on_summon_charges_changed(amt: int):
+	GameMan.connect("mana_changed", Callable(self, "_on_mana_changed"))
+func _on_mana_changed(amt: int):
 	show_x_charge_icons(amt)
 	
 func show_x_charge_icons(x: int):
