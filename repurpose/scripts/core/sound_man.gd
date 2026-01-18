@@ -11,6 +11,13 @@ var pelfen_death_sounds: Array[AudioStream]
 var pelfen_death_sound_0 = preload("res://assets/sounds/pelfen_death_sound_0.wav")
 var pelfen_death_sound_1 = preload("res://assets/sounds/pelfen_death_sound_1.wav")
 
+var necro_sound_player: AudioStreamPlayer2D
+var necro_death_sounds: Array[AudioStream]
+var necro_hurt_sounds: Array[AudioStream]
+var necro_death_sound_0 = preload("res://assets/sounds/necro_death.wav")
+var necro_hurt_sound_0 = preload("res://assets/sounds/necro_hurt.wav")
+var necro_hurt_sound_1 = preload("res://assets/sounds/necro_hurt_1.wav")
+
 var magic_sound_0 = preload("res://assets/sounds/flipflomp.wav")
 var decline_sound = preload("res://assets/sounds/decline.wav")
 var chaching_sound = preload("res://assets/sounds/chaching.wav")
@@ -27,16 +34,28 @@ func _ready() -> void:
 	pelfen_death_sounds.append(pelfen_death_sound_1)
 	death_sound_player = audio_player_scene.instantiate()
 	get_tree().current_scene.add_child(death_sound_player)
+	
+	necro_death_sounds.append(necro_death_sound_0)
+	necro_hurt_sounds.append(necro_hurt_sound_0)
+	necro_hurt_sounds.append(necro_hurt_sound_1)
+	necro_sound_player = audio_player_scene.instantiate()
+	get_tree().current_scene.add_child(necro_sound_player)
 
 func play_hit(entity_type= GlobalConstants.EntityType.ENEMY):
-	if entity_type != GlobalConstants.EntityType.WORKABLE:
+	if entity_type != GlobalConstants.EntityType.WORKABLE and entity_type != GlobalConstants.EntityType.PLAYER:
 		hit_sound_player.stream = hit_sounds[randi_range(0,2)]
 		hit_sound_player.play()
+	elif entity_type == GlobalConstants.EntityType.PLAYER:
+		necro_sound_player.stream = necro_hurt_sounds[randi_range(0,1)]
+		necro_sound_player.play()
 
 func play_death(npc_name: String):
 	if npc_name == "Pelfen":
 		death_sound_player.stream = pelfen_death_sounds[randi_range(0,1)]
 		death_sound_player.play()
+	elif npc_name == "Player":
+		necro_sound_player.stream = necro_death_sounds[0]
+		necro_sound_player.play()
 	else:
 		death_sound_player.stream = pelfen_death_sounds[randi_range(0,1)]
 		death_sound_player.play()

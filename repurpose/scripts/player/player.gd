@@ -25,6 +25,7 @@ var queued_move: Vector2i
 var facing_right: bool
 
 signal health_changed(new_hp, _max_hp)
+signal player_health_changed(new_hp)
 
 func _ready() -> void:
 	GameMan.register_player(self)
@@ -88,7 +89,7 @@ func _input(event: InputEvent):
 		pass
 	# check if occupied. if occ by enemy, queue attack. if occ by mini, swap.
 	# if occ by else, skip input.
-	var occupant := GameMan.get_node_at_coord(target_coord)
+	var occupant = GameMan.get_node_at_coord(target_coord)
 	if occupant:
 		if occupant.is_in_group("enemy"):
 			print("--------PLAYER ATTACK QUEUEING from: " + str(current_cell) + " to " + str((occupant.current_cell)))
@@ -168,16 +169,23 @@ func tween_move(to: Vector2):
 
 func take_damage(damage: float):
 	emit_signal("health_changed", hp-damage, max_hp)
+	emit_signal("player_health_changed", hp-damage)
 	damage = int(round(damage))
 	$HitFlashAnim.play("hit")
 	hp -= damage
 	if hp <= 0:
 		die()
 
+func heal(amt: int):
+	hp += amt
+	if hp > max_hp:
+		hp = max_hp
+	emit_signal("health_changed", hp, max_hp)
+	emit_signal("player_health_changed", hp)
+
 func die():
-	pass
-	#GameMan.register_npc_death(self)
-	#%AnimSprite.hide()
+	GameMan.register_npc_death(self)
+	%AnimSprite.play("die")
 
 #### ANIMATION / VISUALS ####################################
 

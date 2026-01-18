@@ -1,5 +1,9 @@
 extends Control
 
+#death
+@export var death_screen: Control
+@export var enemies_slain: Label
+@export var total_gems_collected: Label
 # enemy popup
 var enemy_popup: Control
 var enemy_popup_target: Node2D
@@ -61,7 +65,11 @@ func show_door_popup(door: Node2D, e= true):
 			return
 		should_show_d_popup = false
 
-
+func display_death_screen():
+	total_gems_collected.text = str(GameMan.total_gems_collected)
+	enemies_slain.text = str(GameMan.enemies_slain)
+	death_screen.show()
+	
 
 ############# DEPRECATED
 

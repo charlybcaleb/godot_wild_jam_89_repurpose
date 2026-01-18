@@ -15,6 +15,7 @@ func spawn_summon_fx(coord: Vector2i):
 	summon_fx_instance.global_position = pos
 
 func despawn_summon_fx():
+	if summon_fx_instance == null: return
 	summon_fx_instance.queue_free()
 
 func spawn_and_send_gems_fx(from_pos: Vector2, to_pos= Vector2.ZERO):

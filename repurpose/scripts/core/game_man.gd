@@ -44,14 +44,19 @@ var coords_being_moved_to: Array[Vector2i]
 var spawn_moves: Array[Move]
 var effect_stack: Array[Effect]
 var active_effect: Effect
-# stats
+# meta stats
 var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
+var total_gems_collected := 0
 # player resources
 var gems := 0
 var mana := 0
 var max_mana := 1
+# player stats
+var hp_regen_every := 5
+var hp_regen_amt := 3
+var turns_since_player_hurt := 0
 
 signal max_mana_changed(amt)
 signal mana_changed(amt)
@@ -64,6 +69,9 @@ func add_gems(amt: int):
 	emit_signal("gems_changed", gems)
 	SoundMan.play_chaching()
 	print("GEMS COUNTTTTTTTTTTTT " + str(gems))
+	
+	if amt > 0:
+		total_gems_collected += amt
 
 func update_mana(amt: int):
 	if mana + amt <= max_mana and \
@@ -210,6 +218,7 @@ func spawn_new_room(rd: RoomData):
 	pass
 
 func move_to_room(rd: RoomData, from_door: Node2D):
+	attacks.clear() ## FIXME: bandaid fixx for attacked from old room bug.
 	player.block_inputs = true
 	var original_door_pos = (from_door.global_position)
 	
@@ -366,6 +375,10 @@ func cell_to_pos(cell: Vector2i):
 
 func tick():
 	emit_signal("began_tick")
+	print (str(turns_since_player_hurt))
+	turns_since_player_hurt += 1
+	if turns_since_player_hurt % hp_regen_every == 0:
+		player.heal(hp_regen_amt)
 	process_swap_moves()
 	minion_tick()
 	enemy_tick()
@@ -503,11 +516,11 @@ func process_attacks(player_mode: bool):
 	att_to_prune.clear()
 	alrdy_attacked.clear()
 	# sort by speed, filter
-	#var fastest := attacks[0]
-	#for a in attacks:
-		#if a.speed > fastest.speed:
-			#fastest = a
-	#attacks.push_front(fastest)
+	var fastest := attacks[0]
+	for a in attacks:
+		if a.speed > fastest.speed:
+			fastest = a
+	attacks.push_front(fastest)
 
 	# now do attacks
 	for a in attacks:
@@ -555,7 +568,9 @@ func process_attacks(player_mode: bool):
 			str(a.to) + ". TURN " + str(get_turn()))
 		if a.defender.entity_type != GlobalConstants.EntityType.WORKABLE:
 			SoundMan.play_hit()
-		if a.defender.entity_type == GlobalConstants.EntityType.PLAYER
+		if a.defender.entity_type == GlobalConstants.EntityType.PLAYER:
+			SoundMan.play_hit(GlobalConstants.EntityType.PLAYER)
+			turns_since_player_hurt = 0
 		else:
 			SoundMan.play_hit(GlobalConstants.EntityType.WORKABLE)
 	# now cleanup attacks
@@ -576,8 +591,8 @@ func queue_attack(attack: Attack):
 		valid = false; aq_log += "att expired, "
 	if valid: attacks.append(attack)
 	else:
-		if a.attacker.is_in_group("player"):
-			print("QUEUE_ATTACK: failed because " + aq_log)
+		#if a.attacker.is_in_group("player"):
+		print("QUEUE_ATTACK: failed because " + aq_log)
 		pass
 
 func process_corpses():
@@ -805,6 +820,8 @@ func register_npc_death(npc: Node2D, silent= false):
 		souls.pop_at(souls.find(npc))
 		npc.queue_free()
 		print("soul spawned")
+	elif npc.is_in_group("player"):
+		player_died()
 	# prune effects owned by this entity
 	var e_to_prune = []
 	for e in effect_stack:
@@ -813,6 +830,10 @@ func register_npc_death(npc: Node2D, silent= false):
 	for e in e_to_prune:
 		if effect_stack.has(e):
 			effect_stack.pop_at(effect_stack.find(e))
+
+func player_died():
+	SoundMan.play_death("player")
+	ui.display_death_screen()
 
 func get_turn() -> int:
 	return turn

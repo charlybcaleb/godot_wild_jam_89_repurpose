@@ -98,14 +98,13 @@ offset_right = 15.0
 offset_bottom = 18.0
 script = ExtResource("4_eyaot")
 
-[node name="HP" type="Control" parent="StatsAndResources" node_paths=PackedStringArray("hp_label")]
+[node name="HP" type="Control" parent="StatsAndResources"]
 anchors_preset = 0
 offset_left = 64.0
 offset_top = 8.0
 offset_right = 104.0
 offset_bottom = 48.0
 script = ExtResource("6_k1g1s")
-hp_label = NodePath("Label")
 
 [node name="Sprite2D" type="Sprite2D" parent="StatsAndResources/HP"]
 position = Vector2(8, 0)
@@ -121,7 +120,6 @@ theme_override_font_sizes/font_size = 12
 text = "16"
 
 [node name="YouDied" type="Control" parent="."]
-visible = false
 z_index = 5
 anchors_preset = 0
 offset_left = 281.0
