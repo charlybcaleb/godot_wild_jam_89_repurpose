@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cvfvhlyxb21v5" path="res://scripts/npc/enemy.gd" id="1_a3pup"]
 [ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="2_40wdo"]
 [ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="2_cwlon"]
-[ext_resource type="SpriteFrames" uid="uid://dmy057g252dnp" path="res://assets/sprites/characters/scrik_necro_frames.tres" id="4_gl05p"]
+[ext_resource type="SpriteFrames" uid="uid://dne7u38utlfqi" path="res://assets/sprites/characters/gnoll_necro_frames.tres" id="4_gl05p"]
 [ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_gl05p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]

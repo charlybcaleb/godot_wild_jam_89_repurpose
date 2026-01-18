@@ -1,0 +1,52 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://dne7u38utlfqi"]
+
+[ext_resource type="Texture2D" uid="uid://bhojxabpci8yh" path="res://assets/sprites/characters/gnoll_necro_sheet.png" id="1_rlgo6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6blyb"]
+atlas = ExtResource("1_rlgo6")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqsdn"]
+atlas = ExtResource("1_rlgo6")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mgpv"]
+atlas = ExtResource("1_rlgo6")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epppq"]
+atlas = ExtResource("1_rlgo6")
+region = Rect2(32, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6blyb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqsdn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7mgpv")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epppq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6blyb")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]

@@ -1,0 +1,52 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://ctpbfvlx7tolf"]
+
+[ext_resource type="Texture2D" uid="uid://b186d72fhp4s0" path="res://assets/sprites/characters/gnoll-Sheet.png" id="1_tq355"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yx32j"]
+atlas = ExtResource("1_tq355")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trigj"]
+atlas = ExtResource("1_tq355")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8k5wp"]
+atlas = ExtResource("1_tq355")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvgt0"]
+atlas = ExtResource("1_tq355")
+region = Rect2(32, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yx32j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trigj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8k5wp")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jvgt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yx32j")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]

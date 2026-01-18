@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=25 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" uid="uid://ca5v5kr2ia6tw" path="res://scenes/ui/hp.gd" id="6_k1g1s"]
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 [ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
+[ext_resource type="Script" uid="uid://c041cjix48u8n" path="res://scenes/ui/main_menu.gd" id="8_50b52"]
+[ext_resource type="Texture2D" uid="uid://cffskgene5s3i" path="res://assets/sprites/ui/maintitle.png" id="8_ofhg1"]
 [ext_resource type="Script" uid="uid://c65sivmixmfxi" path="res://scripts/ui/mana_ui.gd" id="11_1v2lq"]
 [ext_resource type="Texture2D" uid="uid://6bxq5inxe1g8" path="res://assets/sprites/ui/mana_gem.png" id="12_1v2lq"]
 [ext_resource type="Script" uid="uid://dmbiq7gosm26q" path="res://scripts/ui/radial_menu_button.gd" id="13_dnmvj"]
@@ -122,7 +124,7 @@ text = "16"
 
 [node name="YouDied" type="Control" parent="."]
 visible = false
-z_index = 5
+z_index = 10
 anchors_preset = 0
 offset_left = 281.0
 offset_top = 82.0
@@ -215,6 +217,42 @@ offset_right = 128.0
 offset_bottom = 64.0
 texture = ExtResource("2_k3tac")
 expand_mode = 1
+
+[node name="MainMenu" type="Control" parent="."]
+visible = false
+z_index = 10
+anchors_preset = 0
+offset_left = 281.0
+offset_top = 82.0
+offset_right = 321.0
+offset_bottom = 122.0
+script = ExtResource("8_50b52")
+
+[node name="PanelContainer" type="PanelContainer" parent="MainMenu"]
+layout_mode = 0
+offset_left = -286.0
+offset_top = -85.00001
+offset_right = 58.79187
+offset_bottom = 2.8440247
+scale = Vector2(1.9199988, 4.36)
+theme_override_styles/panel = SubResource("StyleBoxFlat_weg4l")
+
+[node name="ty" type="Label" parent="MainMenu"]
+layout_mode = 0
+offset_left = -50.0
+offset_top = 240.0
+offset_right = 172.0
+offset_bottom = 297.0
+text = "press the left mouse button!"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MainMenu"]
+layout_mode = 0
+offset_left = -210.0
+offset_top = -49.0
+offset_right = 243.0
+offset_bottom = 147.0
+texture = ExtResource("8_ofhg1")
 
 [node name="GridDisplay" type="Control" parent="."]
 unique_name_in_owner = true
@@ -544,6 +582,7 @@ texture = ExtResource("2_k3tac")
 expand_mode = 1
 
 [node name="TitleLabel" type="Label" parent="DoorPopup/SpecialTxtContainer"]
+visible = false
 layout_mode = 2
 text = "1-2 enemies"
 label_settings = SubResource("LabelSettings_8b3e8")

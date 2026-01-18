@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="RoomData" load_steps=5 format=3 uid="uid://b8n0ujgjxvw4l"]
+[gd_resource type="Resource" script_class="RoomData" load_steps=6 format=3 uid="uid://b8n0ujgjxvw4l"]
 
 [ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_6sy8e"]
 [ext_resource type="Resource" uid="uid://c5losy6iqcqgb" path="res://assets/resources/pelfen_data.tres" id="2_ynuen"]
 [ext_resource type="Script" uid="uid://jtl4bsq8gie4" path="res://scripts/dungeon/room_data.gd" id="3_l34n6"]
 [ext_resource type="Resource" uid="uid://1y5he2oot7r4" path="res://assets/resources/scrik_data.tres" id="3_ynuen"]
+[ext_resource type="Resource" uid="uid://cowdt8ehd8cr3" path="res://assets/resources/gnoll_data.tres" id="4_l34n6"]
 
 [resource]
 script = ExtResource("3_l34n6")
@@ -12,8 +13,9 @@ room_scene_path = "res://scenes/rooms/room_tomb_large.tscn"
 spawn_weight = 100
 enemy_table = Dictionary[ExtResource("1_6sy8e"), float]({
 ExtResource("2_ynuen"): 10.0,
-ExtResource("3_ynuen"): 5.0
+ExtResource("3_ynuen"): 5.0,
+ExtResource("4_l34n6"): 2.5
 })
-min_enemies = 6
-max_enemies = 7
+min_enemies = 3
+max_enemies = 5
 metadata/_custom_type_script = "uid://jtl4bsq8gie4"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://cowdt8ehd8cr3"]
+
+[ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_1gapd"]
+
+[resource]
+script = ExtResource("1_1gapd")
+name = "Gnoll"
+hp = 28
+dmg_die = 8
+cost = 450
+metadata/_custom_type_script = "uid://c08irn7x3105s"
