@@ -11,6 +11,7 @@ extends Resource
 @export var dmg_rolls := 1
 @export var dmg_die := 4
 @export var speed := 10
+@export var cost := 200
 #special
 @export var goblin_dance:= false
 

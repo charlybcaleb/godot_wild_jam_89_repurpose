@@ -5,9 +5,11 @@
 [resource]
 script = ExtResource("1_y6cq8")
 name = "Scrik"
+icon_path = "res://assets/sprites/characters/scrik_icon.png"
 sprite_frames_path = "res://assets/sprites/characters/scrik_frames.tres"
 hp = 11
-dmg_die = 3
+dmg_die = 5
 speed = 20
+cost = 250
 goblin_dance = true
 metadata/_custom_type_script = "uid://c08irn7x3105s"

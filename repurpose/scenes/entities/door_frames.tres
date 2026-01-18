@@ -1,0 +1,45 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://cd7tnke72ie67"]
+
+[ext_resource type="Texture2D" uid="uid://c47sr8obh0bv" path="res://assets/sprites/env/dungeon0.png" id="1_cl2wv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewl7v"]
+atlas = ExtResource("1_cl2wv")
+region = Rect2(128, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_htbgl"]
+atlas = ExtResource("1_cl2wv")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_de05j"]
+atlas = ExtResource("1_cl2wv")
+region = Rect2(144, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ewl7v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_htbgl")
+}],
+"loop": true,
+"name": &"lock",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.2,
+"texture": SubResource("AtlasTexture_ewl7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_de05j")
+}],
+"loop": false,
+"name": &"open",
+"speed": 5.0
+}]

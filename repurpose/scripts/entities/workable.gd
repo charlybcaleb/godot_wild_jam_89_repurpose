@@ -25,6 +25,7 @@ func tick(_delta: float):
 		GameMan.add_effect(effect)
 	if charges == max_charges:
 		currently_workable = true
+		%AnimSprite.play("default")
 
 func get_target() -> Node2D:
 	return
@@ -32,6 +33,7 @@ func get_target() -> Node2D:
 func setup(_grid: AStarGrid2D, _data: EnemyData = null):
 	super.setup(_grid, _data)
 	entity_type = GlobalConstants.EntityType.WORKABLE
+	%AnimSprite.play("die")
 
 func effect_processed():
 	pass
@@ -48,15 +50,13 @@ func die(silent=true):
 	# when worked this is called.
 	if worked_effect:
 		GameMan.add_effect(Effect.new(worked_effect, self))
-	%AnimSprite.play("die")
 	var loot_data = load(data.loot_data_path)
 	if loot_data.min_loot > 0:
 		GameMan.spawn_loot(data, GameMan.pos_to_cell(global_position))
+	%AnimSprite.play("die")
+	#await %AnimSprite.animation_finished
 	if destroy_on_worked:
 		GameMan.register_npc_death(self,silent)
-		#$Area2D.become_corpse(self, true)
-		#await %AnimSprite.animation_finished
-		queue_free()
 
 func add_charges(amt: int):
 	#if hp <= 0: # the idea is that when this is caleld, if the worker

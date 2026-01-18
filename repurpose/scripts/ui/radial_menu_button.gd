@@ -14,6 +14,7 @@ func _ready():
 	GameMan.connect("souls_changed", Callable(self, "_on_souls_changed"))
 	GameMan.connect("began_tick", Callable(self, "_on_began_tick"))
 	Domain.connect("show_summon_menu", Callable(self, "_on_show_summon_menu"))
+	Domain.connect("click_while_menu_open", Callable(self, "_on_click_while_menu_open"))
 	
 	$Buttons.hide()
 	num = $Buttons.get_child_count()
@@ -25,7 +26,11 @@ func setup_buttons():
 func _on_began_tick():
 	if active:
 		hide_menu()
-	
+
+func _on_click_while_menu_open():
+	if active:
+		await get_tree().create_timer(0.28).timeout
+		hide_menu()
 
 func _on_show_summon_menu(pos: Vector2):
 	click_pos = pos
@@ -42,6 +47,7 @@ func _on_souls_changed(_s: Node2D):
 	pass
 
 func create_button(data: EnemyData, soul: Node2D):
+	print("BUTTOIN COST " + str(data.cost))
 	var button = summon_button_scene.instantiate()
 	$Buttons.add_child(button)
 	var icon = load(data.get_icon_path())
@@ -62,6 +68,9 @@ func show_menu():
 		tw.tween_property(b, "position", dest, speed).from(Vector2.ZERO).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		tw.tween_property(b, "scale", Vector2.ONE, speed).from(Vector2(0.5, 0.5)).set_trans(Tween.TRANS_LINEAR)
 	Domain.menu_open = true
+	
+	FxMan.spawn_summon_fx(GameMan.pos_to_cell(click_pos))
+	SoundMan.play_magic()
 
 func hide_menu():
 	print("hiding")
@@ -72,6 +81,9 @@ func hide_menu():
 		tw.tween_property(b, "position", Vector2.ZERO, 0).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		tw.tween_property(b, "scale", Vector2(0.5, 0.5), 0).set_trans(Tween.TRANS_LINEAR)
 	Domain.menu_open = false
+	
+	FxMan.despawn_summon_fx()
+	SoundMan.play_decline()
 
 
 func _on_pressed():

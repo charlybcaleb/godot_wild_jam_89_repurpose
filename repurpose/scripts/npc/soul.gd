@@ -30,7 +30,6 @@ func tick(_delta: float) -> void:
 	if get_target() == null: return
 	if target == null or target.hp <= 0:
 		set_target(get_target())
-		if target: print("enemy targeted: " + target.name)
 	if target != null:
 		var tpos = Vector2i(GameMan.pos_to_cell(target.global_position))
 		if tpos != tpos+Vector2i.UP: # FIXME: lol i turned this check off. cuz it was making enemies not move.!
@@ -38,14 +37,14 @@ func tick(_delta: float) -> void:
 			var path_blocked = false
 			for mp in move_pts:
 				var mp_coord = (GameMan.pos_to_cell(mp))
-				print("MINI PATH PT: " + str(mp_coord))
+				#print("MINI PATH PT: " + str(mp_coord))
 				# check if any points aside from start and end are blocked
 				if move_pts.find(mp) != move_pts.size()-1 and \
 				move_pts.find(mp) != 1 and \
 				move_pts.find(mp) != 0:
 					if GameMan.is_tile_blocked(mp_coord, false):
 						path_blocked = true
-						print("MINI PATH BLOCKED: " + str(mp_coord))
+						#print("MINI PATH BLOCKED: " + str(mp_coord))
 			# offset move_pts path by half the size of our tile size to get center
 			# this must be done before movement. FIXME: this sucks
 			move_pts = (move_pts as Array).map(func(p): return p + grid.cell_size / 2.0)
@@ -89,15 +88,15 @@ func get_target() -> Node2D:
 	else: return null
 
 
-func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton  \
-	and event.button_index == MOUSE_BUTTON_LEFT \
-	and event.is_pressed():
-		if soul_state != SoulState.HELD:
-			soul_state = SoulState.HELD
-		else:
-			#todo: check and see if over valid tile.
-			soul_state = SoulState.IDLE
+#func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	#if event is InputEventMouseButton  \
+	#and event.button_index == MOUSE_BUTTON_LEFT \
+	#and event.is_pressed():
+		#if soul_state != SoulState.HELD:
+			#soul_state = SoulState.HELD
+		#else:
+			##todo: check and see if over valid tile.
+			#soul_state = SoulState.IDLE
 
 func die(silent=false):
 	GameMan.register_npc_death(self, silent)

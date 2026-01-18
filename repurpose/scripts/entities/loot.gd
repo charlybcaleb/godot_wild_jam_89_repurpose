@@ -8,12 +8,23 @@ extends CharacterBody2D
 var quantity: int
 var domain = true
 
+# called when spawned by gman
 func setup():
+	SoundMan.play_gem_drop()
 	quantity = randi_range(min_quantity, max_quantity)
 	$Label.text = str(quantity)
+	send_gems_to_ui(quantity)
 
 func set_quantity(new_quantity: int):
 	quantity = new_quantity
 	$Label.text = str(quantity)
 	if quantity == 0:
 		queue_free()
+
+func send_gems_to_ui(amt: int):
+	await get_tree().create_timer(0.2).timeout
+	FxMan.spawn_and_send_gems_fx(global_position)
+	hide()
+	await get_tree().create_timer(0.5).timeout
+	GameMan.add_gems(amt)
+	set_quantity(0)

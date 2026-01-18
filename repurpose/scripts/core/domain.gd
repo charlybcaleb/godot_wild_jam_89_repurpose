@@ -7,6 +7,7 @@ var npc_at_mouse: Node2D
 var menu_open= false
 
 signal show_summon_menu(pos)
+signal click_while_menu_open
 
 
 # domain spans from x 0 to 39 and y 16 to 21
@@ -33,9 +34,9 @@ func _process(_delta: float) -> void:
 	if !spawn_moves.is_empty():
 		process_soul_spawn_moves()
 	if Input.is_action_just_pressed("lmb"):
-		print("SOUL COUNT ON SUMMON MENU CLICK " + str(GameMan.souls.size()))
 		# check props
 		if menu_open:
+			emit_signal("click_while_menu_open")
 			return
 		#if GameMan.mana < 1:
 			#return
@@ -44,7 +45,7 @@ func _process(_delta: float) -> void:
 			if npc_at_mouse.hp <= 0:
 				return
 		if !GameMan.souls.is_empty():
-			var soul = GameMan.souls[0]
+			#var soul = GameMan.souls[0]
 			var click_coord = Vector2i(GameMan.pos_to_cell(get_global_mouse_position()))
 			var valid = true
 			if !GameMan.is_tile_in_room(click_coord):
@@ -63,7 +64,8 @@ func _process(_delta: float) -> void:
 		print("DEBUG CLICK AT COORD " + str(click_coord))
 
 ## spawns first unassigned soul in at coord as minion, unless other soul is provided.
-func summon_at(coord: Vector2i, soul: Node2D = null):
+func summon_at(coord: Vector2i, soul: Node2D = null, _cost= 0):
+	#SoundMan.play_chaching()
 	GameMan.spawn_npc(soul.data, coord, soul)
 	soul.die(true)
 

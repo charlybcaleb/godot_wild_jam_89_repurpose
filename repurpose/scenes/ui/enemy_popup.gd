@@ -3,6 +3,7 @@ extends Control
 @export var name_txt: Label
 @export var dmg_txt: Label
 @export var hp_txt: Label
+@export var cost_txt: Label
 @export var icon_rect: TextureRect
 #@export var special_txt: Label
 
@@ -16,3 +17,4 @@ func update(entity_props: EntityProperties):
 	dmg_txt.text = dmg_string
 	hp_txt.text = str(entity_props.hp)
 	icon_rect.texture = load(entity_props.data.get_icon_path())
+	cost_txt.text = str(entity_props.data.cost)

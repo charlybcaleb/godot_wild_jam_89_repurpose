@@ -29,9 +29,16 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 		if is_corpse:
 			var valid = true
 			GameMan.click_consumed = true
+			if GameMan.gems < npc.data.cost:
+				SoundMan.play_decline()
+				valid = false
 			if valid:
 				send_soul_to_domain(the_damned_waiting_for_redemption)
 				is_corpse = false
+				
+				GameMan.add_gems(-npc.data.cost)
+				var from_pos = get_tree().get_first_node_in_group("gems_display").global_position
+				FxMan.spawn_and_send_gems_fx(from_pos, npc.global_position)
 		else:
 			if npc.is_in_group("minion"):
 				if npc.secs_alive > 0.1: npc.die()

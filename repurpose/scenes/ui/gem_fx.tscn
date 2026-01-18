@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://cty3y88k5exrs"]
+
+[ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="1_bkua5"]
+[ext_resource type="Texture2D" uid="uid://bhl01e6pxht6i" path="res://assets/sprites/ui/ui.png" id="2_bkua5"]
+[ext_resource type="Script" uid="uid://b4reuip046tss" path="res://scenes/ui/anim_sprite_autoplay.gd" id="3_cvv7j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_40wdo"]
+resource_local_to_scene = true
+shader = ExtResource("1_bkua5")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_enabled = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5y06a"]
+atlas = ExtResource("2_bkua5")
+region = Rect2(160, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvv7j"]
+atlas = ExtResource("2_bkua5")
+region = Rect2(176, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tljbj"]
+atlas = ExtResource("2_bkua5")
+region = Rect2(192, 144, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wn04d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5y06a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvv7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tljbj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="FX" type="Node2D"]
+
+[node name="AnimSprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_40wdo")
+sprite_frames = SubResource("SpriteFrames_wn04d")
+script = ExtResource("3_cvv7j")

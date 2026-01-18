@@ -11,6 +11,7 @@ var click_consumed = false # FIXME: this shit is so cursed. it's a gamejam tho!
 var enemy_scene: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var minion_scene: PackedScene = preload("res://scenes/player/minion.tscn")
 var entity_ui_scene: PackedScene = preload("res://scenes/ui/entity_ui.tscn")
+var sg_flower_scene: PackedScene = preload("res://scenes/player/workable.tscn")
 # rooms
 var room_datas: Array[RoomData]
 var error_room: RoomData = preload("res://assets/resources/rooms/room_error.tres")
@@ -48,13 +49,21 @@ var turn := 0
 var enemies_slain := 0
 var minions_slain := 0
 # player resources
+var gems := 0
 var mana := 0
 var max_mana := 1
 
 signal max_mana_changed(amt)
 signal mana_changed(amt)
+signal gems_changed(amt)
 signal souls_changed(s)
 signal began_tick
+
+func add_gems(amt: int):
+	gems += amt
+	emit_signal("gems_changed", gems)
+	SoundMan.play_chaching()
+	print("GEMS COUNTTTTTTTTTTTT " + str(gems))
 
 func update_mana(amt: int):
 	if mana + amt <= max_mana and \
@@ -150,16 +159,22 @@ func setup() -> void:
 	load_all_rooms()
 	spawn_start_room()
 	player.setup(dun.astar_grid)
+	add_gems(200)
 	#dun.setup()
 
 func load_all_rooms():
 	var path = "res://assets/resources/rooms/"
 	var dir = DirAccess.open(path)
 	var rd_loads = []
+	print("begin load all rooms")
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
+			print("current file name: " + file_name)
+			if file_name.ends_with(".remap"):
+				file_name = file_name.replace(".remap", "")
+			print("post-importectomy file name: " + file_name)
 			if dir.current_is_dir():
 				print("Found directory: "+ file_name)
 			else:
@@ -488,11 +503,11 @@ func process_attacks(player_mode: bool):
 	att_to_prune.clear()
 	alrdy_attacked.clear()
 	# sort by speed, filter
-	var fastest := attacks[0]
-	for a in attacks:
-		if a.speed > fastest.speed:
-			fastest = a
-	attacks.push_front(fastest)
+	#var fastest := attacks[0]
+	#for a in attacks:
+		#if a.speed > fastest.speed:
+			#fastest = a
+	#attacks.push_front(fastest)
 
 	# now do attacks
 	for a in attacks:
@@ -504,8 +519,9 @@ func process_attacks(player_mode: bool):
 			att_to_prune.append(a)
 			continue
 		if a.turn != get_turn(): # MINIBUG: IT WAS THIS!
-			att_to_prune.append(a)
-			continue
+			if !a.attacker.is_in_group("player"):
+				att_to_prune.append(a)
+				continue
 		if abs(a.attacker.current_cell.x - a.defender.current_cell.x) > 1 or \
 		abs(a.attacker.current_cell.y - a.defender.current_cell.y) > 1:
 			att_to_prune.append(a) # MINIBUG THIS IS FINE
@@ -559,7 +575,8 @@ func queue_attack(attack: Attack):
 		valid = false; aq_log += "att expired, "
 	if valid: attacks.append(attack)
 	else:
-		#print("QUEUE_ATTACK: failed because " + aq_log)
+		if a.attacker.is_in_group("player"):
+			print("QUEUE_ATTACK: failed because " + aq_log)
 		pass
 
 func process_corpses():
@@ -585,10 +602,12 @@ func spawn_npc(data: EnemyData, coord: Vector2i, soul: Node2D = null):
 			minion, pos_to_cell(minion.global_position), free_tile, 100, true)
 		queue_spawn_move(move)
 	elif data != null:
+		var free_tile = get_free_tile_near(coord)
+		if !is_tile_in_room(coord):
+			return
 		var enemy = enemy_scene.instantiate()
 		enemy.setup(dun.astar_grid, data)
 		get_tree().get_root().add_child(enemy)
-		var free_tile = get_free_tile_near(coord)
 		var move = Move.new(
 			enemy, pos_to_cell(enemy.global_position), free_tile, 100, true)
 		queue_spawn_move(move)
@@ -638,6 +657,15 @@ func is_tile_in_domain(coord: Vector2i) -> bool:
 	if dun.domain_floor_coords.has(coord):
 		return true
 	else: return false
+
+func get_random_domain_tile() -> Vector2i:
+	var free_domain_coords = []
+	for c in dun.domain_floor_coords:
+		if !is_tile_blocked(c):
+			free_domain_coords.append(c)
+	if free_domain_coords.is_empty(): return Vector2i(999,999)
+	var r = randi_range(0, free_domain_coords.size()-1)
+	return free_domain_coords[r]
 
 func is_tile_occupied(coord: Vector2i, count_corpses = true) -> bool:
 	var occupied = false
@@ -755,6 +783,11 @@ func register_npc_death(npc: Node2D, silent= false):
 		enemies.pop_at(enemies.find(npc))
 		enemies_slain += 1
 		print("enemy slain: " + npc.data.name)
+		# sg reward
+		var coord = get_random_domain_tile()
+		if coord != Vector2i(999,999): # returns error v2i if no available tiles.
+			spawn_sg_flower(npc.data, coord)
+		#print("SOUL FLOWER CORDDDDDDD" + str(coord))
 		if enemies.is_empty():
 			room_cleared()
 	elif npc.is_in_group("minion"):
@@ -764,6 +797,9 @@ func register_npc_death(npc: Node2D, silent= false):
 	elif npc.is_in_group("workable"):
 		workables.pop_at(workables.find(npc))
 		print("byby workable!!!")
+		if npc.destroy_on_worked:
+			npc.queue_free()
+			print("workable destroyddddddddddddddddddddddddddd")
 	elif npc.is_in_group("soul"):
 		souls.pop_at(souls.find(npc))
 		npc.queue_free()
@@ -781,6 +817,16 @@ func get_turn() -> int:
 	return turn
 
 ## INIT STUFF
+
+func spawn_sg_flower(enemy_data: EnemyData, coord: Vector2i):
+	# for when enemy dies, get its soul_value, and spawn amount of gems accordingly
+	var flower_instance = sg_flower_scene.instantiate()
+	dun.add_child(flower_instance)
+	var pos = cell_to_pos(coord) + \
+	Vector2i((GlobalConstants.TILE_SIZE / 2.0),(GlobalConstants.TILE_SIZE / 2.0))
+	print("SG FLOWER POSITIONNNNNNNNN " + str(pos))
+	flower_instance.global_position = pos
+	pass
 
 func spawn_loot(enemy_data: EnemyData, coord: Vector2i):
 	var loot_data = load(enemy_data.loot_data_path)
@@ -837,7 +883,6 @@ func register_workable(w: Node2D):
 	w.setup(dun.astar_grid)
 	workables.append(w)
 	if w.entity_props == null: setup_entity_props(w)
-	w.play_anim("default")
 	spawn_entity_ui(w)
 
 func register_loot(w: Node2D):

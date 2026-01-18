@@ -13,5 +13,5 @@ enemy_table = Dictionary[ExtResource("1_rofav"), float]({
 ExtResource("2_vvm15"): 10.0
 })
 min_enemies = 1
-max_enemies = 3
+max_enemies = 1
 metadata/_custom_type_script = "uid://jtl4bsq8gie4"

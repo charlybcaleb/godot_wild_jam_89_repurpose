@@ -11,6 +11,12 @@ var pelfen_death_sounds: Array[AudioStream]
 var pelfen_death_sound_0 = preload("res://assets/sounds/pelfen_death_sound_0.wav")
 var pelfen_death_sound_1 = preload("res://assets/sounds/pelfen_death_sound_1.wav")
 
+var magic_sound_0 = preload("res://assets/sounds/flipflomp.wav")
+var decline_sound = preload("res://assets/sounds/decline.wav")
+var chaching_sound = preload("res://assets/sounds/chaching.wav")
+var gem_drop_sound = preload("res://assets/sounds/gem_drop.wav")
+
+
 func _ready() -> void:
 	hit_sounds.append(hit_sound_0)
 	hit_sounds.append(hit_sound_1)
@@ -34,3 +40,19 @@ func play_death(npc_name: String):
 	else:
 		death_sound_player.stream = pelfen_death_sounds[randi_range(0,1)]
 		death_sound_player.play()
+
+func play_magic():
+	hit_sound_player.stream = magic_sound_0
+	hit_sound_player.play()
+
+func play_decline():
+	hit_sound_player.stream = decline_sound
+	hit_sound_player.play()
+
+func play_chaching():
+	hit_sound_player.stream = chaching_sound
+	hit_sound_player.play()
+
+func play_gem_drop():
+	hit_sound_player.stream = gem_drop_sound
+	hit_sound_player.play()

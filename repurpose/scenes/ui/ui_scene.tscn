@@ -1,12 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://cfp21mjv65dgd"]
+[gd_scene load_steps=22 format=3 uid="uid://cfp21mjv65dgd"]
 
 [ext_resource type="Script" uid="uid://cx2sbr6ex03d6" path="res://scenes/ui/ui.gd" id="1_8b3e8"]
 [ext_resource type="Script" uid="uid://dw0ttcvb0mddh" path="res://scripts/ui/grid_display.gd" id="1_u3faw"]
 [ext_resource type="Texture2D" uid="uid://dtw4uqw0air7l" path="res://assets/sprites/ui/crystal_128x64frame.png" id="2_4bb1o"]
 [ext_resource type="Texture2D" uid="uid://epcroqnykgx7" path="res://assets/sprites/ui/128x64frame.png" id="2_k3tac"]
 [ext_resource type="Script" uid="uid://cxtv7hommech2" path="res://scenes/ui/enemy_popup.gd" id="3_epb56"]
+[ext_resource type="Script" uid="uid://dr8x5oc4fnk7n" path="res://scenes/ui/gems_ui.gd" id="3_i85ru"]
 [ext_resource type="Texture2D" uid="uid://df8ckrofmyug4" path="res://assets/sprites/characters/pelfen.png" id="3_nchkn"]
 [ext_resource type="Texture2D" uid="uid://3i6r067xrstg" path="res://assets/sprites/ui/hp_crystal_128x64frame.png" id="4_awamv"]
+[ext_resource type="Script" uid="uid://cpdoalow56082" path="res://scenes/ui/gem_display_send_to.gd" id="4_eyaot"]
 [ext_resource type="Script" uid="uid://ddudijqovpa5e" path="res://scenes/ui/door_popup.gd" id="6_fr74f"]
 [ext_resource type="PackedScene" uid="uid://dlk38o7ibgwu3" path="res://scenes/ui/room_panel_container.tscn" id="6_o6iqq"]
 [ext_resource type="Texture2D" uid="uid://daxs3mubd6rmu" path="res://assets/sprites/env/door.png" id="7_4bb1o"]
@@ -14,6 +16,9 @@
 [ext_resource type="Texture2D" uid="uid://6bxq5inxe1g8" path="res://assets/sprites/ui/mana_gem.png" id="12_1v2lq"]
 [ext_resource type="Script" uid="uid://dmbiq7gosm26q" path="res://scripts/ui/radial_menu_button.gd" id="13_dnmvj"]
 [ext_resource type="PackedScene" uid="uid://cdrie4ivotcm3" path="res://scenes/ui/summon_button.tscn" id="14_weg4l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_weg4l"]
+bg_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3tac"]
 
@@ -60,12 +65,14 @@ layout_mode = 2
 texture = ExtResource("2_k3tac")
 expand_mode = 1
 
-[node name="Gem" type="Control" parent="StatsAndResources"]
+[node name="Gem" type="Control" parent="StatsAndResources" node_paths=PackedStringArray("gems_label")]
 anchors_preset = 0
 offset_left = 64.0
 offset_top = 24.0
 offset_right = 104.0
 offset_bottom = 64.0
+script = ExtResource("3_i85ru")
+gems_label = NodePath("Label")
 
 [node name="Sprite2D" type="Sprite2D" parent="StatsAndResources/Gem"]
 position = Vector2(8, 8)
@@ -79,7 +86,13 @@ offset_right = 64.0
 offset_bottom = 21.0
 theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 12
-text = "10011"
+text = "0"
+
+[node name="send_to_pos" type="Control" parent="StatsAndResources/Gem"]
+anchors_preset = 0
+offset_right = 15.0
+offset_bottom = 18.0
+script = ExtResource("4_eyaot")
 
 [node name="HP" type="Control" parent="StatsAndResources"]
 anchors_preset = 0
@@ -100,6 +113,102 @@ offset_bottom = 17.0
 theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 12
 text = "16"
+
+[node name="YouDied" type="Control" parent="."]
+visible = false
+z_index = 5
+anchors_preset = 0
+offset_left = 281.0
+offset_top = 82.0
+offset_right = 321.0
+offset_bottom = 122.0
+
+[node name="PanelContainer" type="PanelContainer" parent="YouDied"]
+layout_mode = 0
+offset_left = -64.0
+offset_top = -3.0
+offset_right = 64.0
+offset_bottom = 61.0
+scale = Vector2(1.9199988, 4.36)
+theme_override_styles/panel = SubResource("StyleBoxFlat_weg4l")
+
+[node name="Gem" type="Control" parent="YouDied"]
+anchors_preset = 0
+offset_left = 75.0
+offset_top = 81.0
+offset_right = 115.0
+offset_bottom = 121.0
+
+[node name="Sprite2D" type="Sprite2D" parent="YouDied/Gem"]
+position = Vector2(8, 8)
+texture = ExtResource("2_4bb1o")
+
+[node name="Label" type="Label" parent="YouDied/Gem"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 4.0
+offset_right = 64.0
+offset_bottom = 21.0
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 12
+text = "10011"
+
+[node name="Label" type="Label" parent="YouDied"]
+layout_mode = 0
+offset_left = -19.0
+offset_top = 8.0
+offset_right = 151.0
+offset_bottom = 65.0
+text = "You have been slain...
+Your deeds of valor 
+shall not be forgotten."
+
+[node name="Label2" type="Label" parent="YouDied"]
+layout_mode = 0
+offset_left = -48.0
+offset_top = 109.0
+offset_right = 122.0
+offset_bottom = 166.0
+text = "ENEMIES SLAIN:"
+
+[node name="Label3" type="Label" parent="YouDied"]
+layout_mode = 0
+offset_left = -49.0
+offset_top = 83.0
+offset_right = 121.0
+offset_bottom = 140.0
+text = "TOTAL SOUL GEMS:"
+
+[node name="Label4" type="Label" parent="YouDied"]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 110.0
+offset_right = 139.0
+offset_bottom = 127.0
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 12
+text = "11"
+
+[node name="ty" type="Label" parent="YouDied"]
+layout_mode = 0
+offset_left = -49.0
+offset_top = 157.0
+offset_right = 173.0
+offset_bottom = 214.0
+text = "THANK YOU FOR 
+PLAYING MY GAME!
+
+Sorry, but please refresh to
+play again. I ran out of time!"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="YouDied"]
+visible = false
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 64.0
+texture = ExtResource("2_k3tac")
+expand_mode = 1
 
 [node name="GridDisplay" type="Control" parent="."]
 unique_name_in_owner = true
@@ -129,15 +238,16 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "show grid"
 
-[node name="EnemyPopup" type="Control" parent="." node_paths=PackedStringArray("name_txt", "dmg_txt", "hp_txt", "icon_rect")]
+[node name="EnemyPopup" type="Control" parent="." node_paths=PackedStringArray("name_txt", "dmg_txt", "hp_txt", "cost_txt", "icon_rect")]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("3_epb56")
-name_txt = NodePath("TitleContainer/TitleLabel")
+name_txt = NodePath("Name/TitleLabel")
 dmg_txt = NodePath("DmgTxtContainer/TitleLabel")
 hp_txt = NodePath("HPTxtContainer/TitleLabel")
+cost_txt = NodePath("CostGemsandLabel/CostGemsLabel")
 icon_rect = NodePath("PortraitContainer/TextureRect")
 
 [node name="PanelContainer" type="PanelContainer" parent="EnemyPopup"]
@@ -150,26 +260,75 @@ layout_mode = 2
 texture = ExtResource("2_k3tac")
 expand_mode = 1
 
-[node name="TitleContainer" type="PanelContainer" parent="EnemyPopup"]
+[node name="Name" type="PanelContainer" parent="EnemyPopup"]
 clip_contents = true
 layout_mode = 0
 offset_left = 39.0
 offset_top = 6.0
 offset_right = 123.0
-offset_bottom = 38.0
+offset_bottom = 21.23
 theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
 
-[node name="TextureRect" type="TextureRect" parent="EnemyPopup/TitleContainer"]
+[node name="TextureRect" type="TextureRect" parent="EnemyPopup/Name"]
 visible = false
 layout_mode = 2
 texture = ExtResource("2_k3tac")
 expand_mode = 1
 
-[node name="TitleLabel" type="Label" parent="EnemyPopup/TitleContainer"]
+[node name="TitleLabel" type="Label" parent="EnemyPopup/Name"]
 layout_mode = 2
-text = "Pelfen, the one who pelfers"
+text = "Pelfen"
 label_settings = SubResource("LabelSettings_u3faw")
 autowrap_mode = 2
+max_lines_visible = 2
+
+[node name="CostText" type="PanelContainer" parent="EnemyPopup"]
+clip_contents = true
+layout_mode = 0
+offset_left = 39.0
+offset_top = 23.0
+offset_right = 123.0
+offset_bottom = 38.23
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="EnemyPopup/CostText"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="EnemyPopup/CostText"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "SOUL COST:"
+label_settings = SubResource("LabelSettings_u3faw")
+max_lines_visible = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyPopup"]
+z_index = 6
+position = Vector2(100, 29)
+texture = ExtResource("2_4bb1o")
+
+[node name="CostGemsandLabel" type="PanelContainer" parent="EnemyPopup"]
+clip_contents = true
+layout_mode = 0
+offset_left = 105.0
+offset_top = 23.0
+offset_right = 132.0
+offset_bottom = 38.23
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k3tac")
+
+[node name="TextureRect" type="TextureRect" parent="EnemyPopup/CostGemsandLabel"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_k3tac")
+expand_mode = 1
+
+[node name="CostGemsLabel" type="Label" parent="EnemyPopup/CostGemsandLabel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "200"
+label_settings = SubResource("LabelSettings_u3faw")
 max_lines_visible = 2
 
 [node name="DmgTxtContainer" type="PanelContainer" parent="EnemyPopup"]
