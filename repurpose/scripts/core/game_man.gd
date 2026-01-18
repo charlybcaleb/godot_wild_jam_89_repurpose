@@ -170,7 +170,7 @@ func setup() -> void:
 	load_all_rooms()
 	spawn_start_room()
 	player.setup(dun.astar_grid)
-	add_gems(20022)
+	add_gems(200)
 	#dun.setup()
 
 func load_all_rooms():
@@ -221,6 +221,7 @@ func spawn_new_room(rd: RoomData):
 	pass
 
 func move_to_room(rd: RoomData, from_door: Node2D):
+	player.heal(4)
 	attacks.clear() ## FIXME: bandaid fixx for attacked from old room bug.
 	player.block_inputs = true
 	var original_door_pos = (from_door.global_position)
@@ -380,8 +381,8 @@ func tick():
 	emit_signal("began_tick")
 	print (str(turns_since_player_hurt))
 	turns_since_player_hurt += 1
-	if turns_since_player_hurt % hp_regen_every == 0:
-		player.heal(hp_regen_amt)
+	#if turns_since_player_hurt % hp_regen_every == 0:
+		#player.heal(hp_regen_amt)
 	if turn % mana_regen_every == 0:
 		update_mana(mana_regen_amt)
 	process_swap_moves()
@@ -618,16 +619,16 @@ func tween_move(mover: Node2D, to: Vector2):
 func spawn_npc(data: EnemyData, coord: Vector2i, soul: Node2D = null):
 	if soul != null:
 		var minion = minion_scene.instantiate()
-		get_tree().get_root().add_child(minion)
 		minion.setup(dun.astar_grid, data)
+		get_tree().get_root().add_child(minion)
 		var free_tile = get_free_tile_near(coord)
 		var move = Move.new(
 			minion, pos_to_cell(minion.global_position), free_tile, 100, true)
 		queue_spawn_move(move)
-	if data.no_movement and soul != null:
+	elif data.no_movement and soul != null:
 		var minion = static_minion_scene.instantiate()
-		get_tree().get_root().add_child(minion)
 		minion.setup(dun.astar_grid, data)
+		get_tree().get_root().add_child(minion)
 		var free_tile = get_free_tile_near(coord)
 		var move = Move.new(
 			minion, pos_to_cell(minion.global_position), free_tile, 100, true)
@@ -637,8 +638,8 @@ func spawn_npc(data: EnemyData, coord: Vector2i, soul: Node2D = null):
 		if !is_tile_in_room(coord):
 			return
 		var enemy = enemy_scene.instantiate()
-		get_tree().get_root().add_child(enemy)
 		enemy.setup(dun.astar_grid, data)
+		get_tree().get_root().add_child(enemy)
 		var move = Move.new(
 			enemy, pos_to_cell(enemy.global_position), free_tile, 100, true)
 		queue_spawn_move(move)
@@ -901,7 +902,8 @@ func register_enemy(e: Node2D):
 	e.play_anim("default")
 	spawn_entity_ui(e)
 	if e.data.die_on_spawn:
-		await get_tree().create_timer(1.5).timeout
+		get_tree().current_scene.add_child(e)
+		await get_tree().create_timer(0.5).timeout
 		e.die(true)
 
 func register_minion(m: Node2D):

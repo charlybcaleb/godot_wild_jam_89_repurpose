@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cky00tw4a57h6"]
+[gd_scene load_steps=7 format=3 uid="uid://cky00tw4a57h6"]
 
 [ext_resource type="PackedScene" uid="uid://cfp21mjv65dgd" path="res://scenes/ui/ui_scene.tscn" id="1_j0xxo"]
 [ext_resource type="Script" uid="uid://bx7xiwh3ljtna" path="res://scripts/camera/camera.gd" id="2_8rffp"]
 [ext_resource type="PackedScene" uid="uid://wriu3c8nph2x" path="res://assets/tilesets/dungeon_0.tscn" id="2_xnanu"]
 [ext_resource type="PackedScene" uid="uid://dpfbr2m80hha8" path="res://scenes/player/player.tscn" id="3_xnanu"]
 [ext_resource type="AudioStream" uid="uid://cqsmowfhxqbjs" path="res://assets/sounds/music/necromogul_song.wav" id="5_mjl0v"]
+[ext_resource type="Script" uid="uid://d53hrb22q0ep" path="res://scenes/core/music_player.gd" id="6_5b884"]
 
 [node name="crawl" type="Node2D"]
 
@@ -28,4 +29,6 @@ map_rooms = []
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_mjl0v")
-volume_db = -4.913
+autoplay = true
+script = ExtResource("6_5b884")
+track_2 = ExtResource("5_mjl0v")

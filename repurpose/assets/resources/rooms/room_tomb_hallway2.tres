@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=5 format=3 uid="uid://bcu1dc3u306jc"]
+
+[ext_resource type="Script" uid="uid://c08irn7x3105s" path="res://scripts/npc/enemy_data.gd" id="1_oc3f3"]
+[ext_resource type="Resource" uid="uid://1y5he2oot7r4" path="res://assets/resources/scrik_data.tres" id="2_3f3hm"]
+[ext_resource type="Resource" uid="uid://cowdt8ehd8cr3" path="res://assets/resources/gnoll_data.tres" id="3_7sycs"]
+[ext_resource type="Script" uid="uid://jtl4bsq8gie4" path="res://scripts/dungeon/room_data.gd" id="4_gunr5"]
+
+[resource]
+script = ExtResource("4_gunr5")
+name = "Gnoll Hideout"
+room_scene_path = "res://scenes/rooms/room_tomb_hallway.tscn"
+spawn_weight = 10
+enemy_table = Dictionary[ExtResource("1_oc3f3"), float]({
+ExtResource("2_3f3hm"): 5.0,
+ExtResource("3_7sycs"): 10.0
+})
+min_enemies = 5
+max_enemies = 10
+metadata/_custom_type_script = "uid://jtl4bsq8gie4"

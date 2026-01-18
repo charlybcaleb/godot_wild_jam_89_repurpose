@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://6vuaera7q0na"]
+[gd_scene load_steps=13 format=3 uid="uid://6vuaera7q0na"]
 
 [ext_resource type="Script" uid="uid://da8pkvmsj3ser" path="res://scripts/npc/static_minion.gd" id="1_nn1nw"]
 [ext_resource type="Resource" uid="uid://bv0lcw6kikn8j" path="res://assets/resources/red_flower_data.tres" id="2_nn1nw"]
+[ext_resource type="Resource" uid="uid://cgywpbpgp4gsb" path="res://assets/resources/healing flower_soul_data.tres" id="2_vdcs1"]
 [ext_resource type="Shader" uid="uid://8h612323ado6" path="res://assets/shaders/anim_sprite.gdshader" id="3_cntll"]
 [ext_resource type="SpriteFrames" uid="uid://bvif1bhmou8r2" path="res://assets/sprites/characters/healing flower_frames.tres" id="4_nn1nw"]
 [ext_resource type="Script" uid="uid://dd26j0qysh7ev" path="res://scenes/player/npc_interactable.gd" id="5_gharp"]
@@ -58,6 +59,7 @@ size = Vector2(16, 16)
 
 [node name="Minion" type="CharacterBody2D"]
 script = ExtResource("1_nn1nw")
+soul_data = ExtResource("2_vdcs1")
 data = ExtResource("2_nn1nw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -33,6 +33,13 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 				SoundMan.play_decline()
 				valid = false
 			if valid:
+				if npc.data.die_on_spawn:
+					Domain.skip_next_click = true
+					GameMan.player.heal(4)
+					GameMan.remove_npc(npc)
+					ui.show_enemy_popup(npc, false)
+					SoundMan.play_magic()
+					return
 				send_soul_to_domain(the_damned_waiting_for_redemption)
 				is_corpse = false
 				

@@ -15,7 +15,19 @@ func _ready():
 
 # called by Domain but should be called by GameMAn
 func setup(_grid: AStarGrid2D, _data: EnemyData = null):
-	super.setup(_grid, _data)
+	grid = _grid
+	current_cell = GameMan.pos_to_cell(global_position)
+	target_cell = current_cell
+	if _data:
+		data = _data
+	hp = data.hp
+	max_hp = data.hp
+	
+	var sprite_frames: SpriteFrames
+	sprite_frames = load(data.get_frames_path())
+	if sprite_frames:
+		$AnimSprite.sprite_frames = sprite_frames
+	else: print("SETUP ERROR: sprite frames not found for " + name)
 
 ## called by GameMan when player moves
 func tick(_delta: float) -> void:
@@ -60,5 +72,6 @@ func get_target() -> Node2D:
 
 func die(silent=true):
 	GameMan.register_npc_death(self, silent)
+	$Area2D.become_corpse(self, true)
 	%AnimSprite.play("die")
 	await %AnimSprite.animation_finished

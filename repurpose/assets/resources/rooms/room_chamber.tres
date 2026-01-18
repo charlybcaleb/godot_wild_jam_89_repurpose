@@ -8,11 +8,11 @@
 script = ExtResource("4_xav0h")
 name = "Reliquary Chamber"
 room_scene_path = "res://scenes/rooms/room_chamber.tscn"
-spawn_weight = 5
+spawn_weight = 100
 enemy_table = Dictionary[ExtResource("1_7jjjn"), float]({
 ExtResource("2_o40k7"): 10.0
 })
-min_enemies = 1
-max_enemies = 3
+min_enemies = 2
+max_enemies = 5
 kill_on_spawn = true
 metadata/_custom_type_script = "uid://jtl4bsq8gie4"

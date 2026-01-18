@@ -8,4 +8,5 @@ name = "Gnoll"
 hp = 28
 dmg_die = 8
 cost = 450
+mana_cost = 5
 metadata/_custom_type_script = "uid://c08irn7x3105s"

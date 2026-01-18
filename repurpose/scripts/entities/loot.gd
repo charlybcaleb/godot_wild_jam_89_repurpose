@@ -3,7 +3,7 @@ extends CharacterBody2D
 #var loot_props: LootProperties
 #var data: ItemData
 @export var loot_name: String
-@export var min_quantity = 5
+@export var min_quantity = 25
 @export var max_quantity = 50
 var quantity: int
 var domain = true
@@ -23,6 +23,7 @@ func set_quantity(new_quantity: int):
 
 func send_gems_to_ui(amt: int):
 	await get_tree().create_timer(0.2).timeout
+	GameMan.player.heal(4)
 	FxMan.spawn_and_send_gems_fx(global_position)
 	hide()
 	await get_tree().create_timer(0.5).timeout
