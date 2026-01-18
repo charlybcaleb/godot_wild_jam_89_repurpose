@@ -555,6 +555,7 @@ func process_attacks(player_mode: bool):
 			str(a.to) + ". TURN " + str(get_turn()))
 		if a.defender.entity_type != GlobalConstants.EntityType.WORKABLE:
 			SoundMan.play_hit()
+		if a.defender.entity_type == GlobalConstants.EntityType.PLAYER
 		else:
 			SoundMan.play_hit(GlobalConstants.EntityType.WORKABLE)
 	# now cleanup attacks
